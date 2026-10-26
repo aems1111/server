@@ -3,182 +3,380 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#080b14">
+    <meta name="theme-color" content="#080b12">
     <title>AMS | Employee Portal</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="./style.css">
+    <script src="./app.js" defer></script>
 </head>
 <body>
-    <div class="background-glow glow-one"></div>
-    <div class="background-glow glow-two"></div>
 
-    <main class="app-container">
-        <section id="loginScreen" class="login-screen">
-            <div class="login-panel">
-                <div class="brand">
-                    <div class="brand-logo">A<span>M</span>S</div>
-                    <div class="brand-caption">EMPLOYEE INTELLIGENCE</div>
+<div class="ambient ambient-one"></div>
+<div class="ambient ambient-two"></div>
+<div class="grid-background"></div>
+
+<!-- LOGIN -->
+<main id="loginScreen" class="login-layout">
+
+    <section class="login-left">
+        <div class="login-content">
+
+            <a class="brand" href="#" aria-label="AMS Home">
+                <span class="brand-mark">A<span>M</span>S</span>
+                <span class="brand-divider"></span>
+                <span class="brand-description">
+                    <strong>EMPLOYEE</strong>
+                    <small>INTELLIGENCE PORTAL</small>
+                </span>
+            </a>
+
+            <div class="login-title">
+                <div class="eyebrow">
+                    <span class="pulse-dot"></span>
+                    EMPLOYEE ACCESS
                 </div>
 
-                <div class="login-heading">
-                    <span class="eyebrow">SECURE WORKSPACE</span>
-                    <h1>خوش آمدید</h1>
-                    <p>برای مشاهده گزارش عملکرد وارد حساب خود شوید.</p>
-                </div>
+                <h1>به دنیای <span>AMS</span><br>خوش آمدی.</h1>
 
-                <form id="loginForm">
+                <p>
+                    وارد حساب خود شو و گزارش عملکرد شخصی
+                    و آمار کلی مجموعه را مشاهده کن.
+                </p>
+            </div>
+
+            <form id="loginForm" autocomplete="on">
+
+                <div class="field">
                     <label for="username">نام کاربری</label>
-                    <div class="input-wrap">
-                        <span class="input-icon">◈</span>
-                        <input id="username" name="username"
-                               type="text" placeholder="نام کاربری خود را وارد کنید"
-                               autocomplete="username" required>
-                    </div>
 
+                    <div class="input-box">
+                        <span class="input-symbol">◈</span>
+
+                        <input
+                            id="username"
+                            name="username"
+                            type="text"
+                            placeholder="نام کاربری خود را وارد کن"
+                            autocomplete="username"
+                            autocapitalize="none"
+                            spellcheck="false"
+                            required
+                        >
+                    </div>
+                </div>
+
+                <div class="field">
                     <label for="password">رمز عبور</label>
-                    <div class="input-wrap">
-                        <span class="input-icon">◇</span>
-                        <input id="password" name="password"
-                               type="password" placeholder="رمز عبور"
-                               autocomplete="current-password" required>
-                        <button type="button" id="togglePassword"
-                                class="password-toggle" aria-label="نمایش رمز عبور">
-                            ◉
-                        </button>
+
+                    <div class="input-box">
+                        <span class="input-symbol">◇</span>
+
+                        <input
+                            id="password"
+                            name="password"
+                            type="password"
+                            placeholder="رمز عبور خود را وارد کن"
+                            autocomplete="current-password"
+                            required
+                        >
+
+                        <button
+                            type="button"
+                            id="togglePassword"
+                            class="show-password"
+                            aria-label="نمایش رمز عبور"
+                        >◉</button>
                     </div>
+                </div>
 
-                    <p id="loginError" class="error-message" role="alert"></p>
+                <div id="loginError" class="message error-message"
+                     role="alert" aria-live="polite"></div>
 
-                    <button type="submit" class="primary-button">
-                        <span>ورود به داشبورد</span>
-                        <span>←</span>
+                <button id="loginButton" class="login-button" type="submit">
+                    <span>ورود به حساب کاربری</span>
+                    <span class="button-arrow">←</span>
+                </button>
+
+            </form>
+
+            <div class="demo-access">
+                <div class="demo-heading">
+                    <span class="demo-icon">ⓘ</span>
+                    اطلاعات حساب‌های نمایشی
+                </div>
+
+                <div class="demo-accounts">
+                    <button class="demo-account" type="button"
+                            data-user="employee1" data-pass="ams123">
+                        <span>کارمند ۱</span>
+                        <span class="demo-username">employee1</span>
                     </button>
-                </form>
 
-                <div class="login-footer">
-                    <span class="status-dot"></span>
-                    سامانه گزارش عملکرد AMS
-                    <span class="demo-tag">DEMO</span>
+                    <button class="demo-account" type="button"
+                            data-user="employee2" data-pass="ams456">
+                        <span>کارمند ۲</span>
+                        <span class="demo-username">employee2</span>
+                    </button>
+
+                    <button class="demo-account" type="button"
+                            data-user="employee3" data-pass="ams789">
+                        <span>کارمند ۳</span>
+                        <span class="demo-username">employee3</span>
+                    </button>
+                </div>
+
+                <p>برای آزمایش، روی یکی از حساب‌ها کلیک کن.</p>
+            </div>
+
+            <footer class="login-footer">
+                <span>© AMS</span>
+                <span>نسخه نمایشی سامانه</span>
+            </footer>
+
+        </div>
+    </section>
+
+    <aside class="login-right">
+
+        <div class="hero-top">
+            <span class="hero-label">AMS / PERFORMANCE SYSTEM</span>
+            <span class="hero-version">V.01</span>
+        </div>
+
+        <div class="hero-main">
+
+            <div class="orbit orbit-one"></div>
+            <div class="orbit orbit-two"></div>
+            <div class="orbit orbit-three"></div>
+
+            <div class="hero-core">
+                <div class="core-inner">
+                    <span class="core-logo">A<span>M</span>S</span>
+                    <span class="core-line"></span>
+                    <span class="core-caption">INTELLIGENCE</span>
                 </div>
             </div>
 
-            <div class="login-side">
-                <div class="side-content">
-                    <div class="side-badge">AMS / PERFORMANCE SYSTEM</div>
-                    <h2>عملکرد را ببین.<br><span>پیشرفت را دنبال کن.</span></h2>
-                    <p>
-                        دسترسی یکپارچه به گزارش شخصی، شاخص‌های عملکرد
-                        و وضعیت کلی مجموعه.
-                    </p>
-
-                    <div class="preview-card">
-                        <div class="preview-card-top">
-                            <span>GLOBAL OVERVIEW</span>
-                            <span class="live-label">● DEMO DATA</span>
-                        </div>
-                        <div class="preview-number">3 <small>کارمند</small></div>
-                        <div class="preview-divider"></div>
-                        <div class="preview-bottom">
-                            <span>سامانه آمار کارمندان</span>
-                            <span>AMS®</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="side-decoration">AMS</div>
+            <div class="floating-node node-one">
+                <span class="node-symbol">↗</span>
+                <span class="node-line"></span>
             </div>
+
+            <div class="floating-node node-two">
+                <span class="node-symbol">◈</span>
+                <span class="node-line"></span>
+            </div>
+
+            <div class="floating-node node-three">
+                <span class="node-symbol">⌁</span>
+                <span class="node-line"></span>
+            </div>
+
+        </div>
+
+        <div class="hero-copy">
+            <span class="eyebrow">ONE PLATFORM. CLEAR PERFORMANCE.</span>
+
+            <h2>عملکرد بهتر،<br><span>تصمیم هوشمندانه‌تر.</span></h2>
+
+            <p>
+                تمام شاخص‌های عملکرد در یک نمای یکپارچه؛
+                ساده، شفاف و قابل‌فهم.
+            </p>
+
+            <div class="hero-indicators">
+                <div>
+                    <span class="indicator-number">03</span>
+                    <span class="indicator-label">DEMO USERS</span>
+                </div>
+
+                <span class="indicator-separator"></span>
+
+                <div>
+                    <span class="indicator-number">01</span>
+                    <span class="indicator-label">DASHBOARD</span>
+                </div>
+
+                <span class="indicator-separator"></span>
+
+                <div>
+                    <span class="indicator-number">AMS</span>
+                    <span class="indicator-label">SYSTEM</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="hero-footer">
+            <span>EMPLOYEE INTELLIGENCE PLATFORM</span>
+            <span class="hero-status"><i></i> DEMO MODE</span>
+        </div>
+
+    </aside>
+
+</main>
+
+
+<!-- DASHBOARD -->
+<main id="dashboardScreen" class="dashboard hidden">
+
+    <header class="topbar">
+
+        <a href="#" class="dashboard-brand">
+            <span class="dashboard-logo">AMS</span>
+
+            <span class="dashboard-brand-divider"></span>
+
+            <span class="dashboard-brand-text">
+                <strong>EMPLOYEE PORTAL</strong>
+                <small>PERFORMANCE INTELLIGENCE</small>
+            </span>
+        </a>
+
+        <div class="topbar-actions">
+            <div class="system-status">
+                <span class="pulse-dot"></span>
+                <span>سامانه نمایشی</span>
+            </div>
+
+            <button id="logoutButton" class="logout-button" type="button">
+                <span>خروج از حساب</span>
+                <span>↗</span>
+            </button>
+        </div>
+
+    </header>
+
+
+    <div class="dashboard-main">
+
+        <section class="welcome-panel">
+
+            <div class="welcome-content">
+                <div class="eyebrow">
+                    DASHBOARD
+                    <span class="breadcrumb-divider">/</span>
+                    <span id="employeeId">AMS-001</span>
+                </div>
+
+                <h1>خوش آمدی، <span id="employeeName">کارمند</span></h1>
+
+                <p>
+                    در این بخش می‌توانی آمار شخصی و وضعیت کلی مجموعه را ببینی.
+                </p>
+
+                <div class="welcome-meta">
+                    <span class="welcome-status"><i></i> حساب فعال</span>
+                    <span class="meta-divider"></span>
+                    <span id="lastUpdated">—</span>
+                </div>
+            </div>
+
+            <div class="welcome-decoration">
+                <span class="decoration-letter">A</span>
+                <span class="decoration-ring ring-a"></span>
+                <span class="decoration-ring ring-b"></span>
+            </div>
+
         </section>
 
-        <section id="dashboardScreen" class="dashboard-screen hidden">
-            <header class="topbar">
-                <a class="dashboard-brand" href="#" aria-label="AMS">
-                    <span class="mini-logo">AMS</span>
-                    <span class="brand-divider"></span>
-                    <span class="brand-label">EMPLOYEE PORTAL</span>
-                </a>
 
-                <div class="topbar-right">
-                    <span class="online-indicator"><i></i> سامانه فعال</span>
-                    <button id="logoutButton" class="logout-button">
-                        خروج از حساب <span>↗</span>
-                    </button>
+        <!-- PERSONAL -->
+        <section class="dashboard-section">
+
+            <div class="section-header">
+                <div>
+                    <span class="section-kicker">01 / YOUR DATA</span>
+                    <h2>آمار شخصی</h2>
+                    <p>اطلاعات مربوط به حساب شما</p>
                 </div>
-            </header>
 
-            <div class="dashboard-content">
-                <div class="welcome-row">
+                <span class="section-badge">PERSONAL OVERVIEW</span>
+            </div>
+
+            <div id="personalStats" class="personal-grid"></div>
+
+        </section>
+
+
+        <!-- GLOBAL -->
+        <section class="dashboard-section">
+
+            <div class="section-header">
+                <div>
+                    <span class="section-kicker">02 / ORGANIZATION</span>
+                    <h2>آمار کلی کارمندان</h2>
+                    <p>نمای کلی عملکرد تمام اعضای مجموعه</p>
+                </div>
+
+                <span class="section-badge">GLOBAL OVERVIEW</span>
+            </div>
+
+            <div id="globalStats" class="global-grid"></div>
+
+        </section>
+
+
+        <!-- TEAM -->
+        <section class="dashboard-section">
+
+            <div class="section-header">
+                <div>
+                    <span class="section-kicker">03 / TEAM STATUS</span>
+                    <h2>وضعیت کارمندان</h2>
+                    <p>مقایسه شاخص‌های عملکرد در سطح مجموعه</p>
+                </div>
+
+                <span class="section-badge">TEAM PERFORMANCE</span>
+            </div>
+
+            <div class="table-panel">
+
+                <div class="table-heading">
                     <div>
-                        <div class="eyebrow">EMPLOYEE DASHBOARD / <span id="employeeId">AMS-001</span></div>
-                        <h1>سلام، <span id="employeeName">کارمند</span></h1>
-                        <p>به پنل گزارش عملکرد خود خوش آمدید.</p>
+                        <strong>گزارش کارمندان</strong>
+                        <span>آمار نمونه برای سه حساب نمایشی</span>
                     </div>
-                    <div class="date-box">
-                        <span class="date-icon">◷</span>
-                        <div>
-                            <small>آخرین به‌روزرسانی نمایشی</small>
-                            <strong id="lastUpdated">—</strong>
-                        </div>
-                    </div>
+
+                    <span class="table-count">03 USERS</span>
                 </div>
 
-                <section class="section-block">
-                    <div class="section-heading">
-                        <div>
-                            <span class="section-index">01 / PERSONAL</span>
-                            <h2>آمار شخصی شما</h2>
-                        </div>
-                        <span class="section-note">PERSONAL PERFORMANCE</span>
-                    </div>
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>کارمند</th>
+                                <th>شناسه</th>
+                                <th>فروش</th>
+                                <th>ساعت کاری</th>
+                                <th>عملکرد</th>
+                            </tr>
+                        </thead>
 
-                    <div id="personalStats" class="stats-grid"></div>
-                </section>
+                        <tbody id="employeesTable"></tbody>
+                    </table>
+                </div>
 
-                <section class="section-block global-section">
-                    <div class="section-heading">
-                        <div>
-                            <span class="section-index">02 / ORGANIZATION</span>
-                            <h2>آمار کلی کارمندان</h2>
-                        </div>
-                        <span class="section-note">GLOBAL PERFORMANCE</span>
-                    </div>
-
-                    <div id="globalStats" class="global-stats-grid"></div>
-                </section>
-
-                <section class="section-block employees-section">
-                    <div class="section-heading">
-                        <div>
-                            <span class="section-index">03 / TEAM</span>
-                            <h2>وضعیت کلی تیم</h2>
-                        </div>
-                        <span class="section-note">TEAM OVERVIEW</span>
-                    </div>
-
-                    <div class="table-wrapper">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>کارمند</th>
-                                    <th>شناسه</th>
-                                    <th>تعداد فروش</th>
-                                    <th>ساعت کاری</th>
-                                    <th>امتیاز عملکرد</th>
-                                </tr>
-                            </thead>
-                            <tbody id="employeesTable"></tbody>
-                        </table>
-                    </div>
-                    <p class="demo-notice">
-                        این اطلاعات صرفاً نمونه نمایشی هستند و داده‌های واقعی مجموعه نیستند.
-                    </p>
-                </section>
-
-                <footer class="dashboard-footer">
-                    <span><b>AMS</b> — EMPLOYEE INTELLIGENCE</span>
-                    <span>DEMO VERSION <span class="footer-dot">●</span></span>
-                </footer>
             </div>
-        </section>
-    </main>
 
-    <script src="app.js"></script>
+            <div class="demo-warning">
+                <span>ⓘ</span>
+                این اطلاعات آزمایشی هستند و به پایگاه داده واقعی متصل نیستند.
+            </div>
+
+        </section>
+
+
+        <footer class="dashboard-footer">
+            <div class="footer-brand">
+                <strong>AMS</strong>
+                <span>EMPLOYEE INTELLIGENCE</span>
+            </div>
+
+            <span>نسخه نمایشی — اطلاعات نمونه</span>
+        </footer>
+
+    </div>
+
+</main>
+
 </body>
 </html>
