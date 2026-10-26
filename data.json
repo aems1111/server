@@ -1,0 +1,42 @@
+{
+  "format": "AMS_SHARED_DATA",
+  "version": 1,
+  "updatedAt": "2026-10-26T00:00:00.000Z",
+  "employees": [
+    {
+      "id": 1,
+      "name": "آرمان رضایی",
+      "role": "توسعه‌دهنده",
+      "tokens": 0,
+      "activities": 0,
+      "color": "#8b7cff"
+    },
+    {
+      "id": 2,
+      "name": "سارا محمدی",
+      "role": "طراح محصول",
+      "tokens": 0,
+      "activities": 0,
+      "color": "#57c8e3"
+    }
+  ],
+  "tasks": [
+    {
+      "id": 101,
+      "title": "تکمیل طراحی صفحه ورود",
+      "description": "تحویل طرح نهایی و تأیید مدیر",
+      "reward": 50,
+      "status": "فعال"
+    },
+    {
+      "id": 102,
+      "title": "رفع باگ‌های سایت",
+      "description": "بررسی و رفع خطاهای گزارش‌شده",
+      "reward": 75,
+      "status": "فعال"
+    }
+  ],
+  "pending": [],
+  "transactions": [],
+  "extraRequests": []
+}
