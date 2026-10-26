@@ -1,255 +1,184 @@
-"use strict";
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#080b14">
+    <title>AMS | Employee Portal</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="background-glow glow-one"></div>
+    <div class="background-glow glow-two"></div>
 
-/*
- * AMS DEMO
- *
- * این نسخه صرفاً نمایشی است.
- * اطلاعات حساب‌ها و آمار در کد عمومی قرار دارند؛
- * بنابراین از رمز عبور واقعی استفاده نکن.
- */
+    <main class="app-container">
+        <section id="loginScreen" class="login-screen">
+            <div class="login-panel">
+                <div class="brand">
+                    <div class="brand-logo">A<span>M</span>S</div>
+                    <div class="brand-caption">EMPLOYEE INTELLIGENCE</div>
+                </div>
 
-const USERS = [
-    {
-        username: "employee1",
-        password: "ams123",
-        name: "علی رضایی",
-        employeeId: "AMS-001",
-        stats: {
-            sales: 125,
-            hours: 168,
-            score: 92
-        }
-    },
-    {
-        username: "employee2",
-        password: "ams456",
-        name: "سارا احمدی",
-        employeeId: "AMS-002",
-        stats: {
-            sales: 98,
-            hours: 154,
-            score: 86
-        }
-    },
-    {
-        username: "employee3",
-        password: "ams789",
-        name: "محمد کریمی",
-        employeeId: "AMS-003",
-        stats: {
-            sales: 143,
-            hours: 176,
-            score: 96
-        }
-    }
-];
+                <div class="login-heading">
+                    <span class="eyebrow">SECURE WORKSPACE</span>
+                    <h1>خوش آمدید</h1>
+                    <p>برای مشاهده گزارش عملکرد وارد حساب خود شوید.</p>
+                </div>
 
-const $ = (selector) => document.querySelector(selector);
+                <form id="loginForm">
+                    <label for="username">نام کاربری</label>
+                    <div class="input-wrap">
+                        <span class="input-icon">◈</span>
+                        <input id="username" name="username"
+                               type="text" placeholder="نام کاربری خود را وارد کنید"
+                               autocomplete="username" required>
+                    </div>
 
-const loginScreen = $("#loginScreen");
-const dashboardScreen = $("#dashboardScreen");
-const loginForm = $("#loginForm");
-const loginError = $("#loginError");
-const usernameInput = $("#username");
-const passwordInput = $("#password");
+                    <label for="password">رمز عبور</label>
+                    <div class="input-wrap">
+                        <span class="input-icon">◇</span>
+                        <input id="password" name="password"
+                               type="password" placeholder="رمز عبور"
+                               autocomplete="current-password" required>
+                        <button type="button" id="togglePassword"
+                                class="password-toggle" aria-label="نمایش رمز عبور">
+                            ◉
+                        </button>
+                    </div>
 
-let currentUser = null;
+                    <p id="loginError" class="error-message" role="alert"></p>
 
-function formatNumber(value) {
-    return new Intl.NumberFormat("fa-IR").format(value);
-}
+                    <button type="submit" class="primary-button">
+                        <span>ورود به داشبورد</span>
+                        <span>←</span>
+                    </button>
+                </form>
 
-function getGlobalStats() {
-    const totalSales = USERS.reduce(
-        (sum, user) => sum + user.stats.sales,
-        0
-    );
-
-    const totalHours = USERS.reduce(
-        (sum, user) => sum + user.stats.hours,
-        0
-    );
-
-    const averageScore = Math.round(
-        USERS.reduce((sum, user) => sum + user.stats.score, 0) /
-        USERS.length
-    );
-
-    return {
-        employees: USERS.length,
-        sales: totalSales,
-        hours: totalHours,
-        averageScore
-    };
-}
-
-function showLogin() {
-    currentUser = null;
-    dashboardScreen.classList.add("hidden");
-    loginScreen.classList.remove("hidden");
-
-    loginForm.reset();
-    loginError.textContent = "";
-    usernameInput.focus();
-}
-
-function showDashboard(user) {
-    currentUser = user;
-
-    loginScreen.classList.add("hidden");
-    dashboardScreen.classList.remove("hidden");
-
-    $("#employeeName").textContent = user.name;
-    $("#employeeId").textContent = user.employeeId;
-    $("#lastUpdated").textContent = new Intl.DateTimeFormat("fa-IR", {
-        dateStyle: "medium",
-        timeStyle: "short"
-    }).format(new Date());
-
-    renderPersonalStats(user);
-    renderGlobalStats();
-    renderEmployeesTable();
-
-    window.scrollTo({ top: 0, behavior: "smooth" });
-}
-
-function renderPersonalStats(user) {
-    const stats = user.stats;
-
-    const cards = [
-        {
-            label: "تعداد فروش",
-            value: formatNumber(stats.sales),
-            description: "مجموع فروش ثبت‌شده در اطلاعات نمایشی",
-            icon: "↗",
-            color: "blue"
-        },
-        {
-            label: "ساعت کاری",
-            value: formatNumber(stats.hours),
-            description: "مجموع ساعات کاری ثبت‌شده",
-            icon: "◷",
-            color: "green"
-        },
-        {
-            label: "امتیاز عملکرد",
-            value: formatNumber(stats.score) + "٪",
-            description: "شاخص نمایشی ارزیابی عملکرد",
-            icon: "◇",
-            color: "orange"
-        }
-    ];
-
-    $("#personalStats").innerHTML = cards.map((card) => `
-        <article class="stat-card ${card.color}">
-            <div class="stat-top">
-                <span class="stat-label">${card.label}</span>
-                <span class="stat-icon">${card.icon}</span>
+                <div class="login-footer">
+                    <span class="status-dot"></span>
+                    سامانه گزارش عملکرد AMS
+                    <span class="demo-tag">DEMO</span>
+                </div>
             </div>
-            <div class="stat-value">${card.value}</div>
-            <div class="stat-description">${card.description}</div>
-        </article>
-    `).join("");
-}
 
-function renderGlobalStats() {
-    const stats = getGlobalStats();
+            <div class="login-side">
+                <div class="side-content">
+                    <div class="side-badge">AMS / PERFORMANCE SYSTEM</div>
+                    <h2>عملکرد را ببین.<br><span>پیشرفت را دنبال کن.</span></h2>
+                    <p>
+                        دسترسی یکپارچه به گزارش شخصی، شاخص‌های عملکرد
+                        و وضعیت کلی مجموعه.
+                    </p>
 
-    const cards = [
-        {
-            label: "تعداد کل کارمندان",
-            value: formatNumber(stats.employees),
-            unit: "نفر"
-        },
-        {
-            label: "مجموع فروش",
-            value: formatNumber(stats.sales),
-            unit: "فروش ثبت‌شده"
-        },
-        {
-            label: "مجموع ساعت کاری",
-            value: formatNumber(stats.hours),
-            unit: "ساعت"
-        },
-        {
-            label: "میانگین عملکرد",
-            value: formatNumber(stats.averageScore) + "٪",
-            unit: "میانگین امتیاز"
-        }
-    ];
-
-    $("#globalStats").innerHTML = cards.map((card) => `
-        <article class="global-card">
-            <div class="global-label">${card.label}</div>
-            <div class="global-value">${card.value}</div>
-            <div class="global-unit">${card.unit}</div>
-        </article>
-    `).join("");
-}
-
-function renderEmployeesTable() {
-    const sortedUsers = [...USERS].sort(
-        (a, b) => b.stats.score - a.stats.score
-    );
-
-    $("#employeesTable").innerHTML = sortedUsers.map((user) => `
-        <tr>
-            <td>
-                <div class="employee-cell">
-                    <div class="employee-avatar">${user.name.charAt(0)}</div>
-                    <div>
-                        <div class="employee-name">${user.name}</div>
-                        <div class="employee-role">کارمند مجموعه</div>
+                    <div class="preview-card">
+                        <div class="preview-card-top">
+                            <span>GLOBAL OVERVIEW</span>
+                            <span class="live-label">● DEMO DATA</span>
+                        </div>
+                        <div class="preview-number">3 <small>کارمند</small></div>
+                        <div class="preview-divider"></div>
+                        <div class="preview-bottom">
+                            <span>سامانه آمار کارمندان</span>
+                            <span>AMS®</span>
+                        </div>
                     </div>
                 </div>
-            </td>
-            <td>${user.employeeId}</td>
-            <td>${formatNumber(user.stats.sales)}</td>
-            <td>${formatNumber(user.stats.hours)}</td>
-            <td><span class="score-pill">${formatNumber(user.stats.score)}٪</span></td>
-        </tr>
-    `).join("");
-}
+                <div class="side-decoration">AMS</div>
+            </div>
+        </section>
 
-loginForm.addEventListener("submit", (event) => {
-    event.preventDefault();
+        <section id="dashboardScreen" class="dashboard-screen hidden">
+            <header class="topbar">
+                <a class="dashboard-brand" href="#" aria-label="AMS">
+                    <span class="mini-logo">AMS</span>
+                    <span class="brand-divider"></span>
+                    <span class="brand-label">EMPLOYEE PORTAL</span>
+                </a>
 
-    const username = usernameInput.value.trim();
-    const password = passwordInput.value;
+                <div class="topbar-right">
+                    <span class="online-indicator"><i></i> سامانه فعال</span>
+                    <button id="logoutButton" class="logout-button">
+                        خروج از حساب <span>↗</span>
+                    </button>
+                </div>
+            </header>
 
-    const user = USERS.find((candidate) =>
-        candidate.username === username &&
-        candidate.password === password
-    );
+            <div class="dashboard-content">
+                <div class="welcome-row">
+                    <div>
+                        <div class="eyebrow">EMPLOYEE DASHBOARD / <span id="employeeId">AMS-001</span></div>
+                        <h1>سلام، <span id="employeeName">کارمند</span></h1>
+                        <p>به پنل گزارش عملکرد خود خوش آمدید.</p>
+                    </div>
+                    <div class="date-box">
+                        <span class="date-icon">◷</span>
+                        <div>
+                            <small>آخرین به‌روزرسانی نمایشی</small>
+                            <strong id="lastUpdated">—</strong>
+                        </div>
+                    </div>
+                </div>
 
-    if (!user) {
-        loginError.textContent = "نام کاربری یا رمز عبور صحیح نیست.";
-        passwordInput.value = "";
-        passwordInput.focus();
-        return;
-    }
+                <section class="section-block">
+                    <div class="section-heading">
+                        <div>
+                            <span class="section-index">01 / PERSONAL</span>
+                            <h2>آمار شخصی شما</h2>
+                        </div>
+                        <span class="section-note">PERSONAL PERFORMANCE</span>
+                    </div>
 
-    loginError.textContent = "";
-    showDashboard(user);
-});
+                    <div id="personalStats" class="stats-grid"></div>
+                </section>
 
-$("#logoutButton").addEventListener("click", showLogin);
+                <section class="section-block global-section">
+                    <div class="section-heading">
+                        <div>
+                            <span class="section-index">02 / ORGANIZATION</span>
+                            <h2>آمار کلی کارمندان</h2>
+                        </div>
+                        <span class="section-note">GLOBAL PERFORMANCE</span>
+                    </div>
 
-$("#togglePassword").addEventListener("click", () => {
-    const isPassword = passwordInput.type === "password";
-    passwordInput.type = isPassword ? "text" : "password";
-    $("#togglePassword").setAttribute(
-        "aria-label",
-        isPassword ? "مخفی‌کردن رمز عبور" : "نمایش رمز عبور"
-    );
-});
+                    <div id="globalStats" class="global-stats-grid"></div>
+                </section>
 
-usernameInput.addEventListener("input", () => {
-    loginError.textContent = "";
-});
+                <section class="section-block employees-section">
+                    <div class="section-heading">
+                        <div>
+                            <span class="section-index">03 / TEAM</span>
+                            <h2>وضعیت کلی تیم</h2>
+                        </div>
+                        <span class="section-note">TEAM OVERVIEW</span>
+                    </div>
 
-passwordInput.addEventListener("input", () => {
-    loginError.textContent = "";
-});
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>کارمند</th>
+                                    <th>شناسه</th>
+                                    <th>تعداد فروش</th>
+                                    <th>ساعت کاری</th>
+                                    <th>امتیاز عملکرد</th>
+                                </tr>
+                            </thead>
+                            <tbody id="employeesTable"></tbody>
+                        </table>
+                    </div>
+                    <p class="demo-notice">
+                        این اطلاعات صرفاً نمونه نمایشی هستند و داده‌های واقعی مجموعه نیستند.
+                    </p>
+                </section>
 
-showLogin();
+                <footer class="dashboard-footer">
+                    <span><b>AMS</b> — EMPLOYEE INTELLIGENCE</span>
+                    <span>DEMO VERSION <span class="footer-dot">●</span></span>
+                </footer>
+            </div>
+        </section>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>
