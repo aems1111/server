@@ -4,495 +4,287 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#0b1020">
-    <title>داشبورد درآمد کارمندان</title>
+    <title>AMS | سیستم پاداش سکه‌ای</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
 <div class="app">
-
     <aside class="sidebar">
         <div class="brand">
-            <div class="brand-icon">E</div>
-            <div>
-                <h2>EMPLOYEE</h2>
-                <span>MANAGEMENT SYSTEM</span>
-            </div>
+            <div class="brand-icon">A</div>
+            <div><h2>AMS REWARDS</h2><small>COIN MANAGEMENT</small></div>
         </div>
 
-        <div class="menu-label">منوی اصلی</div>
-
-        <button class="nav-item active" data-page="dashboard">
-            <span>▦</span> داشبورد
-        </button>
-
-        <button class="nav-item" data-page="employees">
-            <span>♙</span> کارمندان
-        </button>
-
-        <button class="nav-item" data-page="reports">
-            <span>▤</span> گزارش درآمد
-        </button>
+        <p class="menu-label">منوی اصلی</p>
+        <button class="nav active" data-page="dashboard">▦ <span>داشبورد</span></button>
+        <button class="nav" data-page="users">♙ <span>مدیریت کاربران</span></button>
+        <button class="nav" data-page="tasks">☷ <span>مدیریت وظایف</span></button>
+        <button class="nav" data-page="history">◷ <span>تاریخچه پاداش‌ها</span></button>
 
         <div class="sidebar-bottom">
-            <div class="system-status">
-                <span class="status-dot"></span>
-                <div>
-                    <strong>وضعیت سیستم</strong>
-                    <small>نسخه نمایشی محلی</small>
-                </div>
-            </div>
-
-            <button class="admin-button" id="openAdmin">
-                <span>⚙</span> ورود به پنل مدیریت
-            </button>
+            <div class="local-status"><span></span><div>سیستم نمایشی<small>ذخیره محلی مرورگر</small></div></div>
+            <button class="admin-button" id="openAdmin">⚙ پنل مدیریت</button>
         </div>
     </aside>
 
     <main class="main">
-
         <header class="topbar">
             <div>
-                <h1 id="pageTitle">داشبورد مدیریتی</h1>
-                <p id="pageSubtitle">گزارش عملکرد و درآمد کارمندان</p>
+                <h1 id="pageTitle">داشبورد پاداش‌ها</h1>
+                <p id="pageSubtitle">مدیریت کاربران، وظایف و سکه‌های AMS</p>
             </div>
-
-            <div class="topbar-left">
-                <div class="date-box">
-                    <span>◷</span>
-                    <span id="todayDate"></span>
-                </div>
-
-                <button class="avatar" id="topAdmin">AD</button>
+            <div class="top-actions">
+                <span id="todayDate"></span>
+                <button class="avatar" id="adminAvatar">AD</button>
             </div>
         </header>
 
-        <section class="page-section" id="dashboardPage">
-
-            <div class="welcome-banner">
+        <section id="dashboardPage" class="page">
+            <div class="hero">
                 <div>
-                    <span class="eyebrow">EMPLOYEE ANALYTICS</span>
-                    <h2>نمای کلی عملکرد شرکت</h2>
-                    <p>آمار درآمد و وضعیت پرداخت کارمندان را بررسی کنید.</p>
+                    <span class="eyebrow">AMS REWARDS SYSTEM</span>
+                    <h2>مرکز مدیریت پاداش‌ها</h2>
+                    <p>وظایف را بررسی کن و پس از تأیید، سکه را به کاربر اختصاص بده.</p>
                 </div>
-                <div class="banner-symbol">▥</div>
+                <div class="coin-art">🪙</div>
             </div>
 
-            <div class="stats-grid">
-
-                <article class="stat-card">
-                    <div class="stat-top">
-                        <span>مجموع درآمد ماهانه</span>
-                        <span class="stat-icon purple">↗</span>
-                    </div>
-                    <h2 id="totalIncome">۰ تومان</h2>
-                    <p class="stat-description">مجموع درآمد ثبت‌شده کارمندان</p>
+            <div class="stats">
+                <article class="stat">
+                    <span>مجموع سکه کاربران</span>
+                    <strong id="totalCoins">0</strong>
+                    <small>موجودی فعلی تمام کاربران</small>
                 </article>
-
-                <article class="stat-card">
-                    <div class="stat-top">
-                        <span>تعداد کارمندان</span>
-                        <span class="stat-icon blue">♙</span>
-                    </div>
-                    <h2 id="employeeCount">۰</h2>
-                    <p class="stat-description">تعداد افراد ثبت‌شده در سیستم</p>
+                <article class="stat">
+                    <span>تعداد کاربران</span>
+                    <strong id="userCount">0</strong>
+                    <small>کاربران ثبت‌شده</small>
                 </article>
-
-                <article class="stat-card">
-                    <div class="stat-top">
-                        <span>میانگین درآمد</span>
-                        <span class="stat-icon green">◈</span>
-                    </div>
-                    <h2 id="averageIncome">۰ تومان</h2>
-                    <p class="stat-description">میانگین درآمد ماهانه هر کارمند</p>
+                <article class="stat">
+                    <span>وظایف تکمیل‌شده</span>
+                    <strong id="completedCount">0</strong>
+                    <small>وظایف تأییدشده</small>
                 </article>
-
-                <article class="stat-card">
-                    <div class="stat-top">
-                        <span>پردرآمدترین کارمند</span>
-                        <span class="stat-icon orange">★</span>
-                    </div>
-                    <h2 id="topEmployee">—</h2>
-                    <p class="stat-description" id="topEmployeeIncome">
-                        هنوز اطلاعاتی ثبت نشده است
-                    </p>
+                <article class="stat">
+                    <span>پردرآمدترین کاربر از نظر سکه</span>
+                    <strong id="topUser">—</strong>
+                    <small id="topUserCoins">بدون اطلاعات</small>
                 </article>
-
             </div>
 
-            <div class="content-grid">
-
-                <section class="panel chart-panel">
-                    <div class="panel-heading">
-                        <div>
-                            <h3>مقایسه درآمد کارمندان</h3>
-                            <p>بر اساس درآمد ماهانه ثبت‌شده</p>
-                        </div>
-                        <span class="heading-badge">MONTHLY</span>
+            <div class="grid">
+                <section class="panel">
+                    <div class="panel-head">
+                        <div><h3>موجودی سکه کاربران</h3><p>مقایسه کاربران بر اساس موجودی فعلی</p></div>
+                        <span class="tag">COINS</span>
                     </div>
-
-                    <div id="incomeChart" class="chart">
-                        <div class="empty-state">هنوز اطلاعاتی وجود ندارد.</div>
-                    </div>
+                    <div id="coinChart" class="chart"></div>
                 </section>
 
-                <section class="panel summary-panel">
-                    <div class="panel-heading">
-                        <div>
-                            <h3>وضعیت پرداخت</h3>
-                            <p>گزارش پرداخت حقوق ماه جاری</p>
-                        </div>
+                <section class="panel">
+                    <div class="panel-head">
+                        <div><h3>عملیات سریع</h3><p>مدیریت وظایف و پاداش‌ها</p></div>
                     </div>
-
-                    <div class="payment-total">
-                        <span>مجموع حقوق پرداخت‌شده</span>
-                        <strong id="paidTotal">۰ تومان</strong>
+                    <button class="primary full" id="quickComplete">＋ ثبت وظیفه تکمیل‌شده</button>
+                    <button class="secondary full" id="quickUser">＋ افزودن کاربر</button>
+                    <button class="secondary full" id="quickTask">＋ افزودن وظیفه</button>
+                    <div class="notice">
+                        <strong>یادآوری</strong>
+                        <p>قبل از ثبت پاداش، گزارش ارسالی کاربر در تلگرام را بررسی کن.</p>
                     </div>
-
-                    <div class="progress-track">
-                        <div class="progress-fill" id="paymentProgress"></div>
-                    </div>
-
-                    <div class="progress-labels">
-                        <span>درصد پرداخت</span>
-                        <strong id="paymentPercent">۰٪</strong>
-                    </div>
-
-                    <div class="payment-stats">
-                        <div>
-                            <span class="legend-dot paid-dot"></span>
-                            <span>پرداخت‌شده</span>
-                            <strong id="paidCount">۰</strong>
-                        </div>
-                        <div>
-                            <span class="legend-dot unpaid-dot"></span>
-                            <span>در انتظار پرداخت</span>
-                            <strong id="unpaidCount">۰</strong>
-                        </div>
-                    </div>
-
-                    <button class="primary-button full-button" id="goEmployees">
-                        مشاهده کارمندان
-                    </button>
                 </section>
-
             </div>
 
             <section class="panel table-panel">
-                <div class="panel-heading">
-                    <div>
-                        <h3>آخرین اطلاعات کارمندان</h3>
-                        <p>نمایش اطلاعات ثبت‌شده در سیستم</p>
-                    </div>
-                    <button class="text-button" id="viewAllEmployees">
-                        مشاهده همه ←
-                    </button>
+                <div class="panel-head">
+                    <div><h3>آخرین پاداش‌ها</h3><p>آخرین وظایف تأییدشده</p></div>
+                    <button class="text-button" data-goto="history">مشاهده همه ←</button>
                 </div>
-
-                <div class="table-wrapper">
+                <div class="table-wrap">
                     <table>
-                        <thead>
-                            <tr>
-                                <th>کارمند</th>
-                                <th>سمت</th>
-                                <th>درآمد ماهانه</th>
-                                <th>پاداش</th>
-                                <th>وضعیت پرداخت</th>
-                            </tr>
-                        </thead>
-                        <tbody id="recentEmployees"></tbody>
+                        <thead><tr><th>کاربر</th><th>وظیفه</th><th>پاداش</th><th>زمان ثبت</th></tr></thead>
+                        <tbody id="recentHistory"></tbody>
                     </table>
                 </div>
             </section>
-
         </section>
 
-        <section class="page-section hidden" id="employeesPage">
-
-            <div class="section-toolbar">
-                <div>
-                    <h2>مدیریت کارمندان</h2>
-                    <p>اطلاعات و وضعیت پرداخت کارمندان شرکت</p>
-                </div>
-                <button class="primary-button admin-required" id="addEmployeeBtn">
-                    + افزودن کارمند
-                </button>
+        <section id="usersPage" class="page hidden">
+            <div class="toolbar">
+                <div><h2>مدیریت کاربران</h2><p>ثبت کاربران و مشاهده موجودی سکه</p></div>
+                <button class="primary admin-only" id="addUserButton">＋ افزودن کاربر</button>
             </div>
-
-            <div class="panel table-panel">
+            <section class="panel table-panel">
                 <div class="table-tools">
-                    <input id="employeeSearch" type="search"
-                           placeholder="جستجو بر اساس نام یا سمت...">
-
-                    <select id="statusFilter">
-                        <option value="all">تمام وضعیت‌ها</option>
-                        <option value="paid">پرداخت‌شده</option>
-                        <option value="unpaid">در انتظار پرداخت</option>
-                    </select>
+                    <input id="userSearch" placeholder="جستجو بر اساس نام، شناسه یا تلگرام">
                 </div>
-
-                <div class="table-wrapper">
+                <div class="table-wrap">
                     <table>
-                        <thead>
-                            <tr>
-                                <th>کارمند</th>
-                                <th>سمت</th>
-                                <th>درآمد ماهانه</th>
-                                <th>پاداش</th>
-                                <th>وضعیت پرداخت</th>
-                                <th>عملیات</th>
-                            </tr>
-                        </thead>
-                        <tbody id="allEmployees"></tbody>
-                    </table>
-                </div>
-            </div>
-
-        </section>
-
-        <section class="page-section hidden" id="reportsPage">
-
-            <div class="section-toolbar">
-                <div>
-                    <h2>گزارش درآمد</h2>
-                    <p>خلاصه مالی اطلاعات ثبت‌شده کارمندان</p>
-                </div>
-                <button class="primary-button" id="exportCSV">
-                    ↓ دریافت گزارش CSV
-                </button>
-            </div>
-
-            <div class="stats-grid report-stats">
-                <article class="stat-card">
-                    <div class="stat-top">
-                        <span>کل درآمد پایه</span>
-                        <span class="stat-icon purple">↗</span>
-                    </div>
-                    <h2 id="reportBase">۰ تومان</h2>
-                </article>
-
-                <article class="stat-card">
-                    <div class="stat-top">
-                        <span>کل پاداش‌ها</span>
-                        <span class="stat-icon orange">★</span>
-                    </div>
-                    <h2 id="reportBonus">۰ تومان</h2>
-                </article>
-
-                <article class="stat-card">
-                    <div class="stat-top">
-                        <span>کل تعهد مالی</span>
-                        <span class="stat-icon blue">▤</span>
-                    </div>
-                    <h2 id="reportTotal">۰ تومان</h2>
-                </article>
-
-                <article class="stat-card">
-                    <div class="stat-top">
-                        <span>پرداخت باقی‌مانده</span>
-                        <span class="stat-icon green">◷</span>
-                    </div>
-                    <h2 id="reportRemaining">۰ تومان</h2>
-                </article>
-            </div>
-
-            <section class="panel table-panel">
-                <div class="panel-heading">
-                    <div>
-                        <h3>گزارش تفصیلی درآمد</h3>
-                        <p>درآمد پایه، پاداش و مجموع هر کارمند</p>
-                    </div>
-                </div>
-
-                <div class="table-wrapper">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>نام</th>
-                                <th>درآمد پایه</th>
-                                <th>پاداش</th>
-                                <th>مجموع</th>
-                                <th>وضعیت پرداخت</th>
-                            </tr>
-                        </thead>
-                        <tbody id="reportEmployees"></tbody>
+                        <thead><tr><th>کاربر</th><th>شناسه</th><th>تلگرام</th><th>موجودی سکه</th><th>وظایف</th><th>عملیات</th></tr></thead>
+                        <tbody id="usersTable"></tbody>
                     </table>
                 </div>
             </section>
-
         </section>
 
-        <footer class="footer">
-            <span>EMPLOYEE MANAGEMENT SYSTEM</span>
-            <span>نسخه نمایشی • اطلاعات ذخیره‌شده در مرورگر</span>
-        </footer>
+        <section id="tasksPage" class="page hidden">
+            <div class="toolbar">
+                <div><h2>مدیریت وظایف</h2><p>تعریف وظایف و مقدار سکه قابل دریافت</p></div>
+                <button class="primary admin-only" id="addTaskButton">＋ افزودن وظیفه</button>
+            </div>
+            <section class="panel table-panel">
+                <div class="table-wrap">
+                    <table>
+                        <thead><tr><th>نام وظیفه</th><th>توضیحات</th><th>پاداش</th><th>وضعیت</th><th>عملیات</th></tr></thead>
+                        <tbody id="tasksTable"></tbody>
+                    </table>
+                </div>
+            </section>
+        </section>
 
+        <section id="historyPage" class="page hidden">
+            <div class="toolbar">
+                <div><h2>تاریخچه پاداش‌ها</h2><p>سوابق ثبت وظایف و تخصیص سکه به کاربران</p></div>
+                <button class="secondary admin-only" id="exportButton">↓ خروجی CSV</button>
+            </div>
+            <section class="panel table-panel">
+                <div class="table-tools">
+                    <input id="historySearch" placeholder="جستجوی نام کاربر یا وظیفه">
+                </div>
+                <div class="table-wrap">
+                    <table>
+                        <thead><tr><th>کاربر</th><th>وظیفه</th><th>سکه</th><th>گزارش تلگرام</th><th>تاریخ</th><th>عملیات</th></tr></thead>
+                        <tbody id="historyTable"></tbody>
+                    </table>
+                </div>
+            </section>
+        </section>
+
+        <footer>AMS REWARDS · نسخه نمایشی · اطلاعات این نسخه فقط در همین مرورگر ذخیره می‌شوند.</footer>
     </main>
 </div>
 
-<!-- پنجره ورود ادمین -->
-<div class="modal-backdrop hidden" id="loginModal">
-    <div class="modal login-modal">
-        <button class="modal-close" data-close="loginModal">×</button>
-
-        <div class="modal-icon">⚙</div>
-        <h2>ورود به پنل مدیریت</h2>
-        <p>برای ویرایش اطلاعات، رمز مدیریت را وارد کنید.</p>
-
-        <form id="loginForm">
-            <label for="adminPassword">رمز عبور</label>
-            <input type="password" id="adminPassword"
-                   placeholder="رمز عبور مدیریت" required>
-            <div class="form-error" id="loginError"></div>
-            <button class="primary-button full-button" type="submit">
-                ورود به پنل
-            </button>
-        </form>
-
-        <small class="security-note">
-            رمز پیش‌فرض نسخه نمایشی: 1234
-        </small>
-    </div>
-</div>
-
-<!-- پنل مدیریت -->
-<div class="modal-backdrop hidden" id="adminModal">
-    <div class="modal admin-modal">
-        <button class="modal-close" data-close="adminModal">×</button>
-
-        <div class="admin-modal-heading">
-            <div>
-                <span class="eyebrow">ADMIN CONTROL CENTER</span>
-                <h2>پنل مدیریت</h2>
-                <p>مدیریت آمار و اطلاعات کارمندان</p>
-            </div>
-            <span class="admin-badge">ADMIN</span>
-        </div>
-
-        <div class="admin-actions">
-            <button class="admin-action-card" id="adminAddEmployee">
-                <span>＋</span>
-                <strong>افزودن کارمند</strong>
-                <small>ثبت اطلاعات جدید</small>
-            </button>
-
-            <button class="admin-action-card" id="adminManageEmployees">
-                <span>♙</span>
-                <strong>ویرایش آمار</strong>
-                <small>تغییر درآمد و پاداش</small>
-            </button>
-
-            <button class="admin-action-card" id="adminExport">
-                <span>⇩</span>
-                <strong>دریافت گزارش</strong>
-                <small>خروجی فایل CSV</small>
-            </button>
-
-            <button class="admin-action-card danger-action" id="adminLogout">
-                <span>↪</span>
-                <strong>خروج از مدیریت</strong>
-                <small>پایان نشست نمایشی</small>
-            </button>
-        </div>
-
-        <div class="admin-notice">
-            <strong>توجه امنیتی</strong>
-            <p>
-                این پنل برای نمایش و آزمایش طراحی شده است.
-                احراز هویت و اطلاعات آن سمت سرور محافظت نمی‌شوند.
-            </p>
-        </div>
-
-        <div class="admin-modal-footer">
-            <button class="secondary-button" id="changePasswordBtn">
-                تغییر رمز نمایشی
-            </button>
-            <button class="primary-button" data-close="adminModal">
-                بستن پنل
-            </button>
-        </div>
-    </div>
-</div>
-
-<!-- فرم افزودن یا ویرایش کارمند -->
-<div class="modal-backdrop hidden" id="employeeModal">
-    <div class="modal employee-modal">
-        <button class="modal-close" data-close="employeeModal">×</button>
-
-        <h2 id="employeeModalTitle">افزودن کارمند جدید</h2>
-        <p>اطلاعات کارمند را وارد کنید.</p>
-
-        <form id="employeeForm">
-            <input type="hidden" id="employeeId">
-
-            <div class="form-grid">
-                <div class="form-group">
-                    <label for="employeeName">نام و نام خانوادگی</label>
-                    <input id="employeeName" maxlength="80"
-                           placeholder="مثلاً علی رضایی" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="employeeRole">سمت شغلی</label>
-                    <input id="employeeRole" maxlength="80"
-                           placeholder="مثلاً برنامه‌نویس" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="employeeIncome">درآمد ماهانه (تومان)</label>
-                    <input id="employeeIncome" type="number"
-                           min="0" max="1000000000000" step="1" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="employeeBonus">پاداش (تومان)</label>
-                    <input id="employeeBonus" type="number"
-                           min="0" max="1000000000000" step="1" value="0" required>
-                </div>
-
-                <div class="form-group form-group-full">
-                    <label for="employeeStatus">وضعیت پرداخت</label>
-                    <select id="employeeStatus">
-                        <option value="unpaid">در انتظار پرداخت</option>
-                        <option value="paid">پرداخت‌شده</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="form-error" id="employeeError"></div>
-
-            <div class="modal-actions">
-                <button type="button" class="secondary-button"
-                        data-close="employeeModal">انصراف</button>
-                <button type="submit" class="primary-button">ذخیره اطلاعات</button>
-            </div>
-        </form>
-    </div>
-</div>
-
-<!-- تغییر رمز نمایشی -->
-<div class="modal-backdrop hidden" id="passwordModal">
+<!-- ورود مدیریت -->
+<div class="backdrop hidden" id="loginModal">
     <div class="modal">
-        <button class="modal-close" data-close="passwordModal">×</button>
-        <h2>تغییر رمز نمایشی</h2>
-        <p>رمز جدید برای همین مرورگر ذخیره خواهد شد.</p>
+        <button class="close" data-close="loginModal">×</button>
+        <div class="modal-icon">⚙</div>
+        <h2>ورود به پنل ادمین</h2>
+        <p>برای مدیریت سکه‌ها و وظایف وارد شو.</p>
+        <form id="loginForm">
+            <label for="loginPassword">رمز عبور</label>
+            <input id="loginPassword" type="password" required>
+            <div id="loginError" class="error"></div>
+            <button class="primary full">ورود</button>
+        </form>
+        <small class="hint">رمز پیش‌فرض نسخه نمایشی: 1234</small>
+    </div>
+</div>
 
-        <form id="passwordForm">
-            <label for="newPassword">رمز جدید (حداقل ۴ نویسه)</label>
-            <input type="password" id="newPassword" minlength="4"
-                   maxlength="100" required>
-            <div class="form-error" id="passwordError"></div>
+<!-- منوی ادمین -->
+<div class="backdrop hidden" id="adminModal">
+    <div class="modal">
+        <button class="close" data-close="adminModal">×</button>
+        <span class="eyebrow">ADMIN CONTROL CENTER</span>
+        <h2>پنل مدیریت AMS</h2>
+        <p>عملیات موردنظر را انتخاب کن.</p>
+        <div class="admin-grid">
+            <button id="adminComplete">🪙<strong>ثبت پاداش</strong><small>تأیید گزارش تلگرام</small></button>
+            <button id="adminUser">♙<strong>افزودن کاربر</strong><small>ثبت کاربر جدید</small></button>
+            <button id="adminTask">☷<strong>افزودن وظیفه</strong><small>تعریف پاداش</small></button>
+            <button id="adminLogout" class="danger">↪<strong>خروج</strong><small>پایان نشست نمایشی</small></button>
+        </div>
+        <div class="notice">
+            این نسخه برای آزمایش است؛ ورود ادمین و داده‌ها در سمت سرور محافظت نمی‌شوند.
+        </div>
+    </div>
+</div>
+
+<!-- افزودن یا ویرایش کاربر -->
+<div class="backdrop hidden" id="userModal">
+    <div class="modal">
+        <button class="close" data-close="userModal">×</button>
+        <h2 id="userModalTitle">افزودن کاربر</h2>
+        <p>شناسه کاربر باید یکتا باشد.</p>
+        <form id="userForm">
+            <input id="editUserId" type="hidden">
+            <label for="userName">نام نمایشی</label>
+            <input id="userName" maxlength="70" required>
+            <label for="userHandle">نام کاربری تلگرام</label>
+            <input id="userHandle" maxlength="50" placeholder="@username">
+            <label for="userExternalId">شناسه یکتا در سایت</label>
+            <input id="userExternalId" maxlength="50" placeholder="مثلاً AMS-1001" required>
+            <div id="userError" class="error"></div>
             <div class="modal-actions">
-                <button type="button" class="secondary-button"
-                        data-close="passwordModal">انصراف</button>
-                <button type="submit" class="primary-button">ذخیره رمز</button>
+                <button type="button" class="secondary" data-close="userModal">انصراف</button>
+                <button class="primary">ذخیره کاربر</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- افزودن یا ویرایش وظیفه -->
+<div class="backdrop hidden" id="taskModal">
+    <div class="modal">
+        <button class="close" data-close="taskModal">×</button>
+        <h2 id="taskModalTitle">افزودن وظیفه</h2>
+        <form id="taskForm">
+            <input id="editTaskId" type="hidden">
+            <label for="taskName">نام وظیفه</label>
+            <input id="taskName" maxlength="100" required>
+            <label for="taskDescription">توضیحات وظیفه</label>
+            <textarea id="taskDescription" maxlength="500" rows="3"></textarea>
+            <label for="taskReward">پاداش سکه</label>
+            <input id="taskReward" type="number" min="1" max="1000000000" step="1" required>
+            <label for="taskActive">وضعیت</label>
+            <select id="taskActive"><option value="true">فعال</option><option value="false">غیرفعال</option></select>
+            <div id="taskError" class="error"></div>
+            <div class="modal-actions">
+                <button type="button" class="secondary" data-close="taskModal">انصراف</button>
+                <button class="primary">ذخیره وظیفه</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- ثبت تکمیل وظیفه و پاداش -->
+<div class="backdrop hidden" id="completionModal">
+    <div class="modal wide">
+        <button class="close" data-close="completionModal">×</button>
+        <span class="eyebrow">TASK VERIFICATION</span>
+        <h2>تأیید وظیفه و اختصاص سکه</h2>
+        <p>ابتدا گزارش کاربر در تلگرام را بررسی کن؛ سپس اطلاعات را ثبت کن.</p>
+        <form id="completionForm">
+            <label for="completionUser">انتخاب کاربر</label>
+            <select id="completionUser" required></select>
+
+            <label for="completionTask">وظیفه انجام‌شده</label>
+            <select id="completionTask" required></select>
+
+            <label for="completionCoins">مقدار سکه پاداش</label>
+            <input id="completionCoins" type="number" min="1" max="1000000000" step="1" required>
+
+            <label for="telegramReference">لینک یا شناسه گزارش تلگرام</label>
+            <input id="telegramReference" maxlength="300" placeholder="لینک پیام یا توضیح گزارش" required>
+
+            <label for="completionNote">یادداشت ادمین (اختیاری)</label>
+            <textarea id="completionNote" maxlength="500" rows="2"></textarea>
+
+            <div id="completionError" class="error"></div>
+
+            <div class="notice">
+                ثبت نهایی، موجودی سکه کاربر را افزایش می‌دهد. هر وظیفه برای هر کاربر فقط یک بار قابل ثبت است.
+            </div>
+
+            <div class="modal-actions">
+                <button type="button" class="secondary" data-close="completionModal">انصراف</button>
+                <button class="primary">تأیید گزارش و افزودن سکه</button>
             </div>
         </form>
     </div>
 </div>
 
 <div class="toast" id="toast"></div>
-
 <script src="app.js"></script>
 </body>
 </html>
