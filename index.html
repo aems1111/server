@@ -1,291 +1,380 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#0b1020">
-    <title>AMS | سیستم پاداش سکه‌ای</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#080b14">
+  <title>AMS Rewards | سیستم پاداش</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div class="app">
-    <aside class="sidebar">
-        <div class="brand">
-            <div class="brand-icon">A</div>
-            <div><h2>AMS REWARDS</h2><small>COIN MANAGEMENT</small></div>
+  <div class="background-glow glow-one"></div>
+  <div class="background-glow glow-two"></div>
+
+  <header class="topbar">
+    <a class="brand" href="#" aria-label="AMS Rewards">
+      <div class="brand-icon">A</div>
+      <div>
+        <strong>AMS<span>REWARDS</span></strong>
+        <small>REWARD MANAGEMENT SYSTEM</small>
+      </div>
+    </a>
+    <div class="top-status">
+      <span class="status-dot"></span>
+      DEMO SYSTEM
+    </div>
+  </header>
+
+  <main>
+    <!-- صفحه ورود -->
+    <section id="loginView" class="login-layout">
+      <div class="intro">
+        <div class="eyebrow"><span></span> AMS REWARDS PLATFORM</div>
+        <h1>تلاش تو،<br><span>پاداش تو.</span></h1>
+        <p>
+          وظایف خود را انجام بده، پاداش بگیر و موجودی سکه‌هایت را
+          در پنل شخصی خود مشاهده کن.
+        </p>
+        <div class="intro-features">
+          <div><span class="feature-icon">◈</span><span>مدیریت سکه‌ها</span></div>
+          <div><span class="feature-icon">✓</span><span>ثبت پاداش وظایف</span></div>
+          <div><span class="feature-icon">⌘</span><span>حساب شخصی</span></div>
+        </div>
+      </div>
+
+      <div class="login-card">
+        <div class="card-symbol">◈</div>
+        <h2>ورود به حساب</h2>
+        <p class="muted">برای ادامه، نوع حساب خود را انتخاب کن.</p>
+
+        <div class="login-tabs">
+          <button class="login-tab active" data-role="user">ورود کاربر</button>
+          <button class="login-tab" data-role="admin">ورود ادمین</button>
         </div>
 
-        <p class="menu-label">منوی اصلی</p>
-        <button class="nav active" data-page="dashboard">▦ <span>داشبورد</span></button>
-        <button class="nav" data-page="users">♙ <span>مدیریت کاربران</span></button>
-        <button class="nav" data-page="tasks">☷ <span>مدیریت وظایف</span></button>
-        <button class="nav" data-page="history">◷ <span>تاریخچه پاداش‌ها</span></button>
-
-        <div class="sidebar-bottom">
-            <div class="local-status"><span></span><div>سیستم نمایشی<small>ذخیره محلی مرورگر</small></div></div>
-            <button class="admin-button" id="openAdmin">⚙ پنل مدیریت</button>
-        </div>
-    </aside>
-
-    <main class="main">
-        <header class="topbar">
-            <div>
-                <h1 id="pageTitle">داشبورد پاداش‌ها</h1>
-                <p id="pageSubtitle">مدیریت کاربران، وظایف و سکه‌های AMS</p>
-            </div>
-            <div class="top-actions">
-                <span id="todayDate"></span>
-                <button class="avatar" id="adminAvatar">AD</button>
-            </div>
-        </header>
-
-        <section id="dashboardPage" class="page">
-            <div class="hero">
-                <div>
-                    <span class="eyebrow">AMS REWARDS SYSTEM</span>
-                    <h2>مرکز مدیریت پاداش‌ها</h2>
-                    <p>وظایف را بررسی کن و پس از تأیید، سکه را به کاربر اختصاص بده.</p>
-                </div>
-                <div class="coin-art">🪙</div>
-            </div>
-
-            <div class="stats">
-                <article class="stat">
-                    <span>مجموع سکه کاربران</span>
-                    <strong id="totalCoins">0</strong>
-                    <small>موجودی فعلی تمام کاربران</small>
-                </article>
-                <article class="stat">
-                    <span>تعداد کاربران</span>
-                    <strong id="userCount">0</strong>
-                    <small>کاربران ثبت‌شده</small>
-                </article>
-                <article class="stat">
-                    <span>وظایف تکمیل‌شده</span>
-                    <strong id="completedCount">0</strong>
-                    <small>وظایف تأییدشده</small>
-                </article>
-                <article class="stat">
-                    <span>پردرآمدترین کاربر از نظر سکه</span>
-                    <strong id="topUser">—</strong>
-                    <small id="topUserCoins">بدون اطلاعات</small>
-                </article>
-            </div>
-
-            <div class="grid">
-                <section class="panel">
-                    <div class="panel-head">
-                        <div><h3>موجودی سکه کاربران</h3><p>مقایسه کاربران بر اساس موجودی فعلی</p></div>
-                        <span class="tag">COINS</span>
-                    </div>
-                    <div id="coinChart" class="chart"></div>
-                </section>
-
-                <section class="panel">
-                    <div class="panel-head">
-                        <div><h3>عملیات سریع</h3><p>مدیریت وظایف و پاداش‌ها</p></div>
-                    </div>
-                    <button class="primary full" id="quickComplete">＋ ثبت وظیفه تکمیل‌شده</button>
-                    <button class="secondary full" id="quickUser">＋ افزودن کاربر</button>
-                    <button class="secondary full" id="quickTask">＋ افزودن وظیفه</button>
-                    <div class="notice">
-                        <strong>یادآوری</strong>
-                        <p>قبل از ثبت پاداش، گزارش ارسالی کاربر در تلگرام را بررسی کن.</p>
-                    </div>
-                </section>
-            </div>
-
-            <section class="panel table-panel">
-                <div class="panel-head">
-                    <div><h3>آخرین پاداش‌ها</h3><p>آخرین وظایف تأییدشده</p></div>
-                    <button class="text-button" data-goto="history">مشاهده همه ←</button>
-                </div>
-                <div class="table-wrap">
-                    <table>
-                        <thead><tr><th>کاربر</th><th>وظیفه</th><th>پاداش</th><th>زمان ثبت</th></tr></thead>
-                        <tbody id="recentHistory"></tbody>
-                    </table>
-                </div>
-            </section>
-        </section>
-
-        <section id="usersPage" class="page hidden">
-            <div class="toolbar">
-                <div><h2>مدیریت کاربران</h2><p>ثبت کاربران و مشاهده موجودی سکه</p></div>
-                <button class="primary admin-only" id="addUserButton">＋ افزودن کاربر</button>
-            </div>
-            <section class="panel table-panel">
-                <div class="table-tools">
-                    <input id="userSearch" placeholder="جستجو بر اساس نام، شناسه یا تلگرام">
-                </div>
-                <div class="table-wrap">
-                    <table>
-                        <thead><tr><th>کاربر</th><th>شناسه</th><th>تلگرام</th><th>موجودی سکه</th><th>وظایف</th><th>عملیات</th></tr></thead>
-                        <tbody id="usersTable"></tbody>
-                    </table>
-                </div>
-            </section>
-        </section>
-
-        <section id="tasksPage" class="page hidden">
-            <div class="toolbar">
-                <div><h2>مدیریت وظایف</h2><p>تعریف وظایف و مقدار سکه قابل دریافت</p></div>
-                <button class="primary admin-only" id="addTaskButton">＋ افزودن وظیفه</button>
-            </div>
-            <section class="panel table-panel">
-                <div class="table-wrap">
-                    <table>
-                        <thead><tr><th>نام وظیفه</th><th>توضیحات</th><th>پاداش</th><th>وضعیت</th><th>عملیات</th></tr></thead>
-                        <tbody id="tasksTable"></tbody>
-                    </table>
-                </div>
-            </section>
-        </section>
-
-        <section id="historyPage" class="page hidden">
-            <div class="toolbar">
-                <div><h2>تاریخچه پاداش‌ها</h2><p>سوابق ثبت وظایف و تخصیص سکه به کاربران</p></div>
-                <button class="secondary admin-only" id="exportButton">↓ خروجی CSV</button>
-            </div>
-            <section class="panel table-panel">
-                <div class="table-tools">
-                    <input id="historySearch" placeholder="جستجوی نام کاربر یا وظیفه">
-                </div>
-                <div class="table-wrap">
-                    <table>
-                        <thead><tr><th>کاربر</th><th>وظیفه</th><th>سکه</th><th>گزارش تلگرام</th><th>تاریخ</th><th>عملیات</th></tr></thead>
-                        <tbody id="historyTable"></tbody>
-                    </table>
-                </div>
-            </section>
-        </section>
-
-        <footer>AMS REWARDS · نسخه نمایشی · اطلاعات این نسخه فقط در همین مرورگر ذخیره می‌شوند.</footer>
-    </main>
-</div>
-
-<!-- ورود مدیریت -->
-<div class="backdrop hidden" id="loginModal">
-    <div class="modal">
-        <button class="close" data-close="loginModal">×</button>
-        <div class="modal-icon">⚙</div>
-        <h2>ورود به پنل ادمین</h2>
-        <p>برای مدیریت سکه‌ها و وظایف وارد شو.</p>
         <form id="loginForm">
-            <label for="loginPassword">رمز عبور</label>
-            <input id="loginPassword" type="password" required>
-            <div id="loginError" class="error"></div>
-            <button class="primary full">ورود</button>
-        </form>
-        <small class="hint">رمز پیش‌فرض نسخه نمایشی: 1234</small>
-    </div>
-</div>
+          <label for="loginUsername">نام کاربری</label>
+          <input id="loginUsername" type="text" autocomplete="username"
+                 placeholder="نام کاربری خود را وارد کن" required>
 
-<!-- منوی ادمین -->
-<div class="backdrop hidden" id="adminModal">
-    <div class="modal">
-        <button class="close" data-close="adminModal">×</button>
-        <span class="eyebrow">ADMIN CONTROL CENTER</span>
-        <h2>پنل مدیریت AMS</h2>
-        <p>عملیات موردنظر را انتخاب کن.</p>
-        <div class="admin-grid">
-            <button id="adminComplete">🪙<strong>ثبت پاداش</strong><small>تأیید گزارش تلگرام</small></button>
-            <button id="adminUser">♙<strong>افزودن کاربر</strong><small>ثبت کاربر جدید</small></button>
-            <button id="adminTask">☷<strong>افزودن وظیفه</strong><small>تعریف پاداش</small></button>
-            <button id="adminLogout" class="danger">↪<strong>خروج</strong><small>پایان نشست نمایشی</small></button>
+          <label for="loginPassword">رمز عبور</label>
+          <input id="loginPassword" type="password"
+                 autocomplete="current-password"
+                 placeholder="رمز عبور" required>
+
+          <p id="loginError" class="error-message hidden"></p>
+          <button class="button primary full-width" type="submit">
+            ورود به سیستم <span>←</span>
+          </button>
+        </form>
+
+        <div class="login-note">
+          <span>ⓘ</span>
+          حساب کاربران فقط توسط مدیر ساخته می‌شود.
         </div>
-        <div class="notice">
-            این نسخه برای آزمایش است؛ ورود ادمین و داده‌ها در سمت سرور محافظت نمی‌شوند.
+      </div>
+    </section>
+
+    <!-- پنل ادمین -->
+    <section id="adminView" class="hidden">
+      <div class="page-heading">
+        <div>
+          <div class="eyebrow"><span></span> CONTROL CENTER</div>
+          <h1>پنل مدیریت <span>AMS</span></h1>
+          <p class="muted">مدیریت حساب‌ها، وظایف و پاداش کاربران</p>
         </div>
-    </div>
-</div>
+        <button class="button secondary logout-button" id="adminLogout">
+          خروج از حساب ↗
+        </button>
+      </div>
 
-<!-- افزودن یا ویرایش کاربر -->
-<div class="backdrop hidden" id="userModal">
-    <div class="modal">
-        <button class="close" data-close="userModal">×</button>
-        <h2 id="userModalTitle">افزودن کاربر</h2>
-        <p>شناسه کاربر باید یکتا باشد.</p>
-        <form id="userForm">
-            <input id="editUserId" type="hidden">
-            <label for="userName">نام نمایشی</label>
-            <input id="userName" maxlength="70" required>
-            <label for="userHandle">نام کاربری تلگرام</label>
-            <input id="userHandle" maxlength="50" placeholder="@username">
-            <label for="userExternalId">شناسه یکتا در سایت</label>
-            <input id="userExternalId" maxlength="50" placeholder="مثلاً AMS-1001" required>
-            <div id="userError" class="error"></div>
-            <div class="modal-actions">
-                <button type="button" class="secondary" data-close="userModal">انصراف</button>
-                <button class="primary">ذخیره کاربر</button>
+      <div class="stats-grid">
+        <article class="stat-card">
+          <div class="stat-top"><span>تعداد کاربران</span><span class="stat-icon">♙</span></div>
+          <strong id="statUsers">0</strong>
+          <small>حساب‌های ساخته‌شده</small>
+        </article>
+        <article class="stat-card">
+          <div class="stat-top"><span>کل سکه‌ها</span><span class="stat-icon gold">◈</span></div>
+          <strong id="statCoins">0</strong>
+          <small>موجودی تمام کاربران</small>
+        </article>
+        <article class="stat-card">
+          <div class="stat-top"><span>وظایف تأییدشده</span><span class="stat-icon green">✓</span></div>
+          <strong id="statCompletions">0</strong>
+          <small>تعداد پاداش‌های ثبت‌شده</small>
+        </article>
+        <article class="stat-card">
+          <div class="stat-top"><span>وظایف فعال</span><span class="stat-icon">▤</span></div>
+          <strong id="statTasks">0</strong>
+          <small>وظایف قابل انجام</small>
+        </article>
+      </div>
+
+      <div class="admin-grid">
+        <section class="panel">
+          <div class="panel-heading">
+            <div>
+              <h2>مدیریت کاربران</h2>
+              <p class="muted">حساب‌های جدید را خودت ایجاد کن.</p>
             </div>
-        </form>
-    </div>
-</div>
+            <button class="button primary" id="newUserBtn">+ ساخت حساب</button>
+          </div>
 
-<!-- افزودن یا ویرایش وظیفه -->
-<div class="backdrop hidden" id="taskModal">
-    <div class="modal">
-        <button class="close" data-close="taskModal">×</button>
-        <h2 id="taskModalTitle">افزودن وظیفه</h2>
-        <form id="taskForm">
-            <input id="editTaskId" type="hidden">
-            <label for="taskName">نام وظیفه</label>
-            <input id="taskName" maxlength="100" required>
-            <label for="taskDescription">توضیحات وظیفه</label>
-            <textarea id="taskDescription" maxlength="500" rows="3"></textarea>
-            <label for="taskReward">پاداش سکه</label>
-            <input id="taskReward" type="number" min="1" max="1000000000" step="1" required>
-            <label for="taskActive">وضعیت</label>
-            <select id="taskActive"><option value="true">فعال</option><option value="false">غیرفعال</option></select>
-            <div id="taskError" class="error"></div>
-            <div class="modal-actions">
-                <button type="button" class="secondary" data-close="taskModal">انصراف</button>
-                <button class="primary">ذخیره وظیفه</button>
+          <div class="search-box">
+            <span>⌕</span>
+            <input id="userSearch" type="search" placeholder="جست‌وجوی نام یا نام کاربری">
+          </div>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>کاربر</th>
+                  <th>نام کاربری</th>
+                  <th>موجودی</th>
+                  <th>وضعیت</th>
+                  <th>عملیات</th>
+                </tr>
+              </thead>
+              <tbody id="usersTable"></tbody>
+            </table>
+          </div>
+          <p id="noUsers" class="empty-state">هنوز هیچ حسابی ساخته نشده است.</p>
+        </section>
+
+        <section class="panel">
+          <div class="panel-heading">
+            <div>
+              <h2>افزودن پاداش</h2>
+              <p class="muted">پس از تأیید وظیفه، سکه اضافه کن.</p>
             </div>
-        </form>
-    </div>
-</div>
+            <span class="panel-icon gold">◈</span>
+          </div>
 
-<!-- ثبت تکمیل وظیفه و پاداش -->
-<div class="backdrop hidden" id="completionModal">
-    <div class="modal wide">
-        <button class="close" data-close="completionModal">×</button>
-        <span class="eyebrow">TASK VERIFICATION</span>
-        <h2>تأیید وظیفه و اختصاص سکه</h2>
-        <p>ابتدا گزارش کاربر در تلگرام را بررسی کن؛ سپس اطلاعات را ثبت کن.</p>
-        <form id="completionForm">
-            <label for="completionUser">انتخاب کاربر</label>
-            <select id="completionUser" required></select>
+          <form id="rewardForm" class="form-stack">
+            <label for="rewardUser">انتخاب کاربر</label>
+            <select id="rewardUser" required></select>
 
-            <label for="completionTask">وظیفه انجام‌شده</label>
-            <select id="completionTask" required></select>
+            <label for="rewardTask">انتخاب وظیفه</label>
+            <select id="rewardTask" required></select>
 
-            <label for="completionCoins">مقدار سکه پاداش</label>
-            <input id="completionCoins" type="number" min="1" max="1000000000" step="1" required>
+            <label for="rewardAmount">مقدار پاداش (سکه)</label>
+            <input id="rewardAmount" type="number" min="1" step="1" required>
 
-            <label for="telegramReference">لینک یا شناسه گزارش تلگرام</label>
-            <input id="telegramReference" maxlength="300" placeholder="لینک پیام یا توضیح گزارش" required>
+            <label for="rewardReference">لینک گزارش تلگرام (اختیاری)</label>
+            <input id="rewardReference" type="text" placeholder="لینک پیام یا شناسه گزارش">
 
-            <label for="completionNote">یادداشت ادمین (اختیاری)</label>
-            <textarea id="completionNote" maxlength="500" rows="2"></textarea>
+            <label for="rewardNote">یادداشت (اختیاری)</label>
+            <textarea id="rewardNote" rows="2" placeholder="توضیحات پاداش"></textarea>
 
-            <div id="completionError" class="error"></div>
+            <p id="rewardError" class="error-message hidden"></p>
+            <button class="button primary full-width" type="submit">تأیید و افزودن سکه +</button>
+          </form>
+        </section>
+      </div>
 
-            <div class="notice">
-                ثبت نهایی، موجودی سکه کاربر را افزایش می‌دهد. هر وظیفه برای هر کاربر فقط یک بار قابل ثبت است.
-            </div>
+      <section class="panel section-gap">
+        <div class="panel-heading">
+          <div>
+            <h2>مدیریت وظایف</h2>
+            <p class="muted">وظایف را بساز و مقدار پاداششان را تعیین کن.</p>
+          </div>
+          <button class="button primary" id="newTaskBtn">+ ساخت وظیفه</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>عنوان وظیفه</th>
+                <th>پاداش پیش‌فرض</th>
+                <th>وضعیت</th>
+                <th>عملیات</th>
+              </tr>
+            </thead>
+            <tbody id="tasksTable"></tbody>
+          </table>
+        </div>
+        <p id="noTasks" class="empty-state">هنوز وظیفه‌ای ایجاد نشده است.</p>
+      </section>
 
-            <div class="modal-actions">
-                <button type="button" class="secondary" data-close="completionModal">انصراف</button>
-                <button class="primary">تأیید گزارش و افزودن سکه</button>
-            </div>
-        </form>
-    </div>
-</div>
+      <section class="panel section-gap">
+        <div class="panel-heading">
+          <div>
+            <h2>تاریخچه پاداش‌ها</h2>
+            <p class="muted">سوابق افزودن و کسر سکه‌ها</p>
+          </div>
+          <button class="button secondary" id="exportButton">خروجی CSV ↓</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>کاربر</th>
+                <th>شرح</th>
+                <th>تغییر سکه</th>
+                <th>تاریخ</th>
+                <th>مرجع</th>
+              </tr>
+            </thead>
+            <tbody id="historyTable"></tbody>
+          </table>
+        </div>
+        <p id="noHistory" class="empty-state">هنوز سابقه‌ای ثبت نشده است.</p>
+      </section>
+    </section>
 
-<div class="toast" id="toast"></div>
-<script src="app.js"></script>
+    <!-- پنل کاربر -->
+    <section id="userView" class="hidden">
+      <div class="page-heading">
+        <div>
+          <div class="eyebrow"><span></span> PERSONAL DASHBOARD</div>
+          <h1>سلام، <span id="welcomeName">کاربر</span></h1>
+          <p class="muted">به حساب شخصی خود در AMS Rewards خوش آمدی.</p>
+        </div>
+        <button class="button secondary logout-button" id="userLogout">
+          خروج از حساب ↗
+        </button>
+      </div>
+
+      <div class="user-hero">
+        <div>
+          <div class="eyebrow">YOUR REWARDS BALANCE</div>
+          <p class="balance-label">موجودی سکه‌های تو</p>
+          <div class="balance-value"><span id="userBalance">0</span><span class="coin-mark">◈</span></div>
+          <p class="muted">موجودی حساب بر اساس پاداش‌های ثبت‌شده توسط مدیر</p>
+        </div>
+        <div class="coin-art">◈</div>
+      </div>
+
+      <div class="stats-grid user-stats">
+        <article class="stat-card">
+          <div class="stat-top"><span>پاداش‌های دریافتی</span><span class="stat-icon gold">◈</span></div>
+          <strong id="userEarned">0</strong>
+          <small>مجموع سکه‌های دریافت‌شده</small>
+        </article>
+        <article class="stat-card">
+          <div class="stat-top"><span>وظایف تکمیل‌شده</span><span class="stat-icon green">✓</span></div>
+          <strong id="userCompletions">0</strong>
+          <small>وظایف ثبت‌شده در حساب</small>
+        </article>
+      </div>
+
+      <section class="panel section-gap">
+        <div class="panel-heading">
+          <div>
+            <h2>وظایف قابل انجام</h2>
+            <p class="muted">برای انجام وظایف و ارسال گزارش با مدیر تماس بگیر.</p>
+          </div>
+        </div>
+        <div id="userTasks" class="task-grid"></div>
+        <p id="noUserTasks" class="empty-state">در حال حاضر وظیفه فعالی وجود ندارد.</p>
+      </section>
+
+      <section class="panel section-gap">
+        <div class="panel-heading">
+          <div>
+            <h2>تاریخچه حساب</h2>
+            <p class="muted">سوابق ثبت‌شده برای حساب تو</p>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>شرح</th>
+                <th>مقدار سکه</th>
+                <th>تاریخ</th>
+              </tr>
+            </thead>
+            <tbody id="userHistory"></tbody>
+          </table>
+        </div>
+        <p id="noUserHistory" class="empty-state">هنوز پاداشی برای حساب تو ثبت نشده است.</p>
+      </section>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <span>AMS REWARDS</span>
+    <span>نسخه نمایشی • اطلاعات در مرورگر ذخیره می‌شود</span>
+  </footer>
+
+  <!-- پنجره ساخت یا ویرایش کاربر -->
+  <div id="userModal" class="modal-backdrop hidden">
+    <section class="modal">
+      <div class="modal-heading">
+        <div>
+          <h2 id="userModalTitle">ساخت حساب جدید</h2>
+          <p class="muted">اطلاعات ورود را خودت تعیین کن.</p>
+        </div>
+        <button class="icon-button" data-close="userModal" aria-label="بستن">×</button>
+      </div>
+
+      <form id="userForm" class="form-stack">
+        <input type="hidden" id="editUserId">
+
+        <label for="userName">نام نمایشی</label>
+        <input id="userName" type="text" maxlength="80" required placeholder="مثلاً علی رضایی">
+
+        <label for="userUsername">نام کاربری برای ورود</label>
+        <input id="userUsername" type="text" maxlength="40" required
+               pattern="[A-Za-z0-9_.-]+" placeholder="مثلاً ali_01">
+
+        <label for="userPassword">رمز عبور</label>
+        <input id="userPassword" type="password" minlength="4"
+               autocomplete="new-password" placeholder="حداقل ۴ کاراکتر">
+
+        <p id="userPasswordHint" class="muted small">برای حساب جدید رمز عبور الزامی است.</p>
+        <p id="userFormError" class="error-message hidden"></p>
+
+        <div class="modal-actions">
+          <button class="button secondary" type="button" data-close="userModal">انصراف</button>
+          <button class="button primary" type="submit">ذخیره حساب</button>
+        </div>
+      </form>
+    </section>
+  </div>
+
+  <!-- پنجره ساخت یا ویرایش وظیفه -->
+  <div id="taskModal" class="modal-backdrop hidden">
+    <section class="modal">
+      <div class="modal-heading">
+        <div>
+          <h2 id="taskModalTitle">ساخت وظیفه جدید</h2>
+          <p class="muted">عنوان و مقدار پاداش را وارد کن.</p>
+        </div>
+        <button class="icon-button" data-close="taskModal" aria-label="بستن">×</button>
+      </div>
+
+      <form id="taskForm" class="form-stack">
+        <input type="hidden" id="editTaskId">
+
+        <label for="taskName">عنوان وظیفه</label>
+        <input id="taskName" type="text" maxlength="120" required>
+
+        <label for="taskDescription">توضیحات</label>
+        <textarea id="taskDescription" rows="3" maxlength="500"></textarea>
+
+        <label for="taskRewardAmount">پاداش پیش‌فرض (سکه)</label>
+        <input id="taskRewardAmount" type="number" min="1" step="1" required>
+
+        <label class="checkbox-row">
+          <input id="taskActive" type="checkbox" checked>
+          <span>این وظیفه فعال باشد</span>
+        </label>
+
+        <p id="taskFormError" class="error-message hidden"></p>
+        <div class="modal-actions">
+          <button class="button secondary" type="button" data-close="taskModal">انصراف</button>
+          <button class="button primary" type="submit">ذخیره وظیفه</button>
+        </div>
+      </form>
+    </section>
+  </div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script src="app.js"></script>
 </body>
 </html>
-
