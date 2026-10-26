@@ -1,0 +1,2227 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#090b12">
+<title>AMS | پنل مدیریت</title>
+
+<style>
+:root {
+    --bg: #090b12;
+    --panel: #111521;
+    --panel2: #171c2b;
+    --border: rgba(255,255,255,.09);
+    --text: #f4f5ff;
+    --muted: #9299b2;
+    --accent: #9585ff;
+    --accent2: #6c59ed;
+    --green: #55e6a5;
+    --red: #ff647c;
+    --yellow: #ffd477;
+    --blue: #61caff;
+    --sidebar: 250px;
+    --radius: 16px;
+}
+
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    font-family: Tahoma, Arial, sans-serif;
+    background:
+        radial-gradient(ellipse at 75% -10%, rgba(108,89,237,.16), transparent 40%),
+        var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+}
+
+button, input, select, textarea { font: inherit; }
+button { cursor: pointer; }
+button:focus-visible, input:focus-visible, textarea:focus-visible,
+select:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
+
+.app { min-height: 100vh; }
+
+.sidebar {
+    position: fixed;
+    inset: 0 0 0 auto;
+    width: var(--sidebar);
+    padding: 24px 15px;
+    background: rgba(12,15,24,.96);
+    border-left: 1px solid var(--border);
+    z-index: 20;
+    display: flex;
+    flex-direction: column;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 5px 8px 27px;
+    border-bottom: 1px solid var(--border);
+}
+
+.brand-logo {
+    width: 43px;
+    height: 43px;
+    border-radius: 14px;
+    display: grid;
+    place-items: center;
+    color: white;
+    font-weight: 900;
+    font-size: 17px;
+    background: linear-gradient(135deg, #a99aff, #6550df);
+    box-shadow: 0 8px 30px rgba(108,89,237,.27);
+}
+
+.brand h1 { margin: 0; font-size: 19px; letter-spacing: 2px; }
+.brand small { display: block; color: var(--muted); margin-top: 5px; font-size: 10px; }
+
+.nav-title {
+    font-size: 10px;
+    color: #6f7791;
+    padding: 25px 12px 10px;
+    letter-spacing: 1px;
+}
+
+.nav-btn {
+    border: 1px solid transparent;
+    background: transparent;
+    color: #a9b0c8;
+    padding: 13px 12px;
+    text-align: right;
+    border-radius: 11px;
+    margin: 3px 0;
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    transition: .2s;
+    font-size: 12px;
+    width: 100%;
+}
+
+.nav-btn:hover { background: rgba(255,255,255,.04); color: white; }
+
+.nav-btn.active {
+    color: white;
+    background: linear-gradient(90deg, rgba(108,89,237,.22), rgba(108,89,237,.06));
+    border-color: rgba(149,133,255,.2);
+}
+
+.nav-icon {
+    width: 24px;
+    text-align: center;
+    font-size: 17px;
+}
+
+.sidebar-bottom {
+    margin-top: auto;
+    padding: 15px 10px 0;
+    border-top: 1px solid var(--border);
+}
+
+.local-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--muted);
+    font-size: 10px;
+    line-height: 1.8;
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    background: var(--green);
+    border-radius: 50%;
+    box-shadow: 0 0 12px rgba(85,230,165,.4);
+}
+
+.main {
+    margin-right: var(--sidebar);
+    padding: 27px 32px 45px;
+    min-width: 0;
+}
+
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 30px;
+}
+
+.eyebrow {
+    color: var(--accent);
+    font-size: 10px;
+    letter-spacing: 2px;
+    margin-bottom: 9px;
+}
+
+.topbar h2 { margin: 0; font-size: 24px; }
+.topbar p { color: var(--muted); font-size: 11px; margin: 9px 0 0; line-height: 1.9; }
+
+.top-actions { display: flex; align-items: center; gap: 9px; }
+
+.admin-chip {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 13px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    font-size: 11px;
+}
+
+.admin-avatar {
+    width: 31px;
+    height: 31px;
+    display: grid;
+    place-items: center;
+    border-radius: 10px;
+    background: rgba(149,133,255,.18);
+    color: #c9c0ff;
+    font-weight: bold;
+}
+
+.btn {
+    border: 1px solid var(--border);
+    color: var(--text);
+    background: var(--panel2);
+    padding: 10px 14px;
+    border-radius: 10px;
+    font-size: 11px;
+    transition: .2s;
+}
+
+.btn:hover { filter: brightness(1.15); transform: translateY(-1px); }
+.btn-primary { background: linear-gradient(135deg, #8977ff, #6450e5); border-color: transparent; }
+.btn-success { background: rgba(85,230,165,.12); border-color: rgba(85,230,165,.25); color: var(--green); }
+.btn-danger { background: rgba(255,100,124,.1); border-color: rgba(255,100,124,.24); color: var(--red); }
+.btn-warning { background: rgba(255,212,119,.1); border-color: rgba(255,212,119,.22); color: var(--yellow); }
+.btn-small { padding: 7px 10px; font-size: 10px; }
+
+.page { display: none; }
+.page.active { display: block; }
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0,1fr));
+    gap: 15px;
+    margin-bottom: 22px;
+}
+
+.stat-card {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(145deg, rgba(23,28,43,.96), rgba(15,19,30,.96));
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+}
+
+.stat-card::after {
+    content: "";
+    position: absolute;
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    left: -32px;
+    bottom: -48px;
+    background: var(--glow, rgba(149,133,255,.1));
+    filter: blur(3px);
+}
+
+.stat-head { display: flex; justify-content: space-between; align-items: center; }
+.stat-label { color: var(--muted); font-size: 11px; }
+.stat-icon {
+    width: 34px;
+    height: 34px;
+    border-radius: 11px;
+    display: grid;
+    place-items: center;
+    background: var(--glow, rgba(149,133,255,.12));
+    color: var(--color, var(--accent));
+    font-size: 17px;
+}
+.stat-number { font-size: 28px; font-weight: bold; margin-top: 17px; }
+.stat-note { font-size: 10px; color: var(--muted); margin-top: 8px; }
+
+.grid-two {
+    display: grid;
+    grid-template-columns: minmax(0,1.4fr) minmax(280px,1fr);
+    gap: 18px;
+    margin-bottom: 20px;
+}
+
+.panel {
+    background: rgba(17,21,33,.88);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    margin-bottom: 18px;
+}
+
+.panel-head {
+    padding: 19px 21px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.panel-head h3 { font-size: 13px; margin: 0; }
+.panel-head p { font-size: 10px; color: var(--muted); margin: 7px 0 0; line-height: 1.8; }
+.panel-body { padding: 20px; }
+
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 6px 9px;
+    border-radius: 8px;
+    font-size: 10px;
+    white-space: nowrap;
+}
+
+.badge-pending { color: var(--yellow); background: rgba(255,212,119,.1); }
+.badge-approved { color: var(--green); background: rgba(85,230,165,.1); }
+.badge-rejected { color: var(--red); background: rgba(255,100,124,.1); }
+.badge-neutral { color: #aeb5ca; background: rgba(174,181,202,.09); }
+
+.activity-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px 0;
+    border-bottom: 1px solid rgba(255,255,255,.05);
+}
+
+.activity-row:last-child { border-bottom: 0; }
+
+.activity-symbol {
+    flex: 0 0 36px;
+    height: 36px;
+    display: grid;
+    place-items: center;
+    background: rgba(149,133,255,.12);
+    color: var(--accent);
+    border-radius: 11px;
+}
+
+.activity-content { flex: 1; min-width: 0; }
+.activity-content strong { font-size: 11px; display: block; overflow-wrap: anywhere; }
+.activity-content p { color: var(--muted); font-size: 10px; line-height: 1.9; margin: 7px 0 0; }
+
+.empty {
+    text-align: center;
+    padding: 35px 15px;
+    color: var(--muted);
+    font-size: 11px;
+    line-height: 2;
+}
+
+.empty-icon { font-size: 27px; margin-bottom: 10px; opacity: .7; }
+
+.table-wrap { overflow-x: auto; }
+
+table { width: 100%; border-collapse: collapse; min-width: 620px; }
+th, td {
+    padding: 15px 17px;
+    text-align: right;
+    border-bottom: 1px solid rgba(255,255,255,.055);
+    font-size: 11px;
+    vertical-align: middle;
+}
+th { color: var(--muted); font-weight: normal; font-size: 10px; background: rgba(255,255,255,.015); }
+td { color: #e1e4f2; }
+tbody tr:hover { background: rgba(255,255,255,.018); }
+td small { display: block; color: var(--muted); font-size: 9px; margin-top: 6px; line-height: 1.8; }
+.table-actions { display: flex; gap: 6px; flex-wrap: wrap; }
+
+.toolbar {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 17px;
+}
+
+.field { display: flex; flex-direction: column; gap: 8px; margin-bottom: 15px; }
+.field label { font-size: 11px; color: #b7bed3; }
+
+.input, .select, .textarea {
+    width: 100%;
+    border: 1px solid var(--border);
+    background: #0c101a;
+    color: var(--text);
+    border-radius: 10px;
+    padding: 12px;
+    font-size: 11px;
+}
+
+.input::placeholder, .textarea::placeholder { color: #656d85; }
+.textarea { resize: vertical; min-height: 100px; line-height: 2; }
+.select option { background: #111521; }
+
+.search { max-width: 290px; flex: 1; }
+.toolbar .select { width: auto; min-width: 140px; }
+
+.form-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 0 14px; }
+.full-width { grid-column: 1 / -1; }
+
+.review-layout { display: grid; grid-template-columns: minmax(0,1fr) minmax(270px,.8fr); gap: 18px; }
+.review-detail { line-height: 2.1; font-size: 11px; white-space: pre-wrap; overflow-wrap: anywhere; color: #d7dced; }
+.detail-label { color: var(--muted); font-size: 10px; margin: 18px 0 7px; }
+.detail-value { font-size: 11px; line-height: 2; overflow-wrap: anywhere; }
+
+.reward-box {
+    border: 1px solid rgba(149,133,255,.2);
+    background: rgba(149,133,255,.055);
+    border-radius: 12px;
+    padding: 15px;
+    margin: 15px 0;
+}
+.reward-box strong { font-size: 22px; color: #c6bdff; }
+.reward-box span { font-size: 10px; color: var(--muted); margin-right: 5px; }
+
+.callout {
+    padding: 14px 16px;
+    border-radius: 11px;
+    font-size: 11px;
+    line-height: 2;
+    margin-bottom: 17px;
+    border: 1px solid rgba(97,202,255,.2);
+    background: rgba(97,202,255,.06);
+    color: #b7e7ff;
+}
+
+.callout.warning {
+    border-color: rgba(255,212,119,.22);
+    background: rgba(255,212,119,.055);
+    color: #ffe1a0;
+}
+
+.callout.danger {
+    border-color: rgba(255,100,124,.22);
+    background: rgba(255,100,124,.055);
+    color: #ffb0bd;
+}
+
+.footer-note {
+    text-align: center;
+    color: #656d85;
+    font-size: 10px;
+    margin-top: 30px;
+    line-height: 2;
+}
+
+.hidden { display: none !important; }
+
+.toast-wrap {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-width: min(380px, calc(100vw - 40px));
+}
+
+.toast {
+    background: #1b2233;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 13px 16px;
+    font-size: 11px;
+    line-height: 1.9;
+    box-shadow: 0 15px 40px rgba(0,0,0,.3);
+    animation: toastIn .2s ease;
+}
+
+.toast.success { border-color: rgba(85,230,165,.3); }
+.toast.error { border-color: rgba(255,100,124,.3); }
+
+@keyframes toastIn {
+    from { transform: translateY(8px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.modal-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 80;
+    background: rgba(0,0,0,.72);
+    display: grid;
+    place-items: center;
+    padding: 18px;
+    overflow-y: auto;
+}
+
+.modal {
+    width: min(570px, 100%);
+    background: #121725;
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 23px;
+    max-height: calc(100vh - 36px);
+    overflow-y: auto;
+    box-shadow: 0 25px 100px rgba(0,0,0,.4);
+}
+
+.modal-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 20px; }
+.modal-head h3 { margin: 0; font-size: 15px; }
+.close-btn { border: 0; color: var(--muted); background: transparent; font-size: 22px; }
+
+.mobile-menu { display: none; }
+
+@media(max-width:1100px) {
+    :root { --sidebar: 215px; }
+    .main { padding: 23px 20px; }
+    .stats-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+    .grid-two { grid-template-columns: 1fr; }
+}
+
+@media(max-width:760px) {
+    :root { --sidebar: 0px; }
+    .sidebar {
+        width: 250px;
+        transform: translateX(105%);
+        transition: transform .25s;
+        box-shadow: -20px 0 60px rgba(0,0,0,.3);
+    }
+    .sidebar.open { transform: translateX(0); }
+    .main { margin-right: 0; padding: 20px 13px 35px; }
+    .mobile-menu { display: inline-block; }
+    .topbar { align-items: flex-start; }
+    .topbar h2 { font-size: 19px; }
+    .top-actions { flex-wrap: wrap; justify-content: flex-end; }
+    .admin-chip { display: none; }
+    .stats-grid { gap: 9px; }
+    .stat-card { padding: 14px; }
+    .stat-number { font-size: 24px; }
+    .stat-label { font-size: 10px; }
+    .stat-note { font-size: 9px; }
+    .review-layout { grid-template-columns: 1fr; }
+    .form-grid { grid-template-columns: 1fr; }
+    .full-width { grid-column: auto; }
+    .toolbar .select { flex: 1; }
+}
+</style>
+</head>
+
+<body>
+<div class="app">
+
+<aside class="sidebar" id="sidebar">
+    <div class="brand">
+        <div class="brand-logo">AMS</div>
+        <div>
+            <h1>AMS</h1>
+            <small>ADMIN CONTROL CENTER</small>
+        </div>
+    </div>
+
+    <div class="nav-title">مدیریت اصلی</div>
+
+    <button class="nav-btn active" data-page="dashboard">
+        <span class="nav-icon">◈</span> داشبورد
+    </button>
+    <button class="nav-btn" data-page="reports">
+        <span class="nav-icon">▤</span> بررسی گزارش‌ها
+        <span id="pendingNavCount" class="badge badge-pending" style="margin-right:auto">۰</span>
+    </button>
+    <button class="nav-btn" data-page="employees">
+        <span class="nav-icon">♙</span> کارمندان
+    </button>
+    <button class="nav-btn" data-page="tasks">
+        <span class="nav-icon">◫</span> مدیریت وظایف
+    </button>
+    <button class="nav-btn" data-page="rewards">
+        <span class="nav-icon">◇</span> پاداش‌ها و سوابق
+    </button>
+
+    <div class="nav-title">داده‌ها و انتشار</div>
+
+    <button class="nav-btn" data-page="data">
+        <span class="nav-icon">⇅</span> ورود و خروج داده‌ها
+    </button>
+
+    <div class="sidebar-bottom">
+        <div class="local-status">
+            <span class="status-dot"></span>
+            <div>
+                <strong style="color:#dfe3f2">حالت محلی</strong><br>
+                اطلاعات روی همین مرورگر ذخیره می‌شود.
+            </div>
+        </div>
+    </div>
+</aside>
+
+<main class="main">
+    <header class="topbar">
+        <div>
+            <div class="eyebrow">AMS / ADMINISTRATION</div>
+            <h2 id="pageTitle">داشبورد مدیریت</h2>
+            <p id="pageSubtitle">نمای کلی فعالیت‌ها و وضعیت پلتفرم AMS</p>
+        </div>
+
+        <div class="top-actions">
+            <button class="btn mobile-menu" id="mobileMenu">☰</button>
+            <div class="admin-chip">
+                <div class="admin-avatar">A</div>
+                <div>
+                    <strong>مدیر AMS</strong>
+                    <div style="color:var(--muted);font-size:9px;margin-top:5px">پنل محلی مدیریت</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- DASHBOARD -->
+    <section class="page active" id="page-dashboard">
+        <div class="stats-grid">
+            <div class="stat-card" style="--color:#a99aff;--glow:rgba(149,133,255,.12)">
+                <div class="stat-head">
+                    <span class="stat-label">کل کارمندان</span>
+                    <span class="stat-icon">♙</span>
+                </div>
+                <div class="stat-number" id="statEmployees">۰</div>
+                <div class="stat-note">ثبت‌شده در داده‌های محلی</div>
+            </div>
+
+            <div class="stat-card" style="--color:#ffd477;--glow:rgba(255,212,119,.12)">
+                <div class="stat-head">
+                    <span class="stat-label">گزارش‌های در انتظار</span>
+                    <span class="stat-icon">◷</span>
+                </div>
+                <div class="stat-number" id="statPending">۰</div>
+                <div class="stat-note">نیازمند بررسی مدیر</div>
+            </div>
+
+            <div class="stat-card" style="--color:#55e6a5;--glow:rgba(85,230,165,.1)">
+                <div class="stat-head">
+                    <span class="stat-label">گزارش‌های تأییدشده</span>
+                    <span class="stat-icon">✓</span>
+                </div>
+                <div class="stat-number" id="statApproved">۰</div>
+                <div class="stat-note">تأییدشده در این پنل</div>
+            </div>
+
+            <div class="stat-card" style="--color:#61caff;--glow:rgba(97,202,255,.1)">
+                <div class="stat-head">
+                    <span class="stat-label">مجموع پاداش تأییدشده</span>
+                    <span class="stat-icon">◇</span>
+                </div>
+                <div class="stat-number" id="statRewards">۰</div>
+                <div class="stat-note">واحد AMS، بر اساس سوابق پنل</div>
+            </div>
+        </div>
+
+        <div class="grid-two">
+            <div class="panel">
+                <div class="panel-head">
+                    <div>
+                        <h3>گزارش‌های اخیر</h3>
+                        <p>آخرین فعالیت‌های واردشده به پنل مدیریت</p>
+                    </div>
+                    <button class="btn btn-small" data-goto="reports">مشاهده همه</button>
+                </div>
+                <div class="panel-body" id="recentReports"></div>
+            </div>
+
+            <div class="panel">
+                <div class="panel-head">
+                    <div>
+                        <h3>وضعیت پلتفرم</h3>
+                        <p>خلاصه وضعیت داده‌های محلی</p>
+                    </div>
+                </div>
+                <div class="panel-body" id="platformStatus"></div>
+            </div>
+        </div>
+
+        <div class="panel">
+            <div class="panel-head">
+                <div>
+                    <h3>شروع سریع</h3>
+                    <p>عملیات رایج مدیر</p>
+                </div>
+            </div>
+            <div class="panel-body" style="display:flex;gap:10px;flex-wrap:wrap">
+                <button class="btn btn-primary" data-goto="data">⇧ وارد کردن گزارش کارمند</button>
+                <button class="btn" data-goto="employees">＋ افزودن کارمند</button>
+                <button class="btn" data-goto="tasks">＋ تعریف وظیفه جدید</button>
+                <button class="btn" data-action="export">↓ خروجی data.json</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- REPORTS -->
+    <section class="page" id="page-reports">
+        <div class="callout">
+            فایل JSON دانلودشده از سایت کارمندان را از بخش «ورود و خروج داده‌ها» وارد کن.
+            گزارش‌ها در این پنل قابل بررسی هستند. پاداش پیشنهادی کارمند، پاداش نهایی محسوب نمی‌شود.
+        </div>
+
+        <div class="toolbar">
+            <input class="input search" id="reportSearch" placeholder="جستجوی نام، وظیفه یا گزارش...">
+            <select class="select" id="reportFilter">
+                <option value="all">همه وضعیت‌ها</option>
+                <option value="pending">در انتظار بررسی</option>
+                <option value="approved">تأییدشده</option>
+                <option value="rejected">ردشده</option>
+            </select>
+            <button class="btn btn-primary" data-goto="data">＋ وارد کردن گزارش</button>
+        </div>
+
+        <div class="panel">
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>کارمند</th>
+                            <th>وظیفه</th>
+                            <th>تاریخ ثبت</th>
+                            <th>پاداش پیشنهادی</th>
+                            <th>وضعیت</th>
+                            <th>عملیات</th>
+                        </tr>
+                    </thead>
+                    <tbody id="reportsTable"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="review-layout hidden" id="reviewLayout">
+            <div class="panel">
+                <div class="panel-head">
+                    <div>
+                        <h3>جزئیات گزارش</h3>
+                        <p>اطلاعات ثبت‌شده توسط کارمند</p>
+                    </div>
+                    <button class="btn btn-small" id="closeReview">بستن</button>
+                </div>
+                <div class="panel-body" id="reviewDetails"></div>
+            </div>
+
+            <div class="panel">
+                <div class="panel-head">
+                    <div>
+                        <h3>تصمیم مدیر</h3>
+                        <p>تعیین نتیجه بررسی و پاداش نهایی</p>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="field">
+                        <label for="approvedReward">پاداش نهایی (AMS)</label>
+                        <input class="input" type="number" id="approvedReward" min="0" step="1" value="0">
+                    </div>
+                    <div class="field">
+                        <label for="adminNote">یادداشت مدیر</label>
+                        <textarea class="textarea" id="adminNote" placeholder="توضیح نتیجه بررسی..."></textarea>
+                    </div>
+                    <div style="display:flex;gap:8px;flex-wrap:wrap">
+                        <button class="btn btn-success" id="approveReport">✓ تأیید گزارش</button>
+                        <button class="btn btn-danger" id="rejectReport">✕ رد گزارش</button>
+                    </div>
+                    <p style="font-size:10px;line-height:2;color:var(--muted);margin-top:15px">
+                        تأیید گزارش فقط سابقه محلی را به‌روزرسانی می‌کند و به معنی انتقال واقعی توکن روی بلاکچین نیست.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- EMPLOYEES -->
+    <section class="page" id="page-employees">
+        <div class="toolbar">
+            <input class="input search" id="employeeSearch" placeholder="جستجوی نام یا شناسه کارمند...">
+            <button class="btn btn-primary" id="addEmployeeBtn">＋ افزودن کارمند</button>
+        </div>
+
+        <div class="panel">
+            <div class="panel-head">
+                <div>
+                    <h3>فهرست کارمندان</h3>
+                    <p>مدیریت فهرست کارمندان در داده‌های مدیریتی</p>
+                </div>
+            </div>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>نام</th>
+                            <th>شناسه</th>
+                            <th>نقش</th>
+                            <th>گزارش‌ها</th>
+                            <th>پاداش تأییدشده</th>
+                            <th>وضعیت</th>
+                            <th>عملیات</th>
+                        </tr>
+                    </thead>
+                    <tbody id="employeesTable"></tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- TASKS -->
+    <section class="page" id="page-tasks">
+        <div class="toolbar">
+            <input class="input search" id="taskSearch" placeholder="جستجوی وظیفه...">
+            <button class="btn btn-primary" id="addTaskBtn">＋ ساخت وظیفه</button>
+        </div>
+
+        <div class="panel">
+            <div class="panel-head">
+                <div>
+                    <h3>وظایف AMS</h3>
+                    <p>وظایف این بخش در خروجی مدیریتی ذخیره می‌شوند.</p>
+                </div>
+            </div>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>عنوان</th>
+                            <th>دسته‌بندی</th>
+                            <th>پاداش پیشنهادی</th>
+                            <th>وضعیت</th>
+                            <th>عملیات</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tasksTable"></tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- REWARDS -->
+    <section class="page" id="page-rewards">
+        <div class="callout warning">
+            این جدول، سابقه پاداش‌های ثبت‌شده در پنل مدیریت را نشان می‌دهد.
+            تا زمانی که کیف پول، قرارداد هوشمند و تراکنش واقعی پیاده‌سازی نشده باشند،
+            مقادیر این بخش موجودی واقعی بلاکچین نیستند.
+        </div>
+
+        <div class="stats-grid" style="grid-template-columns:repeat(2,minmax(0,1fr))">
+            <div class="stat-card">
+                <div class="stat-label">مجموع پاداش تأییدشده</div>
+                <div class="stat-number" id="rewardTotal">۰</div>
+                <div class="stat-note">واحد AMS</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">تعداد سوابق پاداش</div>
+                <div class="stat-number" id="rewardCount">۰</div>
+                <div class="stat-note">سوابق تأییدشده در داده‌های پنل</div>
+            </div>
+        </div>
+
+        <div class="panel">
+            <div class="panel-head">
+                <div>
+                    <h3>تاریخچه پاداش‌ها</h3>
+                    <p>هر گزارش تأییدشده فقط یک سابقه پاداش ایجاد می‌کند.</p>
+                </div>
+                <button class="btn btn-small" data-action="export">خروجی داده‌ها</button>
+            </div>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>کارمند</th>
+                            <th>شرح</th>
+                            <th>مبلغ (AMS)</th>
+                            <th>زمان ثبت</th>
+                            <th>شناسه گزارش</th>
+                        </tr>
+                    </thead>
+                    <tbody id="rewardsTable"></tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- DATA -->
+    <section class="page" id="page-data">
+        <div class="callout warning">
+            <strong>نکته مهم درباره GitHub Pages:</strong>
+            سایت کارمندان به‌تنهایی نمی‌تواند فایل‌ها را روی کامپیوتر مدیر بنویسد یا
+            داده‌های مرورگر کارمندان را خودکار به این پنل منتقل کند. کارمند باید فایل JSON
+            گزارش را برای مدیر بفرستد. مدیر فایل را وارد می‌کند و سپس خروجی را بررسی و منتشر می‌کند.
+        </div>
+
+        <div class="grid-two">
+            <div class="panel">
+                <div class="panel-head">
+                    <div>
+                        <h3>ورود گزارش کارمند</h3>
+                        <p>وارد کردن فایل JSON دانلودشده از سایت کارمندان</p>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="field">
+                        <label for="reportFile">انتخاب فایل گزارش JSON</label>
+                        <input class="input" type="file" id="reportFile" accept=".json,application/json">
+                    </div>
+                    <button class="btn btn-primary" id="importReportBtn">وارد کردن و بررسی فایل</button>
+                    <p style="color:var(--muted);font-size:10px;line-height:2;margin-top:14px">
+                        فایل‌های فرمت AMS_EMPLOYEE_REPORTS و فایل‌های مدیریتی AMS_SHARED_DATA
+                        پشتیبانی می‌شوند. ورود مجدد یک گزارش با شناسه یکسان، گزارش تکراری نمی‌سازد.
+                    </p>
+                </div>
+            </div>
+
+            <div class="panel">
+                <div class="panel-head">
+                    <div>
+                        <h3>خروجی داده‌های مدیریتی</h3>
+                        <p>ساخت فایل data.json برای انتشار دستی</p>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <p style="font-size:11px;line-height:2;color:var(--muted)">
+                        کارمندان، وظایف، گزارش‌ها و سوابق پاداش در فایل خروجی قرار می‌گیرند.
+                        قبل از انتشار، فایل را بررسی کن و اطلاعاتی را که نباید عمومی باشند در آن قرار نده.
+                    </p>
+                    <button class="btn btn-primary" id="exportDataBtn">↓ دانلود data.json</button>
+                    <button class="btn" id="backupDataBtn" style="margin-right:5px">↓ پشتیبان کامل محلی</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel">
+            <div class="panel-head">
+                <div>
+                    <h3>بازیابی داده‌های مدیریتی</h3>
+                    <p>وارد کردن فایل مدیریتی قبلی برای بازیابی اطلاعات</p>
+                </div>
+            </div>
+            <div class="panel-body">
+                <div class="callout danger">
+                    بازیابی داده‌ها، اطلاعات موجود پنل را با اطلاعات فایل جایگزین می‌کند.
+                    قبل از انجام این کار، از اطلاعات فعلی خروجی پشتیبان بگیر.
+                </div>
+                <div class="field">
+                    <label for="backupFile">انتخاب فایل JSON مدیریتی</label>
+                    <input class="input" type="file" id="backupFile" accept=".json,application/json">
+                </div>
+                <button class="btn btn-danger" id="restoreDataBtn">بازیابی و جایگزینی داده‌ها</button>
+            </div>
+        </div>
+
+        <div class="panel">
+            <div class="panel-head">
+                <div>
+                    <h3>وضعیت ذخیره‌سازی</h3>
+                    <p>اطلاعات پایه درباره وضعیت فعلی پنل</p>
+                </div>
+            </div>
+            <div class="panel-body" id="storageInfo"></div>
+        </div>
+    </section>
+
+    <footer class="footer-note">
+        AMS ADMIN CONTROL CENTER · LOCAL MODE<br>
+        این پنل به‌تنهایی احراز هویت امن، همگام‌سازی آنلاین یا انتقال واقعی توکن انجام نمی‌دهد.
+    </footer>
+</main>
+</div>
+
+<div class="toast-wrap" id="toastWrap"></div>
+<div id="modalRoot"></div>
+
+<script>
+"use strict";
+
+/* =========================================================
+   AMS ADMIN PANEL
+   Local-only management interface.
+   Employee report imports:
+   - AMS_EMPLOYEE_REPORTS
+   - AMS_SHARED_DATA
+   ========================================================= */
+
+const STORAGE_KEY = "ams_admin_data_v3";
+const OLD_STORAGE_KEY = "ams_admin_data_v2";
+
+const $ = (selector, root = document) => root.querySelector(selector);
+const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
+
+const persianNumber = value =>
+    Number(value || 0).toLocaleString("fa-IR");
+
+const escapeHTML = value => String(value ?? "").replace(/[&<>"']/g, char => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#039;"
+}[char]));
+
+const makeId = prefix =>
+    prefix + "_" + Date.now().toString(36) + "_" +
+    Math.random().toString(36).slice(2, 8);
+
+const nowISO = () => new Date().toISOString();
+
+const formatDate = value => {
+    if (!value) return "—";
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) return String(value);
+    return date.toLocaleString("fa-IR", {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+        hour: "2-digit",
+        minute: "2-digit"
+    });
+};
+
+const clone = value => JSON.parse(JSON.stringify(value));
+
+function defaultData() {
+    return {
+        format: "AMS_SHARED_DATA",
+        version: 1,
+        updatedAt: nowISO(),
+        settings: {
+            platformName: "AMS",
+            tokenName: "AMS",
+            currency: "AMS",
+            allowExtraActivityRequests: true,
+            requireAdminApproval: true
+        },
+        employees: [
+            {
+                id: 1,
+                name: "آرمان رضایی",
+                username: "arman",
+                role: "توسعه‌دهنده",
+                tokens: 0,
+                activities: 0,
+                color: "#8b7cff",
+                status: "فعال"
+            },
+            {
+                id: 2,
+                name: "سارا محمدی",
+                username: "sara",
+                role: "طراح محصول",
+                tokens: 0,
+                activities: 0,
+                color: "#57c8e3",
+                status: "فعال"
+            }
+        ],
+        tasks: [
+            {
+                id: 101,
+                title: "تکمیل طراحی صفحه ورود",
+                description: "طراحی صفحه ورود را تکمیل کن و برای بررسی مدیر ارسال کن.",
+                reward: 50,
+                status: "فعال",
+                category: "طراحی",
+                createdAt: nowISO()
+            },
+            {
+                id: 102,
+                title: "رفع باگ‌های سایت",
+                description: "خطاهای گزارش‌شده سایت را بررسی و رفع کن.",
+                reward: 75,
+                status: "فعال",
+                category: "برنامه‌نویسی",
+                createdAt: nowISO()
+            },
+            {
+                id: 103,
+                title: "بهبود رابط کاربری",
+                description: "ظاهر و تجربه کاربری یکی از صفحات AMS را بهبود بده.",
+                reward: 40,
+                status: "فعال",
+                category: "طراحی",
+                createdAt: nowISO()
+            }
+        ],
+        pending: [],
+        transactions: [],
+        extraRequests: [],
+        profileRequests: [],
+        reports: []
+    };
+}
+
+function normalizeData(input) {
+    const base = defaultData();
+    const data = input && typeof input === "object" ? input : {};
+
+    return {
+        ...base,
+        ...data,
+        format: "AMS_SHARED_DATA",
+        version: 1,
+        settings: { ...base.settings, ...(data.settings || {}) },
+        employees: Array.isArray(data.employees) ? data.employees : base.employees,
+        tasks: Array.isArray(data.tasks) ? data.tasks : base.tasks,
+        pending: Array.isArray(data.pending) ? data.pending : [],
+        transactions: Array.isArray(data.transactions) ? data.transactions : [],
+        extraRequests: Array.isArray(data.extraRequests) ? data.extraRequests : [],
+        profileRequests: Array.isArray(data.profileRequests) ? data.profileRequests : [],
+        reports: Array.isArray(data.reports) ? data.reports : []
+    };
+}
+
+function loadData() {
+    try {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if (saved) return normalizeData(JSON.parse(saved));
+
+        const oldSaved = localStorage.getItem(OLD_STORAGE_KEY);
+        if (oldSaved) return normalizeData(JSON.parse(oldSaved));
+
+        return defaultData();
+    } catch (error) {
+        console.error("AMS storage read error:", error);
+        return defaultData();
+    }
+}
+
+let data = loadData();
+let selectedReportId = null;
+let currentPage = "dashboard";
+
+function saveData() {
+    data.updatedAt = nowISO();
+
+    try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+        renderAll();
+        return true;
+    } catch (error) {
+        console.error("AMS storage write error:", error);
+        toast("ذخیره‌سازی انجام نشد. ممکن است فضای ذخیره‌سازی مرورگر کافی نباشد.", "error");
+        return false;
+    }
+}
+
+function toast(message, type = "") {
+    const item = document.createElement("div");
+    item.className = "toast " + type;
+    item.textContent = message;
+    $("#toastWrap").appendChild(item);
+    setTimeout(() => item.remove(), 4300);
+}
+
+function statusBadge(status) {
+    if (status === "approved" || status === "تأییدشده") {
+        return '<span class="badge badge-approved">✓ تأییدشده</span>';
+    }
+    if (status === "rejected" || status === "ردشده") {
+        return '<span class="badge badge-rejected">✕ ردشده</span>';
+    }
+    return '<span class="badge badge-pending">◷ در انتظار</span>';
+}
+
+function reportStatus(report) {
+    const status = String(report.status || "pending").toLowerCase();
+    if (["approved", "تأییدشده", "accepted"].includes(status)) return "approved";
+    if (["rejected", "ردشده", "declined"].includes(status)) return "rejected";
+    return "pending";
+}
+
+function getReports() {
+    return Array.isArray(data.reports) ? data.reports : [];
+}
+
+function getApprovedReports() {
+    return getReports().filter(report => reportStatus(report) === "approved");
+}
+
+function getPendingReports() {
+    return getReports().filter(report => reportStatus(report) === "pending");
+}
+
+function reportReward(report) {
+    return Math.max(0, Number(report.approvedReward ?? 0) || 0);
+}
+
+function getTotalRewards() {
+    return getApprovedReports().reduce((sum, report) => sum + reportReward(report), 0);
+}
+
+function findReport(id) {
+    return getReports().find(report => String(report.id) === String(id));
+}
+
+function findEmployee(name, localId) {
+    if (localId !== undefined && localId !== null && String(localId) !== "") {
+        const byId = data.employees.find(employee =>
+            String(employee.id) === String(localId) ||
+            String(employee.username || "") === String(localId)
+        );
+        if (byId) return byId;
+    }
+
+    return data.employees.find(employee =>
+        String(employee.name || "").trim().toLowerCase() ===
+        String(name || "").trim().toLowerCase()
+    );
+}
+
+function countEmployeeReports(employee) {
+    return getReports().filter(report =>
+        String(report.employeeId) === String(employee.id) ||
+        String(report.employeeName || "").trim() === String(employee.name || "").trim()
+    ).length;
+}
+
+function countEmployeeRewards(employee) {
+    return getApprovedReports()
+        .filter(report =>
+            String(report.employeeId) === String(employee.id) ||
+            String(report.employeeName || "").trim() === String(employee.name || "").trim()
+        )
+        .reduce((sum, report) => sum + reportReward(report), 0);
+}
+
+/* Navigation */
+
+const pageMeta = {
+    dashboard: ["داشبورد مدیریت", "نمای کلی فعالیت‌ها و وضعیت پلتفرم AMS"],
+    reports: ["بررسی گزارش‌ها", "بررسی، تأیید یا رد گزارش‌های ارسالی کارمندان"],
+    employees: ["مدیریت کارمندان", "مدیریت فهرست کارمندان در داده‌های مدیریتی"],
+    tasks: ["مدیریت وظایف", "ساخت و مدیریت وظایف پلتفرم"],
+    rewards: ["پاداش‌ها و سوابق", "تاریخچه پاداش‌های تأییدشده در پنل"],
+    data: ["ورود و خروج داده‌ها", "ورود فایل‌های گزارش و خروجی داده‌های مدیریتی"]
+};
+
+function goToPage(page) {
+    if (!pageMeta[page]) return;
+
+    currentPage = page;
+
+    $$(".page").forEach(element => element.classList.remove("active"));
+    $("#page-" + page).classList.add("active");
+
+    $$(".nav-btn[data-page]").forEach(button => {
+        button.classList.toggle("active", button.dataset.page === page);
+    });
+
+    $("#pageTitle").textContent = pageMeta[page][0];
+    $("#pageSubtitle").textContent = pageMeta[page][1];
+
+    $("#sidebar").classList.remove("open");
+
+    if (page !== "reports") {
+        $("#reviewLayout").classList.add("hidden");
+    }
+}
+
+$$(".nav-btn[data-page]").forEach(button => {
+    button.addEventListener("click", () => goToPage(button.dataset.page));
+});
+
+$$("[data-goto]").forEach(button => {
+    button.addEventListener("click", () => goToPage(button.dataset.goto));
+});
+
+$("#mobileMenu").addEventListener("click", () => {
+    $("#sidebar").classList.toggle("open");
+});
+
+/* Dashboard */
+
+function renderDashboard() {
+    const pending = getPendingReports();
+    const approved = getApprovedReports();
+    const rewards = getTotalRewards();
+
+    $("#statEmployees").textContent = persianNumber(data.employees.length);
+    $("#statPending").textContent = persianNumber(pending.length);
+    $("#statApproved").textContent = persianNumber(approved.length);
+    $("#statRewards").textContent = persianNumber(rewards);
+    $("#pendingNavCount").textContent = persianNumber(pending.length);
+
+    const recent = [...getReports()].sort((a, b) =>
+        new Date(b.createdAt || 0) - new Date(a.createdAt || 0)
+    ).slice(0, 5);
+
+    if (!recent.length) {
+        $("#recentReports").innerHTML =
+            '<div class="empty"><div class="empty-icon">▤</div>هنوز گزارشی وارد نشده است.<br>برای شروع، فایل JSON یکی از کارمندان را وارد کن.</div>';
+    } else {
+        $("#recentReports").innerHTML = recent.map(report => `
+            <div class="activity-row">
+                <div class="activity-symbol">▤</div>
+                <div class="activity-content">
+                    <strong>${escapeHTML(report.title || report.taskTitle || "گزارش فعالیت")}</strong>
+                    <p>${escapeHTML(report.employeeName || "کارمند نامشخص")} · ${escapeHTML(formatDate(report.createdAt))}</p>
+                </div>
+                <div>${statusBadge(reportStatus(report))}</div>
+            </div>
+        `).join("");
+    }
+
+    $("#platformStatus").innerHTML = `
+        <div class="activity-row">
+            <div class="activity-symbol">◈</div>
+            <div class="activity-content">
+                <strong>ذخیره‌سازی محلی</strong>
+                <p>داده‌ها در مرورگر همین دستگاه ذخیره می‌شوند.</p>
+            </div>
+            <span class="badge badge-approved">فعال</span>
+        </div>
+        <div class="activity-row">
+            <div class="activity-symbol">♙</div>
+            <div class="activity-content">
+                <strong>فهرست کارمندان</strong>
+                <p>${persianNumber(data.employees.length)} کارمند ثبت‌شده</p>
+            </div>
+        </div>
+        <div class="activity-row">
+            <div class="activity-symbol">◫</div>
+            <div class="activity-content">
+                <strong>وظایف</strong>
+                <p>${persianNumber(data.tasks.length)} وظیفه در داده‌های مدیریتی</p>
+            </div>
+        </div>
+        <div class="activity-row">
+            <div class="activity-symbol">◇</div>
+            <div class="activity-content">
+                <strong>پاداش‌ها</strong>
+                <p>${persianNumber(rewards)} AMS ثبت‌شده در گزارش‌های تأییدشده</p>
+            </div>
+        </div>
+        <div class="activity-row">
+            <div class="activity-symbol">⇅</div>
+            <div class="activity-content">
+                <strong>آخرین تغییر</strong>
+                <p>${escapeHTML(formatDate(data.updatedAt))}</p>
+            </div>
+        </div>
+    `;
+}
+
+/* Reports */
+
+function renderReports() {
+    const query = ($("#reportSearch").value || "").trim().toLowerCase();
+    const filter = $("#reportFilter").value;
+
+    const reports = [...getReports()]
+        .filter(report => {
+            const searchable = [
+                report.employeeName, report.title, report.taskTitle,
+                report.description, report.result
+            ].join(" ").toLowerCase();
+
+            return (!query || searchable.includes(query)) &&
+                (filter === "all" || reportStatus(report) === filter);
+        })
+        .sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
+
+    if (!reports.length) {
+        $("#reportsTable").innerHTML = `
+            <tr><td colspan="6">
+                <div class="empty">گزارشی با این مشخصات پیدا نشد.</div>
+            </td></tr>`;
+        return;
+    }
+
+    $("#reportsTable").innerHTML = reports.map(report => `
+        <tr>
+            <td>
+                <strong>${escapeHTML(report.employeeName || "نامشخص")}</strong>
+                <small>${escapeHTML(String(report.employeeId ?? "بدون شناسه"))}</small>
+            </td>
+            <td>
+                ${escapeHTML(report.taskTitle || report.title || "گزارش فعالیت")}
+                <small>${escapeHTML(report.title || "")}</small>
+            </td>
+            <td>${escapeHTML(formatDate(report.createdAt || report.activityDate))}</td>
+            <td>${persianNumber(report.proposedReward || 0)} AMS</td>
+            <td>${statusBadge(reportStatus(report))}</td>
+            <td>
+                <div class="table-actions">
+                    <button class="btn btn-small" data-review="${escapeHTML(report.id)}">بررسی</button>
+                </div>
+            </td>
+        </tr>
+    `).join("");
+
+    $$("[data-review]", $("#reportsTable")).forEach(button => {
+        button.addEventListener("click", () => openReview(button.dataset.review));
+    });
+}
+
+function openReview(id) {
+    const report = findReport(id);
+    if (!report) {
+        toast("گزارش موردنظر پیدا نشد.", "error");
+        return;
+    }
+
+    selectedReportId = report.id;
+
+    $("#reviewDetails").innerHTML = `
+        <div class="detail-label">کارمند</div>
+        <div class="detail-value">${escapeHTML(report.employeeName || "نامشخص")}</div>
+
+        <div class="detail-label">عنوان گزارش</div>
+        <div class="detail-value">${escapeHTML(report.title || "گزارش فعالیت")}</div>
+
+        <div class="detail-label">وظیفه</div>
+        <div class="detail-value">${escapeHTML(report.taskTitle || "وظیفه مشخص نشده")}</div>
+
+        <div class="detail-label">شرح فعالیت</div>
+        <div class="review-detail">${escapeHTML(report.description || "توضیحی ثبت نشده است.")}</div>
+
+        <div class="detail-label">نتیجه کار</div>
+        <div class="review-detail">${escapeHTML(report.result || "نتیجه‌ای ثبت نشده است.")}</div>
+
+        <div class="detail-label">تاریخ فعالیت</div>
+        <div class="detail-value">${escapeHTML(String(report.activityDate || "—"))}</div>
+
+        <div class="detail-label">زمان ارسال</div>
+        <div class="detail-value">${escapeHTML(formatDate(report.createdAt))}</div>
+
+        <div class="detail-label">وضعیت فعلی</div>
+        <div class="detail-value">${statusBadge(reportStatus(report))}</div>
+
+        <div class="reward-box">
+            <div style="font-size:10px;color:var(--muted);margin-bottom:8px">پاداش پیشنهادی کارمند</div>
+            <strong>${persianNumber(report.proposedReward || 0)}</strong>
+            <span>AMS</span>
+        </div>
+
+        ${report.adminNote ? `
+            <div class="detail-label">یادداشت قبلی مدیر</div>
+            <div class="review-detail">${escapeHTML(report.adminNote)}</div>
+        ` : ""}
+    `;
+
+    $("#approvedReward").value = report.approvedReward ??
+        Math.max(0, Number(report.proposedReward || 0));
+    $("#adminNote").value = report.adminNote || "";
+    $("#reviewLayout").classList.remove("hidden");
+    $("#reviewLayout").scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+$("#closeReview").addEventListener("click", () => {
+    selectedReportId = null;
+    $("#reviewLayout").classList.add("hidden");
+});
+
+function decideReport(status) {
+    if (selectedReportId === null) {
+        toast("ابتدا گزارشی را انتخاب کن.", "error");
+        return;
+    }
+
+    const report = findReport(selectedReportId);
+    if (!report) {
+        toast("گزارش پیدا نشد.", "error");
+        return;
+    }
+
+    const note = $("#adminNote").value.trim();
+    const oldStatus = reportStatus(report);
+    const previousReward = reportReward(report);
+
+    if (status === "approved") {
+        const rewardValue = Number($("#approvedReward").value);
+
+        if (!Number.isFinite(rewardValue) || rewardValue < 0) {
+            toast("مبلغ پاداش باید عددی معتبر و غیرمنفی باشد.", "error");
+            return;
+        }
+
+        if (!Number.isSafeInteger(rewardValue)) {
+            toast("پاداش باید عدد صحیح باشد.", "error");
+            return;
+        }
+
+        report.approvedReward = rewardValue;
+        report.status = "approved";
+        report.reviewedAt = nowISO();
+        report.adminNote = note;
+
+        if (oldStatus !== "approved") {
+            data.transactions.push({
+                id: makeId("reward"),
+                employeeId: report.employeeId ?? null,
+                employeeName: report.employeeName || "نامشخص",
+                reportId: report.id,
+                type: "reward",
+                amount: rewardValue,
+                currency: "AMS",
+                description: "پاداش گزارش تأییدشده: " + (report.title || report.taskTitle || ""),
+                createdAt: nowISO(),
+                mode: "local_record_only"
+            });
+        } else if (previousReward !== rewardValue) {
+            data.transactions.push({
+                id: makeId("adjustment"),
+                employeeId: report.employeeId ?? null,
+                employeeName: report.employeeName || "نامشخص",
+                reportId: report.id,
+                type: "reward_adjustment",
+                amount: rewardValue - previousReward,
+                currency: "AMS",
+                description: "اصلاح پاداش گزارش تأییدشده",
+                createdAt: nowISO(),
+                mode: "local_record_only"
+            });
+        }
+
+        if (!saveData()) return;
+        toast("گزارش تأیید شد و پاداش نهایی در سوابق محلی ثبت شد.", "success");
+    } else {
+        report.status = "rejected";
+        report.approvedReward = 0;
+        report.reviewedAt = nowISO();
+        report.adminNote = note;
+
+        if (!saveData()) return;
+        toast("گزارش رد شد.", "success");
+    }
+
+    selectedReportId = null;
+    $("#reviewLayout").classList.add("hidden");
+}
+
+$("#approveReport").addEventListener("click", () => decideReport("approved"));
+$("#rejectReport").addEventListener("click", () => {
+    if (confirm("آیا از رد این گزارش مطمئن هستی؟")) decideReport("rejected");
+});
+
+$("#reportSearch").addEventListener("input", renderReports);
+$("#reportFilter").addEventListener("change", renderReports);
+
+/* Employees */
+
+function renderEmployees() {
+    const query = ($("#employeeSearch").value || "").trim().toLowerCase();
+
+    const employees = data.employees.filter(employee =>
+        [employee.name, employee.username, employee.role, employee.id]
+            .join(" ").toLowerCase().includes(query)
+    );
+
+    if (!employees.length) {
+        $("#employeesTable").innerHTML =
+            '<tr><td colspan="7"><div class="empty">کارمندی پیدا نشد.</div></td></tr>';
+        return;
+    }
+
+    $("#employeesTable").innerHTML = employees.map(employee => `
+        <tr>
+            <td>
+                <strong>${escapeHTML(employee.name)}</strong>
+                <small>${escapeHTML(employee.username || "")}</small>
+            </td>
+            <td>${escapeHTML(String(employee.id))}</td>
+            <td>${escapeHTML(employee.role || "کارمند")}</td>
+            <td>${persianNumber(countEmployeeReports(employee))}</td>
+            <td>${persianNumber(countEmployeeRewards(employee))} AMS</td>
+            <td>
+                <span class="badge ${employee.status === "غیرفعال" ? "badge-neutral" : "badge-approved"}">
+                    ${escapeHTML(employee.status || "فعال")}
+                </span>
+            </td>
+            <td>
+                <div class="table-actions">
+                    <button class="btn btn-small" data-edit-employee="${escapeHTML(employee.id)}">ویرایش</button>
+                    <button class="btn btn-small ${employee.status === "غیرفعال" ? "btn-success" : "btn-warning"}"
+                        data-toggle-employee="${escapeHTML(employee.id)}">
+                        ${employee.status === "غیرفعال" ? "فعال‌سازی" : "غیرفعال"}
+                    </button>
+                    <button class="btn btn-small btn-danger" data-delete-employee="${escapeHTML(employee.id)}">حذف</button>
+                </div>
+            </td>
+        </tr>
+    `).join("");
+
+    $$("[data-edit-employee]", $("#employeesTable")).forEach(button =>
+        button.addEventListener("click", () => openEmployeeModal(button.dataset.editEmployee))
+    );
+
+    $$("[data-toggle-employee]", $("#employeesTable")).forEach(button =>
+        button.addEventListener("click", () => {
+            const employee = data.employees.find(item => String(item.id) === button.dataset.toggleEmployee);
+            if (!employee) return;
+            employee.status = employee.status === "غیرفعال" ? "فعال" : "غیرفعال";
+            if (saveData()) toast("وضعیت کارمند تغییر کرد.", "success");
+        })
+    );
+
+    $$("[data-delete-employee]", $("#employeesTable")).forEach(button =>
+        button.addEventListener("click", () => deleteEmployee(button.dataset.deleteEmployee))
+    );
+}
+
+function openModal(title, bodyHTML, onSave) {
+    $("#modalRoot").innerHTML = `
+        <div class="modal-backdrop" id="modalBackdrop">
+            <div class="modal" role="dialog" aria-modal="true" aria-label="${escapeHTML(title)}">
+                <div class="modal-head">
+                    <h3>${escapeHTML(title)}</h3>
+                    <button class="close-btn" id="modalClose" aria-label="بستن">×</button>
+                </div>
+                <div id="modalBody">${bodyHTML}</div>
+            </div>
+        </div>
+    `;
+
+    const close = () => $("#modalRoot").innerHTML = "";
+
+    $("#modalClose").addEventListener("click", close);
+    $("#modalBackdrop").addEventListener("click", event => {
+        if (event.target.id === "modalBackdrop") close();
+    });
+
+    $("#modalRoot")._close = close;
+    $("#modalRoot")._save = onSave;
+}
+
+function openEmployeeModal(id = null) {
+    const employee = id === null
+        ? null
+        : data.employees.find(item => String(item.id) === String(id));
+
+    if (id !== null && !employee) return;
+
+    openModal(employee ? "ویرایش کارمند" : "افزودن کارمند", `
+        <div class="form-grid">
+            <div class="field">
+                <label for="employeeName">نام کامل</label>
+                <input class="input" id="employeeName" maxlength="100"
+                    value="${escapeHTML(employee?.name || "")}" placeholder="نام کارمند">
+            </div>
+            <div class="field">
+                <label for="employeeUsername">نام کاربری</label>
+                <input class="input" id="employeeUsername" maxlength="60"
+                    value="${escapeHTML(employee?.username || "")}" placeholder="username">
+            </div>
+            <div class="field">
+                <label for="employeeRole">نقش</label>
+                <input class="input" id="employeeRole" maxlength="100"
+                    value="${escapeHTML(employee?.role || "کارمند")}">
+            </div>
+            <div class="field">
+                <label for="employeeStatus">وضعیت</label>
+                <select class="select" id="employeeStatus">
+                    <option value="فعال" ${employee?.status !== "غیرفعال" ? "selected" : ""}>فعال</option>
+                    <option value="غیرفعال" ${employee?.status === "غیرفعال" ? "selected" : ""}>غیرفعال</option>
+                </select>
+            </div>
+        </div>
+        <div style="display:flex;justify-content:flex-start;gap:8px;margin-top:8px">
+            <button class="btn btn-primary" id="saveEmployee">ذخیره</button>
+            <button class="btn" id="cancelModal">انصراف</button>
+        </div>
+    `, () => {});
+
+    $("#cancelModal").addEventListener("click", () => $("#modalRoot")._close());
+
+    $("#saveEmployee").addEventListener("click", () => {
+        const name = $("#employeeName").value.trim();
+        const username = $("#employeeUsername").value.trim();
+        const role = $("#employeeRole").value.trim() || "کارمند";
+        const status = $("#employeeStatus").value;
+
+        if (!name) {
+            toast("نام کارمند را وارد کن.", "error");
+            return;
+        }
+
+        const usernameTaken = data.employees.some(item =>
+            item.id !== employee?.id &&
+            username &&
+            String(item.username || "").toLowerCase() === username.toLowerCase()
+        );
+
+        if (usernameTaken) {
+            toast("این نام کاربری قبلاً ثبت شده است.", "error");
+            return;
+        }
+
+        if (employee) {
+            employee.name = name;
+            employee.username = username;
+            employee.role = role;
+            employee.status = status;
+        } else {
+            const numericIds = data.employees.map(item => Number(item.id)).filter(Number.isFinite);
+            const newId = Math.max(0, ...numericIds) + 1;
+
+            data.employees.push({
+                id: newId,
+                name,
+                username,
+                role,
+                tokens: 0,
+                activities: 0,
+                color: "#8b7cff",
+                status
+            });
+        }
+
+        $("#modalRoot")._close();
+        if (saveData()) toast(employee ? "اطلاعات کارمند به‌روزرسانی شد." : "کارمند اضافه شد.", "success");
+    });
+}
+
+function deleteEmployee(id) {
+    const employee = data.employees.find(item => String(item.id) === String(id));
+    if (!employee) return;
+
+    const relatedReports = getReports().filter(report =>
+        String(report.employeeId) === String(employee.id) ||
+        String(report.employeeName || "").trim() === String(employee.name || "").trim()
+    );
+
+    if (relatedReports.length) {
+        toast("این کارمند گزارش ثبت‌شده دارد. برای حفظ سابقه، وضعیت او را غیرفعال کن.", "error");
+        return;
+    }
+
+    if (!confirm(`آیا می‌خواهی کارمند «${employee.name}» را حذف کنی؟`)) return;
+
+    data.employees = data.employees.filter(item => String(item.id) !== String(id));
+    if (saveData()) toast("کارمند حذف شد.", "success");
+}
+
+$("#addEmployeeBtn").addEventListener("click", () => openEmployeeModal());
+$("#employeeSearch").addEventListener("input", renderEmployees);
+
+/* Tasks */
+
+function renderTasks() {
+    const query = ($("#taskSearch").value || "").trim().toLowerCase();
+
+    const tasks = data.tasks.filter(task =>
+        [task.title, task.description, task.category, task.id]
+            .join(" ").toLowerCase().includes(query)
+    );
+
+    if (!tasks.length) {
+        $("#tasksTable").innerHTML =
+            '<tr><td colspan="5"><div class="empty">وظیفه‌ای پیدا نشد.</div></td></tr>';
+        return;
+    }
+
+    $("#tasksTable").innerHTML = tasks.map(task => `
+        <tr>
+            <td>
+                <strong>${escapeHTML(task.title)}</strong>
+                <small>${escapeHTML(task.description || "")}</small>
+                <small>شناسه: ${escapeHTML(String(task.id))}</small>
+            </td>
+            <td>${escapeHTML(task.category || "عمومی")}</td>
+            <td>${persianNumber(task.reward || 0)} AMS</td>
+            <td>
+                <span class="badge ${task.status === "غیرفعال" ? "badge-neutral" : "badge-approved"}">
+                    ${escapeHTML(task.status || "فعال")}
+                </span>
+            </td>
+            <td>
+                <div class="table-actions">
+                    <button class="btn btn-small" data-edit-task="${escapeHTML(task.id)}">ویرایش</button>
+                    <button class="btn btn-small ${task.status === "غیرفعال" ? "btn-success" : "btn-warning"}"
+                        data-toggle-task="${escapeHTML(task.id)}">
+                        ${task.status === "غیرفعال" ? "فعال‌سازی" : "غیرفعال"}
+                    </button>
+                    <button class="btn btn-small btn-danger" data-delete-task="${escapeHTML(task.id)}">حذف</button>
+                </div>
+            </td>
+        </tr>
+    `).join("");
+
+    $$("[data-edit-task]", $("#tasksTable")).forEach(button =>
+        button.addEventListener("click", () => openTaskModal(button.dataset.editTask))
+    );
+
+    $$("[data-toggle-task]", $("#tasksTable")).forEach(button =>
+        button.addEventListener("click", () => {
+            const task = data.tasks.find(item => String(item.id) === button.dataset.toggleTask);
+            if (!task) return;
+            task.status = task.status === "غیرفعال" ? "فعال" : "غیرفعال";
+            if (saveData()) toast("وضعیت وظیفه تغییر کرد.", "success");
+        })
+    );
+
+    $$("[data-delete-task]", $("#tasksTable")).forEach(button =>
+        button.addEventListener("click", () => deleteTask(button.dataset.deleteTask))
+    );
+}
+
+function openTaskModal(id = null) {
+    const task = id === null
+        ? null
+        : data.tasks.find(item => String(item.id) === String(id));
+
+    if (id !== null && !task) return;
+
+    openModal(task ? "ویرایش وظیفه" : "ساخت وظیفه جدید", `
+        <div class="form-grid">
+            <div class="field full-width">
+                <label for="taskTitle">عنوان وظیفه</label>
+                <input class="input" id="taskTitle" maxlength="150"
+                    value="${escapeHTML(task?.title || "")}" placeholder="عنوان وظیفه">
+            </div>
+            <div class="field full-width">
+                <label for="taskDescription">توضیحات</label>
+                <textarea class="textarea" id="taskDescription" maxlength="3000"
+                    placeholder="شرح وظیفه و نتیجه مورد انتظار">${escapeHTML(task?.description || "")}</textarea>
+            </div>
+            <div class="field">
+                <label for="taskCategory">دسته‌بندی</label>
+                <input class="input" id="taskCategory" maxlength="80"
+                    value="${escapeHTML(task?.category || "عمومی")}">
+            </div>
+            <div class="field">
+                <label for="taskReward">پاداش پیشنهادی (AMS)</label>
+                <input class="input" type="number" id="taskReward" min="0" step="1"
+                    value="${escapeHTML(String(task?.reward ?? 0))}">
+            </div>
+            <div class="field">
+                <label for="taskStatus">وضعیت</label>
+                <select class="select" id="taskStatus">
+                    <option value="فعال" ${task?.status !== "غیرفعال" ? "selected" : ""}>فعال</option>
+                    <option value="غیرفعال" ${task?.status === "غیرفعال" ? "selected" : ""}>غیرفعال</option>
+                </select>
+            </div>
+        </div>
+        <div style="display:flex;gap:8px;margin-top:8px">
+            <button class="btn btn-primary" id="saveTask">ذخیره وظیفه</button>
+            <button class="btn" id="cancelModal">انصراف</button>
+        </div>
+    `, () => {});
+
+    $("#cancelModal").addEventListener("click", () => $("#modalRoot")._close());
+
+    $("#saveTask").addEventListener("click", () => {
+        const title = $("#taskTitle").value.trim();
+        const description = $("#taskDescription").value.trim();
+        const category = $("#taskCategory").value.trim() || "عمومی";
+        const reward = Number($("#taskReward").value);
+        const status = $("#taskStatus").value;
+
+        if (!title) {
+            toast("عنوان وظیفه را وارد کن.", "error");
+            return;
+        }
+
+        if (!Number.isSafeInteger(reward) || reward < 0) {
+            toast("پاداش باید عدد صحیح و غیرمنفی باشد.", "error");
+            return;
+        }
+
+        if (task) {
+            task.title = title;
+            task.description = description;
+            task.category = category;
+            task.reward = reward;
+            task.status = status;
+        } else {
+            const numericIds = data.tasks.map(item => Number(item.id)).filter(Number.isFinite);
+            const newId = Math.max(100, ...numericIds) + 1;
+
+            data.tasks.push({
+                id: newId,
+                title,
+                description,
+                category,
+                reward,
+                status,
+                createdAt: nowISO()
+            });
+        }
+
+        $("#modalRoot")._close();
+        if (saveData()) toast(task ? "وظیفه به‌روزرسانی شد." : "وظیفه جدید ایجاد شد.", "success");
+    });
+}
+
+function deleteTask(id) {
+    const task = data.tasks.find(item => String(item.id) === String(id));
+    if (!task) return;
+
+    if (!confirm(`وظیفه «${task.title}» حذف شود؟ گزارش‌های قبلی حذف نمی‌شوند.`)) return;
+
+    data.tasks = data.tasks.filter(item => String(item.id) !== String(id));
+    if (saveData()) toast("وظیفه حذف شد.", "success");
+}
+
+$("#addTaskBtn").addEventListener("click", () => openTaskModal());
+$("#taskSearch").addEventListener("input", renderTasks);
+
+/* Rewards */
+
+function renderRewards() {
+    const approved = getApprovedReports();
+    const total = getTotalRewards();
+
+    $("#rewardTotal").textContent = persianNumber(total);
+    $("#rewardCount").textContent = persianNumber(approved.length);
+
+    const rows = approved
+        .sort((a, b) => new Date(b.reviewedAt || b.createdAt || 0) -
+                        new Date(a.reviewedAt || a.createdAt || 0));
+
+    if (!rows.length) {
+        $("#rewardsTable").innerHTML =
+            '<tr><td colspan="5"><div class="empty">هنوز پاداش تأییدشده‌ای ثبت نشده است.</div></td></tr>';
+        return;
+    }
+
+    $("#rewardsTable").innerHTML = rows.map(report => `
+        <tr>
+            <td>${escapeHTML(report.employeeName || "نامشخص")}</td>
+            <td>${escapeHTML(report.title || report.taskTitle || "گزارش فعالیت")}</td>
+            <td><strong style="color:var(--green)">${persianNumber(reportReward(report))} AMS</strong></td>
+            <td>${escapeHTML(formatDate(report.reviewedAt || report.createdAt))}</td>
+            <td>${escapeHTML(String(report.id))}</td>
+        </tr>
+    `).join("");
+}
+
+/* File import/export */
+
+function downloadJSON(filename, object) {
+    const blob = new Blob(
+        [JSON.stringify(object, null, 2)],
+        { type: "application/json;charset=utf-8" }
+    );
+
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+function buildExportData() {
+    const output = clone(data);
+    output.format = "AMS_SHARED_DATA";
+    output.version = 1;
+    output.updatedAt = nowISO();
+
+    // Make the report history available to the admin's own data file.
+    output.reports = getReports();
+
+    return output;
+}
+
+function exportData() {
+    downloadJSON("data.json", buildExportData());
+    toast("فایل data.json ساخته شد. قبل از انتشار، محتوای آن را بررسی کن.", "success");
+}
+
+function exportBackup() {
+    downloadJSON("ams-admin-backup.json", {
+        format: "AMS_ADMIN_BACKUP",
+        version: 1,
+        exportedAt: nowISO(),
+        data: data
+    });
+    toast("فایل پشتیبان محلی دانلود شد.", "success");
+}
+
+function parseReportFile(parsed) {
+    if (!parsed || typeof parsed !== "object") {
+        throw new Error("محتوای فایل معتبر نیست.");
+    }
+
+    const format = String(parsed.format || "").toUpperCase();
+
+    if (format === "AMS_EMPLOYEE_REPORTS") {
+        if (!Array.isArray(parsed.reports)) {
+            throw new Error("فهرست گزارش‌ها در فایل پیدا نشد.");
+        }
+
+        const employeeName = String(parsed.employee?.name || "").trim();
+        const employeeLocalId = parsed.employee?.localId ?? null;
+
+        return {
+            type: "employee_reports",
+            employeeName,
+            employeeLocalId,
+            reports: parsed.reports.map((report, index) => {
+                if (!report || typeof report !== "object") {
+                    throw new Error(`گزارش شماره ${index + 1} معتبر نیست.`);
+                }
+
+                const proposedReward = Number(report.proposedReward ?? 0);
+
+                if (!Number.isFinite(proposedReward) || proposedReward < 0) {
+                    throw new Error(`پاداش پیشنهادی گزارش شماره ${index + 1} معتبر نیست.`);
+                }
+
+                return {
+                    ...report,
+                    id: String(report.id ?? makeId("report")),
+                    employeeId: report.employeeId ?? employeeLocalId,
+                    employeeName: String(report.employeeName || employeeName || "کارمند نامشخص"),
+                    title: String(report.title || report.taskTitle || "گزارش فعالیت"),
+                    taskTitle: String(report.taskTitle || ""),
+                    description: String(report.description || ""),
+                    result: String(report.result || ""),
+                    createdAt: report.createdAt || parsed.exportedAt || nowISO(),
+                    proposedReward,
+                    status: "pending",
+                    approvedReward: null,
+                    adminNote: "",
+                    importedAt: nowISO(),
+                    importSource: "AMS_EMPLOYEE_REPORTS"
+                };
+            })
+        };
+    }
+
+    if (format === "AMS_SHARED_DATA") {
+        const shared = normalizeData(parsed);
+        return { type: "shared_data", data: shared };
+    }
+
+    if (format === "AMS_ADMIN_BACKUP") {
+        if (!parsed.data || typeof parsed.data !== "object") {
+            throw new Error("داده‌های پشتیبان پیدا نشدند.");
+        }
+        return { type: "backup", data: normalizeData(parsed.data) };
+    }
+
+    throw new Error("فرمت فایل پشتیبانی نمی‌شود. فرمت‌های قابل قبول: AMS_EMPLOYEE_REPORTS، AMS_SHARED_DATA و AMS_ADMIN_BACKUP.");
+}
+
+function mergeEmployeeReports(imported) {
+    let added = 0;
+    let skipped = 0;
+
+    for (const incoming of imported.reports) {
+        const exists = getReports().some(report =>
+            String(report.id) === String(incoming.id)
+        );
+
+        if (exists) {
+            skipped++;
+            continue;
+        }
+
+        // Keep employee report status pending until admin reviews it.
+        const report = {
+            ...incoming,
+            status: "pending",
+            approvedReward: null,
+            adminNote: ""
+        };
+
+        // Link to an existing employee by local ID or name when possible.
+        const employee = findEmployee(report.employeeName, report.employeeId);
+
+        if (employee) {
+            report.employeeId = employee.id;
+            report.employeeName = employee.name;
+        }
+
+        data.reports.push(report);
+        added++;
+    }
+
+    return { added, skipped };
+}
+
+async function readJSONFile(input) {
+    if (!input.files || !input.files[0]) {
+        throw new Error("ابتدا یک فایل JSON انتخاب کن.");
+    }
+
+    const file = input.files[0];
+
+    if (file.size > 10 * 1024 * 1024) {
+        throw new Error("حجم فایل بیش از ۱۰ مگابایت است.");
+    }
+
+    const textContent = await file.text();
+
+    try {
+        return JSON.parse(textContent);
+    } catch {
+        throw new Error("فایل JSON معتبر نیست یا ساختار آن خراب است.");
+    }
+}
+
+$("#importReportBtn").addEventListener("click", async () => {
+    try {
+        const parsed = await readJSONFile($("#reportFile"));
+        const imported = parseReportFile(parsed);
+
+        if (imported.type === "employee_reports") {
+            if (!imported.reports.length) {
+                toast("این فایل گزارشی برای وارد کردن ندارد.", "error");
+                return;
+            }
+
+            const result = mergeEmployeeReports(imported);
+
+            if (!saveData()) return;
+
+            $("#reportFile").value = "";
+
+            toast(
+                `${persianNumber(result.added)} گزارش اضافه شد؛ ${persianNumber(result.skipped)} گزارش تکراری نادیده گرفته شد.`,
+                "success"
+            );
+
+            goToPage("reports");
+            return;
+        }
+
+        if (imported.type === "shared_data") {
+            const incoming = imported.data;
+
+            const result = mergeEmployeeReports({
+                reports: Array.isArray(incoming.reports) ? incoming.reports : []
+            });
+
+            const knownEmployees = new Set(data.employees.map(employee => String(employee.id)));
+            for (const employee of incoming.employees) {
+                if (!knownEmployees.has(String(employee.id))) {
+                    data.employees.push(employee);
+                }
+            }
+
+            const knownTasks = new Set(data.tasks.map(task => String(task.id)));
+            for (const task of incoming.tasks) {
+                if (!knownTasks.has(String(task.id))) {
+                    data.tasks.push(task);
+                }
+            }
+
+            if (!saveData()) return;
+            $("#reportFile").value = "";
+
+            toast(
+                `داده‌های مدیریتی ادغام شدند. ${persianNumber(result.added)} گزارش جدید اضافه شد.`,
+                "success"
+            );
+            return;
+        }
+
+        toast("این نوع فایل برای این بخش مناسب نیست.", "error");
+    } catch (error) {
+        toast(error.message || "ورود فایل انجام نشد.", "error");
+    }
+});
+
+$("#exportDataBtn").addEventListener("click", exportData);
+$("#backupDataBtn").addEventListener("click", exportBackup);
+
+$("#restoreDataBtn").addEventListener("click", async () => {
+    if (!confirm("این کار داده‌های فعلی پنل را جایگزین می‌کند. ابتدا مطمئن شو که پشتیبان داری. ادامه می‌دهی؟")) {
+        return;
+    }
+
+    try {
+        const parsed = await readJSONFile($("#backupFile"));
+        const imported = parseReportFile(parsed);
+
+        if (imported.type !== "backup" && imported.type !== "shared_data") {
+            throw new Error("برای بازیابی، فایل AMS_ADMIN_BACKUP یا AMS_SHARED_DATA لازم است.");
+        }
+
+        const incomingData = imported.data;
+
+        if (imported.type === "backup") {
+            data = normalizeData(incomingData);
+        } else {
+            data = normalizeData(incomingData);
+        }
+
+        selectedReportId = null;
+
+        if (!saveData()) return;
+
+        $("#backupFile").value = "";
+        $("#reviewLayout").classList.add("hidden");
+
+        toast("داده‌ها بازیابی شدند.", "success");
+        goToPage("dashboard");
+    } catch (error) {
+        toast(error.message || "بازیابی انجام نشد.", "error");
+    }
+});
+
+function renderStorageInfo() {
+    let bytes = 0;
+
+    try {
+        bytes = new Blob([localStorage.getItem(STORAGE_KEY) || ""]).size;
+    } catch {}
+
+    const kb = (bytes / 1024).toFixed(2);
+
+    $("#storageInfo").innerHTML = `
+        <div class="activity-row">
+            <div class="activity-symbol">▣</div>
+            <div class="activity-content">
+                <strong>محل ذخیره‌سازی</strong>
+                <p>localStorage مرورگر فعلی</p>
+            </div>
+        </div>
+        <div class="activity-row">
+            <div class="activity-symbol">◷</div>
+            <div class="activity-content">
+                <strong>آخرین به‌روزرسانی داده‌ها</strong>
+                <p>${escapeHTML(formatDate(data.updatedAt))}</p>
+            </div>
+        </div>
+        <div class="activity-row">
+            <div class="activity-symbol">▤</div>
+            <div class="activity-content">
+                <strong>حجم تقریبی داده‌های ذخیره‌شده</strong>
+                <p>${escapeHTML(kb)} KB</p>
+            </div>
+        </div>
+        <div class="activity-row">
+            <div class="activity-symbol">!</div>
+            <div class="activity-content">
+                <strong>وضعیت امنیت</strong>
+                <p>این فایل احراز هویت مدیر ندارد. دسترسی به کامپیوتر و مرورگر مدیر باید محافظت شود.</p>
+            </div>
+        </div>
+    `;
+}
+
+/* General actions */
+
+$$("[data-action='export']").forEach(button =>
+    button.addEventListener("click", exportData)
+);
+
+function renderAll() {
+    renderDashboard();
+    renderReports();
+    renderEmployees();
+    renderTasks();
+    renderRewards();
+    renderStorageInfo();
+}
+
+renderAll();
+</script>
+</body>
+</html>
