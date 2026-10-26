@@ -1,380 +1,255 @@
-<!DOCTYPE html>
-<html lang="fa" dir="rtl">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#080b14">
-  <title>AMS Rewards | سیستم پاداش</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <div class="background-glow glow-one"></div>
-  <div class="background-glow glow-two"></div>
+"use strict";
 
-  <header class="topbar">
-    <a class="brand" href="#" aria-label="AMS Rewards">
-      <div class="brand-icon">A</div>
-      <div>
-        <strong>AMS<span>REWARDS</span></strong>
-        <small>REWARD MANAGEMENT SYSTEM</small>
-      </div>
-    </a>
-    <div class="top-status">
-      <span class="status-dot"></span>
-      DEMO SYSTEM
-    </div>
-  </header>
+/*
+ * AMS DEMO
+ *
+ * این نسخه صرفاً نمایشی است.
+ * اطلاعات حساب‌ها و آمار در کد عمومی قرار دارند؛
+ * بنابراین از رمز عبور واقعی استفاده نکن.
+ */
 
-  <main>
-    <!-- صفحه ورود -->
-    <section id="loginView" class="login-layout">
-      <div class="intro">
-        <div class="eyebrow"><span></span> AMS REWARDS PLATFORM</div>
-        <h1>تلاش تو،<br><span>پاداش تو.</span></h1>
-        <p>
-          وظایف خود را انجام بده، پاداش بگیر و موجودی سکه‌هایت را
-          در پنل شخصی خود مشاهده کن.
-        </p>
-        <div class="intro-features">
-          <div><span class="feature-icon">◈</span><span>مدیریت سکه‌ها</span></div>
-          <div><span class="feature-icon">✓</span><span>ثبت پاداش وظایف</span></div>
-          <div><span class="feature-icon">⌘</span><span>حساب شخصی</span></div>
-        </div>
-      </div>
+const USERS = [
+    {
+        username: "employee1",
+        password: "ams123",
+        name: "علی رضایی",
+        employeeId: "AMS-001",
+        stats: {
+            sales: 125,
+            hours: 168,
+            score: 92
+        }
+    },
+    {
+        username: "employee2",
+        password: "ams456",
+        name: "سارا احمدی",
+        employeeId: "AMS-002",
+        stats: {
+            sales: 98,
+            hours: 154,
+            score: 86
+        }
+    },
+    {
+        username: "employee3",
+        password: "ams789",
+        name: "محمد کریمی",
+        employeeId: "AMS-003",
+        stats: {
+            sales: 143,
+            hours: 176,
+            score: 96
+        }
+    }
+];
 
-      <div class="login-card">
-        <div class="card-symbol">◈</div>
-        <h2>ورود به حساب</h2>
-        <p class="muted">برای ادامه، نوع حساب خود را انتخاب کن.</p>
+const $ = (selector) => document.querySelector(selector);
 
-        <div class="login-tabs">
-          <button class="login-tab active" data-role="user">ورود کاربر</button>
-          <button class="login-tab" data-role="admin">ورود ادمین</button>
-        </div>
+const loginScreen = $("#loginScreen");
+const dashboardScreen = $("#dashboardScreen");
+const loginForm = $("#loginForm");
+const loginError = $("#loginError");
+const usernameInput = $("#username");
+const passwordInput = $("#password");
 
-        <form id="loginForm">
-          <label for="loginUsername">نام کاربری</label>
-          <input id="loginUsername" type="text" autocomplete="username"
-                 placeholder="نام کاربری خود را وارد کن" required>
+let currentUser = null;
 
-          <label for="loginPassword">رمز عبور</label>
-          <input id="loginPassword" type="password"
-                 autocomplete="current-password"
-                 placeholder="رمز عبور" required>
+function formatNumber(value) {
+    return new Intl.NumberFormat("fa-IR").format(value);
+}
 
-          <p id="loginError" class="error-message hidden"></p>
-          <button class="button primary full-width" type="submit">
-            ورود به سیستم <span>←</span>
-          </button>
-        </form>
+function getGlobalStats() {
+    const totalSales = USERS.reduce(
+        (sum, user) => sum + user.stats.sales,
+        0
+    );
 
-        <div class="login-note">
-          <span>ⓘ</span>
-          حساب کاربران فقط توسط مدیر ساخته می‌شود.
-        </div>
-      </div>
-    </section>
+    const totalHours = USERS.reduce(
+        (sum, user) => sum + user.stats.hours,
+        0
+    );
 
-    <!-- پنل ادمین -->
-    <section id="adminView" class="hidden">
-      <div class="page-heading">
-        <div>
-          <div class="eyebrow"><span></span> CONTROL CENTER</div>
-          <h1>پنل مدیریت <span>AMS</span></h1>
-          <p class="muted">مدیریت حساب‌ها، وظایف و پاداش کاربران</p>
-        </div>
-        <button class="button secondary logout-button" id="adminLogout">
-          خروج از حساب ↗
-        </button>
-      </div>
+    const averageScore = Math.round(
+        USERS.reduce((sum, user) => sum + user.stats.score, 0) /
+        USERS.length
+    );
 
-      <div class="stats-grid">
-        <article class="stat-card">
-          <div class="stat-top"><span>تعداد کاربران</span><span class="stat-icon">♙</span></div>
-          <strong id="statUsers">0</strong>
-          <small>حساب‌های ساخته‌شده</small>
-        </article>
-        <article class="stat-card">
-          <div class="stat-top"><span>کل سکه‌ها</span><span class="stat-icon gold">◈</span></div>
-          <strong id="statCoins">0</strong>
-          <small>موجودی تمام کاربران</small>
-        </article>
-        <article class="stat-card">
-          <div class="stat-top"><span>وظایف تأییدشده</span><span class="stat-icon green">✓</span></div>
-          <strong id="statCompletions">0</strong>
-          <small>تعداد پاداش‌های ثبت‌شده</small>
-        </article>
-        <article class="stat-card">
-          <div class="stat-top"><span>وظایف فعال</span><span class="stat-icon">▤</span></div>
-          <strong id="statTasks">0</strong>
-          <small>وظایف قابل انجام</small>
-        </article>
-      </div>
+    return {
+        employees: USERS.length,
+        sales: totalSales,
+        hours: totalHours,
+        averageScore
+    };
+}
 
-      <div class="admin-grid">
-        <section class="panel">
-          <div class="panel-heading">
-            <div>
-              <h2>مدیریت کاربران</h2>
-              <p class="muted">حساب‌های جدید را خودت ایجاد کن.</p>
+function showLogin() {
+    currentUser = null;
+    dashboardScreen.classList.add("hidden");
+    loginScreen.classList.remove("hidden");
+
+    loginForm.reset();
+    loginError.textContent = "";
+    usernameInput.focus();
+}
+
+function showDashboard(user) {
+    currentUser = user;
+
+    loginScreen.classList.add("hidden");
+    dashboardScreen.classList.remove("hidden");
+
+    $("#employeeName").textContent = user.name;
+    $("#employeeId").textContent = user.employeeId;
+    $("#lastUpdated").textContent = new Intl.DateTimeFormat("fa-IR", {
+        dateStyle: "medium",
+        timeStyle: "short"
+    }).format(new Date());
+
+    renderPersonalStats(user);
+    renderGlobalStats();
+    renderEmployeesTable();
+
+    window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function renderPersonalStats(user) {
+    const stats = user.stats;
+
+    const cards = [
+        {
+            label: "تعداد فروش",
+            value: formatNumber(stats.sales),
+            description: "مجموع فروش ثبت‌شده در اطلاعات نمایشی",
+            icon: "↗",
+            color: "blue"
+        },
+        {
+            label: "ساعت کاری",
+            value: formatNumber(stats.hours),
+            description: "مجموع ساعات کاری ثبت‌شده",
+            icon: "◷",
+            color: "green"
+        },
+        {
+            label: "امتیاز عملکرد",
+            value: formatNumber(stats.score) + "٪",
+            description: "شاخص نمایشی ارزیابی عملکرد",
+            icon: "◇",
+            color: "orange"
+        }
+    ];
+
+    $("#personalStats").innerHTML = cards.map((card) => `
+        <article class="stat-card ${card.color}">
+            <div class="stat-top">
+                <span class="stat-label">${card.label}</span>
+                <span class="stat-icon">${card.icon}</span>
             </div>
-            <button class="button primary" id="newUserBtn">+ ساخت حساب</button>
-          </div>
-
-          <div class="search-box">
-            <span>⌕</span>
-            <input id="userSearch" type="search" placeholder="جست‌وجوی نام یا نام کاربری">
-          </div>
-
-          <div class="table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>کاربر</th>
-                  <th>نام کاربری</th>
-                  <th>موجودی</th>
-                  <th>وضعیت</th>
-                  <th>عملیات</th>
-                </tr>
-              </thead>
-              <tbody id="usersTable"></tbody>
-            </table>
-          </div>
-          <p id="noUsers" class="empty-state">هنوز هیچ حسابی ساخته نشده است.</p>
-        </section>
-
-        <section class="panel">
-          <div class="panel-heading">
-            <div>
-              <h2>افزودن پاداش</h2>
-              <p class="muted">پس از تأیید وظیفه، سکه اضافه کن.</p>
-            </div>
-            <span class="panel-icon gold">◈</span>
-          </div>
-
-          <form id="rewardForm" class="form-stack">
-            <label for="rewardUser">انتخاب کاربر</label>
-            <select id="rewardUser" required></select>
-
-            <label for="rewardTask">انتخاب وظیفه</label>
-            <select id="rewardTask" required></select>
-
-            <label for="rewardAmount">مقدار پاداش (سکه)</label>
-            <input id="rewardAmount" type="number" min="1" step="1" required>
-
-            <label for="rewardReference">لینک گزارش تلگرام (اختیاری)</label>
-            <input id="rewardReference" type="text" placeholder="لینک پیام یا شناسه گزارش">
-
-            <label for="rewardNote">یادداشت (اختیاری)</label>
-            <textarea id="rewardNote" rows="2" placeholder="توضیحات پاداش"></textarea>
-
-            <p id="rewardError" class="error-message hidden"></p>
-            <button class="button primary full-width" type="submit">تأیید و افزودن سکه +</button>
-          </form>
-        </section>
-      </div>
-
-      <section class="panel section-gap">
-        <div class="panel-heading">
-          <div>
-            <h2>مدیریت وظایف</h2>
-            <p class="muted">وظایف را بساز و مقدار پاداششان را تعیین کن.</p>
-          </div>
-          <button class="button primary" id="newTaskBtn">+ ساخت وظیفه</button>
-        </div>
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>عنوان وظیفه</th>
-                <th>پاداش پیش‌فرض</th>
-                <th>وضعیت</th>
-                <th>عملیات</th>
-              </tr>
-            </thead>
-            <tbody id="tasksTable"></tbody>
-          </table>
-        </div>
-        <p id="noTasks" class="empty-state">هنوز وظیفه‌ای ایجاد نشده است.</p>
-      </section>
-
-      <section class="panel section-gap">
-        <div class="panel-heading">
-          <div>
-            <h2>تاریخچه پاداش‌ها</h2>
-            <p class="muted">سوابق افزودن و کسر سکه‌ها</p>
-          </div>
-          <button class="button secondary" id="exportButton">خروجی CSV ↓</button>
-        </div>
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>کاربر</th>
-                <th>شرح</th>
-                <th>تغییر سکه</th>
-                <th>تاریخ</th>
-                <th>مرجع</th>
-              </tr>
-            </thead>
-            <tbody id="historyTable"></tbody>
-          </table>
-        </div>
-        <p id="noHistory" class="empty-state">هنوز سابقه‌ای ثبت نشده است.</p>
-      </section>
-    </section>
-
-    <!-- پنل کاربر -->
-    <section id="userView" class="hidden">
-      <div class="page-heading">
-        <div>
-          <div class="eyebrow"><span></span> PERSONAL DASHBOARD</div>
-          <h1>سلام، <span id="welcomeName">کاربر</span></h1>
-          <p class="muted">به حساب شخصی خود در AMS Rewards خوش آمدی.</p>
-        </div>
-        <button class="button secondary logout-button" id="userLogout">
-          خروج از حساب ↗
-        </button>
-      </div>
-
-      <div class="user-hero">
-        <div>
-          <div class="eyebrow">YOUR REWARDS BALANCE</div>
-          <p class="balance-label">موجودی سکه‌های تو</p>
-          <div class="balance-value"><span id="userBalance">0</span><span class="coin-mark">◈</span></div>
-          <p class="muted">موجودی حساب بر اساس پاداش‌های ثبت‌شده توسط مدیر</p>
-        </div>
-        <div class="coin-art">◈</div>
-      </div>
-
-      <div class="stats-grid user-stats">
-        <article class="stat-card">
-          <div class="stat-top"><span>پاداش‌های دریافتی</span><span class="stat-icon gold">◈</span></div>
-          <strong id="userEarned">0</strong>
-          <small>مجموع سکه‌های دریافت‌شده</small>
+            <div class="stat-value">${card.value}</div>
+            <div class="stat-description">${card.description}</div>
         </article>
-        <article class="stat-card">
-          <div class="stat-top"><span>وظایف تکمیل‌شده</span><span class="stat-icon green">✓</span></div>
-          <strong id="userCompletions">0</strong>
-          <small>وظایف ثبت‌شده در حساب</small>
+    `).join("");
+}
+
+function renderGlobalStats() {
+    const stats = getGlobalStats();
+
+    const cards = [
+        {
+            label: "تعداد کل کارمندان",
+            value: formatNumber(stats.employees),
+            unit: "نفر"
+        },
+        {
+            label: "مجموع فروش",
+            value: formatNumber(stats.sales),
+            unit: "فروش ثبت‌شده"
+        },
+        {
+            label: "مجموع ساعت کاری",
+            value: formatNumber(stats.hours),
+            unit: "ساعت"
+        },
+        {
+            label: "میانگین عملکرد",
+            value: formatNumber(stats.averageScore) + "٪",
+            unit: "میانگین امتیاز"
+        }
+    ];
+
+    $("#globalStats").innerHTML = cards.map((card) => `
+        <article class="global-card">
+            <div class="global-label">${card.label}</div>
+            <div class="global-value">${card.value}</div>
+            <div class="global-unit">${card.unit}</div>
         </article>
-      </div>
+    `).join("");
+}
 
-      <section class="panel section-gap">
-        <div class="panel-heading">
-          <div>
-            <h2>وظایف قابل انجام</h2>
-            <p class="muted">برای انجام وظایف و ارسال گزارش با مدیر تماس بگیر.</p>
-          </div>
-        </div>
-        <div id="userTasks" class="task-grid"></div>
-        <p id="noUserTasks" class="empty-state">در حال حاضر وظیفه فعالی وجود ندارد.</p>
-      </section>
+function renderEmployeesTable() {
+    const sortedUsers = [...USERS].sort(
+        (a, b) => b.stats.score - a.stats.score
+    );
 
-      <section class="panel section-gap">
-        <div class="panel-heading">
-          <div>
-            <h2>تاریخچه حساب</h2>
-            <p class="muted">سوابق ثبت‌شده برای حساب تو</p>
-          </div>
-        </div>
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>شرح</th>
-                <th>مقدار سکه</th>
-                <th>تاریخ</th>
-              </tr>
-            </thead>
-            <tbody id="userHistory"></tbody>
-          </table>
-        </div>
-        <p id="noUserHistory" class="empty-state">هنوز پاداشی برای حساب تو ثبت نشده است.</p>
-      </section>
-    </section>
-  </main>
+    $("#employeesTable").innerHTML = sortedUsers.map((user) => `
+        <tr>
+            <td>
+                <div class="employee-cell">
+                    <div class="employee-avatar">${user.name.charAt(0)}</div>
+                    <div>
+                        <div class="employee-name">${user.name}</div>
+                        <div class="employee-role">کارمند مجموعه</div>
+                    </div>
+                </div>
+            </td>
+            <td>${user.employeeId}</td>
+            <td>${formatNumber(user.stats.sales)}</td>
+            <td>${formatNumber(user.stats.hours)}</td>
+            <td><span class="score-pill">${formatNumber(user.stats.score)}٪</span></td>
+        </tr>
+    `).join("");
+}
 
-  <footer class="footer">
-    <span>AMS REWARDS</span>
-    <span>نسخه نمایشی • اطلاعات در مرورگر ذخیره می‌شود</span>
-  </footer>
+loginForm.addEventListener("submit", (event) => {
+    event.preventDefault();
 
-  <!-- پنجره ساخت یا ویرایش کاربر -->
-  <div id="userModal" class="modal-backdrop hidden">
-    <section class="modal">
-      <div class="modal-heading">
-        <div>
-          <h2 id="userModalTitle">ساخت حساب جدید</h2>
-          <p class="muted">اطلاعات ورود را خودت تعیین کن.</p>
-        </div>
-        <button class="icon-button" data-close="userModal" aria-label="بستن">×</button>
-      </div>
+    const username = usernameInput.value.trim();
+    const password = passwordInput.value;
 
-      <form id="userForm" class="form-stack">
-        <input type="hidden" id="editUserId">
+    const user = USERS.find((candidate) =>
+        candidate.username === username &&
+        candidate.password === password
+    );
 
-        <label for="userName">نام نمایشی</label>
-        <input id="userName" type="text" maxlength="80" required placeholder="مثلاً علی رضایی">
+    if (!user) {
+        loginError.textContent = "نام کاربری یا رمز عبور صحیح نیست.";
+        passwordInput.value = "";
+        passwordInput.focus();
+        return;
+    }
 
-        <label for="userUsername">نام کاربری برای ورود</label>
-        <input id="userUsername" type="text" maxlength="40" required
-               pattern="[A-Za-z0-9_.-]+" placeholder="مثلاً ali_01">
+    loginError.textContent = "";
+    showDashboard(user);
+});
 
-        <label for="userPassword">رمز عبور</label>
-        <input id="userPassword" type="password" minlength="4"
-               autocomplete="new-password" placeholder="حداقل ۴ کاراکتر">
+$("#logoutButton").addEventListener("click", showLogin);
 
-        <p id="userPasswordHint" class="muted small">برای حساب جدید رمز عبور الزامی است.</p>
-        <p id="userFormError" class="error-message hidden"></p>
+$("#togglePassword").addEventListener("click", () => {
+    const isPassword = passwordInput.type === "password";
+    passwordInput.type = isPassword ? "text" : "password";
+    $("#togglePassword").setAttribute(
+        "aria-label",
+        isPassword ? "مخفی‌کردن رمز عبور" : "نمایش رمز عبور"
+    );
+});
 
-        <div class="modal-actions">
-          <button class="button secondary" type="button" data-close="userModal">انصراف</button>
-          <button class="button primary" type="submit">ذخیره حساب</button>
-        </div>
-      </form>
-    </section>
-  </div>
+usernameInput.addEventListener("input", () => {
+    loginError.textContent = "";
+});
 
-  <!-- پنجره ساخت یا ویرایش وظیفه -->
-  <div id="taskModal" class="modal-backdrop hidden">
-    <section class="modal">
-      <div class="modal-heading">
-        <div>
-          <h2 id="taskModalTitle">ساخت وظیفه جدید</h2>
-          <p class="muted">عنوان و مقدار پاداش را وارد کن.</p>
-        </div>
-        <button class="icon-button" data-close="taskModal" aria-label="بستن">×</button>
-      </div>
+passwordInput.addEventListener("input", () => {
+    loginError.textContent = "";
+});
 
-      <form id="taskForm" class="form-stack">
-        <input type="hidden" id="editTaskId">
-
-        <label for="taskName">عنوان وظیفه</label>
-        <input id="taskName" type="text" maxlength="120" required>
-
-        <label for="taskDescription">توضیحات</label>
-        <textarea id="taskDescription" rows="3" maxlength="500"></textarea>
-
-        <label for="taskRewardAmount">پاداش پیش‌فرض (سکه)</label>
-        <input id="taskRewardAmount" type="number" min="1" step="1" required>
-
-        <label class="checkbox-row">
-          <input id="taskActive" type="checkbox" checked>
-          <span>این وظیفه فعال باشد</span>
-        </label>
-
-        <p id="taskFormError" class="error-message hidden"></p>
-        <div class="modal-actions">
-          <button class="button secondary" type="button" data-close="taskModal">انصراف</button>
-          <button class="button primary" type="submit">ذخیره وظیفه</button>
-        </div>
-      </form>
-    </section>
-  </div>
-
-  <div id="toast" class="toast" role="status" aria-live="polite"></div>
-
-  <script src="app.js"></script>
-</body>
-</html>
+showLogin();
