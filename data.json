@@ -1,0 +1,80 @@
+{
+  "format": "AMS_SHARED_DATA",
+  "version": 1,
+  "updatedAt": "2026-10-26T01:55:50.434Z",
+  "settings": {
+    "platformName": "AMS",
+    "tokenName": "AMS",
+    "currency": "AMS",
+    "allowExtraActivityRequests": true,
+    "requireAdminApproval": true
+  },
+  "employees": [],
+  "tasks": [
+    {
+      "id": 101,
+      "title": "تکمیل طراحی صفحه ورود",
+      "description": "طراحی صفحه ورود را تکمیل کن و برای بررسی مدیر ارسال کن.",
+      "reward": 50,
+      "status": "فعال",
+      "category": "طراحی",
+      "createdAt": "2026-10-26T01:52:40.258Z"
+    },
+    {
+      "id": 102,
+      "title": "رفع باگ‌های سایت",
+      "description": "خطاهای گزارش‌شده سایت را بررسی و رفع کن.",
+      "reward": 75,
+      "status": "فعال",
+      "category": "برنامه‌نویسی",
+      "createdAt": "2026-10-26T01:52:40.258Z"
+    },
+    {
+      "id": 103,
+      "title": "بهبود رابط کاربری",
+      "description": "ظاهر و تجربه کاربری یکی از صفحات AMS را بهبود بده.",
+      "reward": 40,
+      "status": "فعال",
+      "category": "طراحی",
+      "createdAt": "2026-10-26T01:52:40.258Z"
+    }
+  ],
+  "pending": [],
+  "transactions": [
+    {
+      "id": "reward_mvoltc11_c7yb5k",
+      "employeeId": "employee-mvolhlao-vp01pot",
+      "employeeName": "aems",
+      "reportId": "report-mvolhlao-i83zhth",
+      "type": "reward",
+      "amount": 50,
+      "currency": "AMS",
+      "description": "پاداش گزارش تأییدشده: تکمیل طراحی صفحه ی ورود",
+      "createdAt": "2026-10-26T01:54:51.302Z",
+      "mode": "local_record_only"
+    }
+  ],
+  "extraRequests": [],
+  "profileRequests": [],
+  "reports": [
+    {
+      "id": "report-mvolhlao-i83zhth",
+      "employeeId": "employee-mvolhlao-vp01pot",
+      "employeeName": "aems",
+      "taskId": 101,
+      "taskTitle": "تکمیل طراحی صفحه ورود",
+      "title": "تکمیل طراحی صفحه ی ورود",
+      "description": "تغییرات زیادی انجام دادم",
+      "result": "نتیجه کارم این هست که خدا میدونه",
+      "activityDate": "2026-10-26",
+      "createdAt": "2026-10-26T01:45:43.440Z",
+      "status": "approved",
+      "proposedReward": 50,
+      "approvedReward": 50,
+      "adminNote": "موفق باشید اقای aems",
+      "importedAt": "2026-10-26T01:53:27.258Z",
+      "importSource": "AMS_EMPLOYEE_REPORTS",
+      "reviewedAt": "2026-10-26T01:54:51.301Z"
+    }
+  ]
+}
