@@ -1,939 +1,1228 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>AMS | پنل کارمندان</title>
-
-    <meta
-        name="description"
-        content="پرتال رسمی فعالیت‌ها و وظایف کارمندان AMS"
-    >
-
-    <style>
-        :root {
-            --background: #080910;
-            --surface: #10121e;
-            --surface-light: #171a29;
-            --border: rgba(255, 255, 255, 0.09);
-            --text: #f5f5ff;
-            --muted: #9295ad;
-            --accent: #8b7cff;
-            --accent-dark: #6254e8;
-            --green: #52e59b;
-            --danger: #ff657a;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            min-height: 100vh;
-            font-family: Tahoma, Arial, sans-serif;
-            color: var(--text);
-            background:
-                radial-gradient(
-                    circle at 15% 15%,
-                    rgba(98, 84, 232, 0.12),
-                    transparent 32%
-                ),
-                radial-gradient(
-                    circle at 85% 85%,
-                    rgba(82, 229, 155, 0.05),
-                    transparent 28%
-                ),
-                var(--background);
-            overflow-x: hidden;
-        }
-
-        button,
-        input {
-            font: inherit;
-        }
-
-        button {
-            cursor: pointer;
-        }
-
-        .ambient {
-            position: fixed;
-            inset: 0;
-            pointer-events: none;
-            overflow: hidden;
-            z-index: 0;
-        }
-
-        .ambient-grid {
-            position: absolute;
-            inset: 0;
-            opacity: 0.12;
-            background-image:
-                linear-gradient(
-                    rgba(255,255,255,0.035) 1px,
-                    transparent 1px
-                ),
-                linear-gradient(
-                    90deg,
-                    rgba(255,255,255,0.035) 1px,
-                    transparent 1px
-                );
-            background-size: 55px 55px;
-            mask-image: linear-gradient(
-                to bottom,
-                black,
-                transparent 85%
-            );
-        }
-
-        .orb {
-            position: absolute;
-            width: 300px;
-            height: 300px;
-            border-radius: 50%;
-            filter: blur(100px);
-            opacity: 0.12;
-            background: var(--accent);
-            animation: float 12s ease-in-out infinite alternate;
-        }
-
-        .orb-one {
-            top: 10%;
-            right: -150px;
-        }
-
-        .orb-two {
-            bottom: -150px;
-            left: -100px;
-            background: var(--green);
-            animation-delay: -4s;
-        }
-
-        @keyframes float {
-            from {
-                transform: translateY(-20px);
-            }
-
-            to {
-                transform: translateY(35px);
-            }
-        }
-
-        .app {
-            position: relative;
-            z-index: 1;
-            min-height: 100vh;
-        }
-
-        .topbar {
-            height: 76px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 6%;
-            border-bottom: 1px solid var(--border);
-            background: rgba(8, 9, 16, 0.78);
-            backdrop-filter: blur(18px);
-        }
-
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .brand-symbol {
-            width: 43px;
-            height: 43px;
-            display: grid;
-            place-items: center;
-            border-radius: 13px;
-            background: linear-gradient(
-                135deg,
-                var(--accent),
-                var(--accent-dark)
-            );
-            box-shadow: 0 0 30px rgba(139, 124, 255, 0.25);
-            font-weight: 900;
-            font-size: 18px;
-            letter-spacing: -1px;
-        }
-
-        .brand-name {
-            font-size: 20px;
-            font-weight: 900;
-            letter-spacing: 3px;
-        }
-
-        .brand-caption {
-            margin-top: 4px;
-            color: var(--muted);
-            font-size: 10px;
-            letter-spacing: 1px;
-        }
-
-        .system-status {
-            display: flex;
-            align-items: center;
-            gap: 9px;
-            color: var(--muted);
-            font-size: 12px;
-        }
-
-        .status-dot {
-            width: 7px;
-            height: 7px;
-            border-radius: 50%;
-            background: var(--green);
-            box-shadow: 0 0 12px rgba(82, 229, 155, 0.7);
-        }
-
-        main {
-            width: min(1120px, 90%);
-            margin: 0 auto;
-            padding: 65px 0 50px;
-        }
-
-        .welcome-section {
-            max-width: 720px;
-            margin: 0 auto 35px;
-            text-align: center;
-        }
-
-        .eyebrow {
-            display: inline-flex;
-            align-items: center;
-            gap: 9px;
-            padding: 9px 14px;
-            border: 1px solid rgba(139, 124, 255, 0.22);
-            border-radius: 50px;
-            color: #c1baff;
-            background: rgba(139, 124, 255, 0.07);
-            font-size: 11px;
-            letter-spacing: 1px;
-        }
-
-        .eyebrow-mark {
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: var(--accent);
-        }
-
-        h1 {
-            margin-top: 24px;
-            font-size: clamp(30px, 5vw, 49px);
-            line-height: 1.5;
-            font-weight: 900;
-        }
-
-        .gradient-text {
-            color: #a69bff;
-            background: linear-gradient(
-                90deg,
-                #c5baff,
-                #8b7cff,
-                #6e9eff
-            );
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .welcome-description {
-            max-width: 570px;
-            margin: 15px auto 0;
-            color: var(--muted);
-            line-height: 2.1;
-            font-size: 14px;
-        }
-
-        .entry-card {
-            width: min(480px, 100%);
-            margin: 38px auto 0;
-            padding: 30px;
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 22px;
-            background: linear-gradient(
-                145deg,
-                rgba(22, 24, 39, 0.97),
-                rgba(13, 15, 25, 0.97)
-            );
-            box-shadow: 0 25px 90px rgba(0,0,0,0.3);
-            text-align: right;
-        }
-
-        .card-heading {
-            display: flex;
-            align-items: center;
-            gap: 13px;
-            margin-bottom: 25px;
-        }
-
-        .card-icon {
-            width: 48px;
-            height: 48px;
-            flex-shrink: 0;
-            display: grid;
-            place-items: center;
-            border-radius: 15px;
-            background: rgba(139, 124, 255, 0.12);
-            border: 1px solid rgba(139, 124, 255, 0.22);
-            font-size: 22px;
-        }
-
-        .card-heading h2 {
-            font-size: 17px;
-            margin-bottom: 7px;
-        }
-
-        .card-heading p {
-            color: var(--muted);
-            font-size: 11px;
-            line-height: 1.8;
-        }
-
-        .field-label {
-            display: block;
-            margin-bottom: 10px;
-            color: #deddf0;
-            font-size: 12px;
-        }
-
-        .input-wrap {
-            position: relative;
-        }
-
-        .name-input {
-            width: 100%;
-            height: 53px;
-            padding: 0 15px;
-            border: 1px solid rgba(255,255,255,0.11);
-            border-radius: 12px;
-            outline: none;
-            background: #0b0c15;
-            color: var(--text);
-            transition: border-color 0.2s, box-shadow 0.2s;
-        }
-
-        .name-input::placeholder {
-            color: #62657c;
-        }
-
-        .name-input:focus {
-            border-color: var(--accent);
-            box-shadow: 0 0 0 4px rgba(139, 124, 255, 0.1);
-        }
-
-        .input-hint {
-            margin-top: 9px;
-            color: #777a92;
-            font-size: 10px;
-            line-height: 1.8;
-        }
-
-        .primary-button {
-            width: 100%;
-            min-height: 52px;
-            margin-top: 22px;
-            border: 0;
-            border-radius: 12px;
-            background: linear-gradient(
-                100deg,
-                var(--accent),
-                var(--accent-dark)
-            );
-            color: white;
-            font-size: 13px;
-            font-weight: bold;
-            box-shadow: 0 10px 28px rgba(98, 84, 232, 0.22);
-            transition: transform 0.2s, filter 0.2s;
-        }
-
-        .primary-button:hover {
-            transform: translateY(-2px);
-            filter: brightness(1.12);
-        }
-
-        .primary-button:active {
-            transform: translateY(0);
-        }
-
-        .error-message {
-            display: none;
-            margin-top: 12px;
-            color: var(--danger);
-            font-size: 12px;
-        }
-
-        .privacy-note {
-            display: flex;
-            align-items: flex-start;
-            gap: 9px;
-            margin-top: 20px;
-            padding: 13px;
-            border: 1px solid rgba(255,255,255,0.055);
-            border-radius: 11px;
-            color: #85889e;
-            background: rgba(255,255,255,0.02);
-            font-size: 10px;
-            line-height: 2;
-        }
-
-        .privacy-icon {
-            color: var(--green);
-            font-size: 14px;
-        }
-
-        .features {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 14px;
-            margin-top: 45px;
-        }
-
-        .feature-card {
-            padding: 20px;
-            border: 1px solid var(--border);
-            border-radius: 15px;
-            background: rgba(16, 18, 30, 0.6);
-        }
-
-        .feature-icon {
-            margin-bottom: 15px;
-            font-size: 22px;
-        }
-
-        .feature-card h3 {
-            margin-bottom: 9px;
-            font-size: 13px;
-        }
-
-        .feature-card p {
-            color: var(--muted);
-            font-size: 11px;
-            line-height: 2;
-        }
-
-        .dashboard {
-            display: none;
-        }
-
-        .dashboard-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .dashboard-header h1 {
-            margin-top: 0;
-            font-size: clamp(25px, 4vw, 38px);
-        }
-
-        .dashboard-header p {
-            margin-top: 8px;
-            color: var(--muted);
-            font-size: 13px;
-            line-height: 2;
-        }
-
-        .secondary-button {
-            padding: 12px 16px;
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            background: var(--surface-light);
-            color: #d8d7eb;
-            font-size: 12px;
-        }
-
-        .dashboard-panel {
-            padding: 28px;
-            border: 1px solid var(--border);
-            border-radius: 18px;
-            background: rgba(16, 18, 30, 0.82);
-        }
-
-        .dashboard-panel h2 {
-            font-size: 17px;
-            margin-bottom: 10px;
-        }
-
-        .dashboard-panel > p {
-            color: var(--muted);
-            font-size: 12px;
-            line-height: 2;
-        }
-
-        .empty-state {
-            margin-top: 22px;
-            padding: 30px 20px;
-            border: 1px dashed rgba(255,255,255,0.12);
-            border-radius: 13px;
-            text-align: center;
-        }
-
-        .empty-state .empty-icon {
-            font-size: 32px;
-            margin-bottom: 12px;
-        }
-
-        .empty-state h3 {
-            font-size: 14px;
-            margin-bottom: 10px;
-        }
-
-        .empty-state p {
-            color: var(--muted);
-            font-size: 12px;
-            line-height: 2;
-        }
-
-        .user-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            margin-top: 20px;
-            padding: 12px 16px;
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            background: rgba(255,255,255,0.025);
-        }
-
-        .user-avatar {
-            width: 36px;
-            height: 36px;
-            display: grid;
-            place-items: center;
-            border-radius: 11px;
-            background: rgba(139, 124, 255, 0.18);
-            color: #c5baff;
-            font-weight: bold;
-        }
-
-        .user-details strong {
-            display: block;
-            font-size: 12px;
-        }
-
-        .user-details small {
-            display: block;
-            margin-top: 5px;
-            color: var(--muted);
-            font-size: 10px;
-        }
-
-        footer {
-            position: relative;
-            z-index: 1;
-            padding: 22px 5%;
-            border-top: 1px solid var(--border);
-            text-align: center;
-            color: #6f7288;
-            font-size: 10px;
-            line-height: 2;
-        }
-
-        @media (max-width: 700px) {
-            .topbar {
-                height: 68px;
-                padding: 0 5%;
-            }
-
-            .brand-symbol {
-                width: 38px;
-                height: 38px;
-            }
-
-            .brand-name {
-                font-size: 17px;
-            }
-
-            .system-status {
-                font-size: 10px;
-            }
-
-            main {
-                width: 90%;
-                padding-top: 42px;
-            }
-
-            .entry-card {
-                padding: 23px 19px;
-            }
-
-            .features {
-                grid-template-columns: 1fr;
-                margin-top: 28px;
-            }
-
-            .feature-card {
-                padding: 17px;
-            }
-
-            .dashboard-header {
-                align-items: flex-start;
-                flex-direction: column;
-            }
-
-            .dashboard-panel {
-                padding: 21px 17px;
-            }
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-            *,
-            *::before,
-            *::after {
-                animation-duration: 0.01ms !important;
-                transition-duration: 0.01ms !important;
-                scroll-behavior: auto !important;
-            }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#090b12">
+  <title>AMS | پنل کارمندان</title>
+
+  <style>
+    :root {
+      --bg: #090b12;
+      --panel: #111522;
+      --panel2: #151a2a;
+      --border: rgba(255,255,255,.085);
+      --text: #f4f5ff;
+      --muted: #9299b1;
+      --accent: #8b7cff;
+      --accent2: #6254e8;
+      --green: #52e59b;
+      --yellow: #ffd166;
+      --red: #ff7185;
+      --sidebar: 245px;
+      --radius: 18px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--text);
+      background:
+        radial-gradient(ellipse at 80% -10%, rgba(98,84,232,.18), transparent 35%),
+        radial-gradient(ellipse at 5% 50%, rgba(82,229,155,.055), transparent 30%),
+        var(--bg);
+      font-family: Tahoma, Arial, sans-serif;
+      font-size: 14px;
+    }
+
+    button, input, textarea, select { font: inherit; }
+    button { cursor: pointer; }
+    button:focus-visible, input:focus-visible, textarea:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+    }
+
+    .hidden { display: none !important; }
+
+    .welcome-screen {
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+    }
+
+    .welcome-card {
+      width: min(100%, 450px);
+      padding: 36px;
+      background: rgba(17,21,34,.94);
+      border: 1px solid var(--border);
+      border-radius: 26px;
+      box-shadow: 0 30px 100px rgba(0,0,0,.35);
+    }
+
+    .logo {
+      width: 58px;
+      height: 58px;
+      display: grid;
+      place-items: center;
+      border-radius: 17px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      font-size: 24px;
+      font-weight: 900;
+      letter-spacing: -2px;
+      box-shadow: 0 10px 35px rgba(98,84,232,.25);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 30px;
+    }
+
+    .brand h1 {
+      font-size: 23px;
+      margin: 0 0 6px;
+      letter-spacing: 2px;
+    }
+
+    .brand p, .muted { color: var(--muted); }
+    .brand p { margin: 0; font-size: 12px; }
+
+    h2 { margin: 0 0 12px; font-size: 24px; }
+    .welcome-card > p { color: var(--muted); line-height: 1.9; }
+
+    label {
+      display: block;
+      margin: 18px 0 8px;
+      color: #cbd0e3;
+      font-size: 13px;
+    }
+
+    input, textarea, select {
+      width: 100%;
+      padding: 13px 14px;
+      color: var(--text);
+      background: #0b0e18;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      outline: none;
+    }
+
+    input:focus, textarea:focus, select:focus {
+      border-color: var(--accent);
+    }
+
+    textarea { min-height: 125px; resize: vertical; line-height: 1.9; }
+    input::placeholder, textarea::placeholder { color: #626a82; }
+
+    .btn {
+      border: 1px solid transparent;
+      border-radius: 11px;
+      padding: 11px 16px;
+      font-weight: 700;
+      transition: .2s ease;
+    }
+
+    .btn:hover { transform: translateY(-1px); filter: brightness(1.08); }
+
+    .btn-primary {
+      color: white;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      box-shadow: 0 7px 24px rgba(98,84,232,.18);
+    }
+
+    .btn-secondary {
+      color: #e5e7f7;
+      background: #1a2032;
+      border-color: var(--border);
+    }
+
+    .btn-success {
+      color: #062817;
+      background: var(--green);
+    }
+
+    .btn-danger {
+      color: #ffdbe0;
+      background: rgba(255,113,133,.1);
+      border-color: rgba(255,113,133,.2);
+    }
+
+    .btn-block { width: 100%; margin-top: 20px; }
+    .btn-small { padding: 8px 11px; font-size: 12px; }
+
+    .app { min-height: 100vh; }
+
+    .sidebar {
+      position: fixed;
+      z-index: 10;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      width: var(--sidebar);
+      padding: 25px 17px;
+      background: rgba(13,16,27,.96);
+      border-left: 1px solid var(--border);
+      backdrop-filter: blur(20px);
+    }
+
+    .sidebar .brand { padding: 0 5px 25px; margin-bottom: 20px; border-bottom: 1px solid var(--border); }
+    .sidebar .logo { width: 45px; height: 45px; border-radius: 13px; font-size: 19px; }
+    .sidebar .brand h1 { font-size: 19px; }
+    .sidebar .brand p { font-size: 11px; }
+
+    .nav-label {
+      color: #666e86;
+      font-size: 10px;
+      letter-spacing: 1px;
+      padding: 8px 12px 12px;
+    }
+
+    .nav-btn {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+      margin-bottom: 7px;
+      padding: 13px 12px;
+      text-align: right;
+      color: #aeb5ca;
+      background: transparent;
+      border: 1px solid transparent;
+      border-radius: 11px;
+    }
+
+    .nav-btn:hover, .nav-btn.active {
+      color: white;
+      background: linear-gradient(90deg, rgba(139,124,255,.16), rgba(139,124,255,.04));
+      border-color: rgba(139,124,255,.15);
+    }
+
+    .nav-icon { width: 23px; text-align: center; font-size: 17px; }
+
+    .sidebar-bottom {
+      position: absolute;
+      bottom: 22px;
+      right: 17px;
+      left: 17px;
+    }
+
+    .local-note {
+      padding: 13px;
+      color: #b7bfd4;
+      background: rgba(255,209,102,.055);
+      border: 1px solid rgba(255,209,102,.12);
+      border-radius: 12px;
+      font-size: 11px;
+      line-height: 1.9;
+    }
+
+    .main {
+      margin-right: var(--sidebar);
+      min-height: 100vh;
+    }
+
+    .topbar {
+      height: 76px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      padding: 0 32px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(9,11,18,.62);
+      backdrop-filter: blur(16px);
+    }
+
+    .topbar-title { font-weight: 700; font-size: 15px; }
+    .topbar-subtitle { margin-top: 5px; color: var(--muted); font-size: 11px; }
+
+    .user-chip {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 12px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--panel);
+    }
+
+    .avatar {
+      width: 35px;
+      height: 35px;
+      display: grid;
+      place-items: center;
+      border-radius: 10px;
+      background: rgba(139,124,255,.18);
+      color: #c8c0ff;
+      font-weight: 900;
+    }
+
+    .user-name { font-size: 12px; font-weight: 700; }
+    .user-role { margin-top: 4px; color: var(--muted); font-size: 10px; }
+
+    .content { max-width: 1500px; margin: auto; padding: 30px 32px 50px; }
+    .page { display: none; }
+    .page.active { display: block; }
+
+    .page-heading {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 20px;
+      margin-bottom: 25px;
+    }
+
+    .page-heading h2 { font-size: 25px; margin-bottom: 8px; }
+    .page-heading p { color: var(--muted); margin: 0; line-height: 1.8; }
+
+    .eyebrow {
+      color: var(--accent);
+      font-size: 10px;
+      letter-spacing: 1.5px;
+      font-weight: 900;
+      margin-bottom: 11px;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0,1fr));
+      gap: 15px;
+      margin-bottom: 28px;
+    }
+
+    .stat-card, .panel, .task-card {
+      background: linear-gradient(145deg, rgba(21,26,42,.95), rgba(15,19,31,.96));
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+    }
+
+    .stat-card { padding: 20px; }
+    .stat-top { display: flex; align-items: center; justify-content: space-between; }
+    .stat-label { color: var(--muted); font-size: 12px; }
+    .stat-icon {
+      width: 37px; height: 37px; display: grid; place-items: center;
+      background: rgba(139,124,255,.12); border-radius: 11px; font-size: 17px;
+    }
+
+    .stat-number { margin-top: 20px; font-size: 27px; font-weight: 900; }
+    .stat-caption { margin-top: 8px; color: var(--muted); font-size: 11px; }
+
+    .section-heading {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 12px; margin-bottom: 17px;
+    }
+
+    .section-heading h3 { font-size: 16px; margin: 0; }
+    .section-heading p { color: var(--muted); font-size: 11px; margin: 7px 0 0; }
+
+    .tasks-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 16px; }
+    .task-card { padding: 20px; transition: .2s ease; }
+    .task-card:hover { border-color: rgba(139,124,255,.35); transform: translateY(-2px); }
+
+    .task-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+    .task-category {
+      display: inline-flex; padding: 6px 9px; color: #c5bdff;
+      background: rgba(139,124,255,.12); border-radius: 8px; font-size: 10px;
+    }
+
+    .reward { color: var(--green); font-weight: 900; white-space: nowrap; font-size: 12px; }
+    .task-card h3 { font-size: 15px; margin: 18px 0 10px; line-height: 1.8; }
+    .task-card > p { min-height: 50px; margin: 0; color: var(--muted); font-size: 12px; line-height: 1.9; }
+
+    .task-footer {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 8px; margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--border);
+    }
+
+    .badge {
+      display: inline-block; padding: 6px 9px; border-radius: 7px;
+      font-size: 10px; white-space: nowrap;
+    }
+
+    .badge-active { color: var(--green); background: rgba(82,229,155,.1); }
+    .badge-progress { color: var(--yellow); background: rgba(255,209,102,.1); }
+    .badge-pending { color: #c6bcff; background: rgba(139,124,255,.14); }
+    .badge-approved { color: var(--green); background: rgba(82,229,155,.1); }
+    .badge-rejected { color: var(--red); background: rgba(255,113,133,.1); }
+
+    .panel { padding: 22px; margin-bottom: 22px; }
+    .empty-state { padding: 38px 15px; text-align: center; color: var(--muted); line-height: 2; }
+    .empty-icon { font-size: 30px; margin-bottom: 12px; }
+
+    .report-list { display: grid; gap: 13px; }
+    .report-card { padding: 17px; border: 1px solid var(--border); border-radius: 13px; background: rgba(8,11,19,.35); }
+    .report-card-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+    .report-card h4 { margin: 0 0 8px; font-size: 14px; }
+    .report-meta { color: var(--muted); font-size: 11px; line-height: 1.9; }
+    .report-text { margin-top: 14px; color: #d6daea; line-height: 1.9; font-size: 12px; white-space: pre-wrap; overflow-wrap: anywhere; }
+    .report-reward { margin-top: 12px; color: var(--green); font-size: 12px; }
+
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 18px; }
+    .form-full { grid-column: 1 / -1; }
+    .form-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 20px; }
+
+    .notice {
+      padding: 13px 15px;
+      color: #d9d2ff;
+      background: rgba(139,124,255,.075);
+      border: 1px solid rgba(139,124,255,.15);
+      border-radius: 11px;
+      font-size: 12px;
+      line-height: 1.9;
+      margin-bottom: 20px;
+    }
+
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; min-width: 520px; }
+    th, td { text-align: right; padding: 14px 12px; border-bottom: 1px solid var(--border); font-size: 12px; }
+    th { color: var(--muted); font-weight: 500; }
+    td { color: #e4e7f5; }
+    tr:last-child td { border-bottom: 0; }
+
+    .toast {
+      position: fixed; z-index: 100; bottom: 24px; left: 24px;
+      max-width: calc(100% - 48px); padding: 14px 18px;
+      color: white; background: #20263a; border: 1px solid var(--border);
+      border-radius: 12px; box-shadow: 0 15px 40px rgba(0,0,0,.3);
+      opacity: 0; transform: translateY(10px); pointer-events: none;
+      transition: .25s ease;
+    }
+
+    .toast.show { opacity: 1; transform: translateY(0); }
+
+    .mobile-menu { display: none; }
+
+    @media (max-width: 1150px) {
+      .tasks-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+      .stats { grid-template-columns: repeat(2,minmax(0,1fr)); }
+    }
+
+    @media (max-width: 760px) {
+      :root { --sidebar: 0px; }
+      .sidebar {
+        display: none; width: 245px; box-shadow: 20px 0 60px rgba(0,0,0,.4);
+      }
+      .sidebar.mobile-open { display: block; }
+      .main { margin-right: 0; }
+      .topbar { height: 70px; padding: 0 15px; }
+      .content { padding: 23px 15px 35px; }
+      .mobile-menu { display: inline-flex; }
+      .page-heading { flex-direction: column; }
+      .tasks-grid { grid-template-columns: 1fr; }
+      .stats { gap: 10px; }
+      .stat-card { padding: 15px; }
+      .stat-number { font-size: 23px; }
+      .user-chip { padding: 6px; }
+      .user-chip .user-role { display: none; }
+      .form-grid { grid-template-columns: 1fr; }
+      .form-full { grid-column: auto; }
+      .welcome-card { padding: 25px; }
+      .sidebar-bottom { position: static; margin-top: 30px; }
+    }
+
+    @media (max-width: 390px) {
+      .stats { grid-template-columns: 1fr 1fr; }
+      .stat-number { font-size: 21px; }
+      .page-heading h2 { font-size: 22px; }
+    }
+  </style>
 </head>
 
 <body>
-    <div class="ambient" aria-hidden="true">
-        <div class="ambient-grid"></div>
-        <div class="orb orb-one"></div>
-        <div class="orb orb-two"></div>
+  <!-- ورود کارمند -->
+  <section id="welcomeScreen" class="welcome-screen">
+    <div class="welcome-card">
+      <div class="brand">
+        <div class="logo">A</div>
+        <div>
+          <h1>AMS</h1>
+          <p>EMPLOYEE WORKSPACE</p>
+        </div>
+      </div>
+
+      <div class="eyebrow">EMPLOYEE ACCESS / 01</div>
+      <h2>به فضای کاری AMS خوش آمدی</h2>
+      <p>برای مشاهده وظایف و ثبت گزارش فعالیت، نام خودت را وارد کن.</p>
+
+      <form id="loginForm">
+        <label for="employeeName">نام و نام خانوادگی</label>
+        <input id="employeeName" name="employeeName" maxlength="80"
+               autocomplete="name" placeholder="مثلاً آرمان رضایی" required>
+        <button class="btn btn-primary btn-block" type="submit">ورود به پنل ←</button>
+      </form>
+
+      <p style="font-size:11px;margin-top:20px">
+        توجه: ورود با نام صرفاً برای شناسایی محلی است و احراز هویت امن محسوب نمی‌شود.
+      </p>
     </div>
+  </section>
 
-    <div class="app">
-        <header class="topbar">
-            <div class="brand">
-                <div class="brand-symbol">A</div>
+  <!-- پنل کارمند -->
+  <div id="app" class="app hidden">
+    <aside id="sidebar" class="sidebar">
+      <div class="brand">
+        <div class="logo">A</div>
+        <div>
+          <h1>AMS</h1>
+          <p>EMPLOYEE WORKSPACE</p>
+        </div>
+      </div>
 
+      <div class="nav-label">فضای کاری</div>
+      <button class="nav-btn active" data-page="dashboard">
+        <span class="nav-icon">◈</span><span>نمای کلی</span>
+      </button>
+      <button class="nav-btn" data-page="tasks">
+        <span class="nav-icon">▤</span><span>وظایف من</span>
+      </button>
+      <button class="nav-btn" data-page="newReport">
+        <span class="nav-icon">＋</span><span>ثبت گزارش فعالیت</span>
+      </button>
+      <button class="nav-btn" data-page="reports">
+        <span class="nav-icon">☷</span><span>گزارش‌های من</span>
+      </button>
+
+      <div class="sidebar-bottom">
+        <div class="local-note">
+          <strong>حالت ذخیره‌سازی محلی</strong><br>
+          اطلاعات فعلاً در همین مرورگر ذخیره می‌شوند. برای ارسال به مدیر، گزارش JSON را دانلود کن.
+        </div>
+        <button id="changeNameBtn" class="nav-btn" style="margin-top:12px">
+          <span class="nav-icon">⚙</span><span>تغییر نام / خروج</span>
+        </button>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div style="display:flex;align-items:center;gap:12px">
+          <button id="mobileMenuBtn" class="btn btn-secondary mobile-menu" aria-label="باز کردن منو">☰</button>
+          <div>
+            <div id="topbarTitle" class="topbar-title">نمای کلی</div>
+            <div class="topbar-subtitle">فضای کاری کارمندان AMS</div>
+          </div>
+        </div>
+
+        <div class="user-chip">
+          <div id="avatar" class="avatar">A</div>
+          <div>
+            <div id="headerEmployeeName" class="user-name">کارمند</div>
+            <div class="user-role">عضو تیم AMS</div>
+          </div>
+        </div>
+      </header>
+
+      <div class="content">
+        <!-- داشبورد -->
+        <section id="page-dashboard" class="page active">
+          <div class="page-heading">
+            <div>
+              <div class="eyebrow">AMS / WORKSPACE OVERVIEW</div>
+              <h2 id="welcomeHeading">خوش آمدی 👋</h2>
+              <p>وظایف را انجام بده، گزارش ثبت کن و وضعیت بررسی را پیگیری کن.</p>
+            </div>
+            <button class="btn btn-primary" data-goto="tasks">مشاهده وظایف ←</button>
+          </div>
+
+          <div class="stats">
+            <div class="stat-card">
+              <div class="stat-top"><span class="stat-label">وظایف فعال</span><span class="stat-icon">▤</span></div>
+              <div id="statTasks" class="stat-number">0</div>
+              <div class="stat-caption">وظایف قابل انجام</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-top"><span class="stat-label">گزارش‌های من</span><span class="stat-icon">☷</span></div>
+              <div id="statReports" class="stat-number">0</div>
+              <div class="stat-caption">کل گزارش‌های ثبت‌شده</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-top"><span class="stat-label">در انتظار بررسی</span><span class="stat-icon">◷</span></div>
+              <div id="statPending" class="stat-number">0</div>
+              <div class="stat-caption">گزارش‌های ارسال‌شده</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-top"><span class="stat-label">پاداش تأییدشده</span><span class="stat-icon">✦</span></div>
+              <div id="statRewards" class="stat-number">0</div>
+              <div class="stat-caption">توکن AMS تأییدشده</div>
+            </div>
+          </div>
+
+          <div class="section-heading">
+            <div>
+              <h3>وظایف پیشنهادی</h3>
+              <p>برای شروع یک وظیفه، آن را انتخاب کن.</p>
+            </div>
+            <button class="btn btn-secondary btn-small" data-goto="tasks">همه وظایف</button>
+          </div>
+          <div id="dashboardTasks" class="tasks-grid"></div>
+
+          <div class="panel" style="margin-top:28px">
+            <div class="section-heading">
+              <div>
+                <h3>آخرین گزارش‌ها</h3>
+                <p>آخرین وضعیت فعالیت‌های ثبت‌شده توسط تو</p>
+              </div>
+              <button class="btn btn-secondary btn-small" data-goto="reports">مشاهده همه</button>
+            </div>
+            <div id="dashboardReports" class="report-list"></div>
+          </div>
+        </section>
+
+        <!-- وظایف -->
+        <section id="page-tasks" class="page">
+          <div class="page-heading">
+            <div>
+              <div class="eyebrow">TASK EXPLORER</div>
+              <h2>وظایف من</h2>
+              <p>یک وظیفه را انتخاب کن، آن را شروع کن و پس از انجام کار گزارش بفرست.</p>
+            </div>
+          </div>
+          <div class="notice">
+            پاداش‌های نمایش‌داده‌شده پیشنهادی هستند. مبلغ نهایی فقط پس از بررسی و تأیید مدیر مشخص می‌شود.
+          </div>
+          <div id="allTasks" class="tasks-grid"></div>
+        </section>
+
+        <!-- ثبت گزارش -->
+        <section id="page-newReport" class="page">
+          <div class="page-heading">
+            <div>
+              <div class="eyebrow">ACTIVITY SUBMISSION</div>
+              <h2>ثبت گزارش فعالیت</h2>
+              <p>جزئیات کار انجام‌شده را وارد کن تا برای بررسی مدیر آماده شود.</p>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="notice">
+              گزارش پس از ثبت در وضعیت «در انتظار بررسی» قرار می‌گیرد. این صفحه به‌تنهایی گزارش را به مدیر ارسال نمی‌کند.
+            </div>
+
+            <form id="reportForm">
+              <div class="form-grid">
                 <div>
-                    <div class="brand-name">AMS</div>
-                    <div class="brand-caption">EMPLOYEE PORTAL</div>
+                  <label for="reportTask">وظیفه مرتبط</label>
+                  <select id="reportTask" required></select>
                 </div>
+                <div>
+                  <label for="reportDate">تاریخ فعالیت</label>
+                  <input id="reportDate" type="date" required>
+                </div>
+                <div class="form-full">
+                  <label for="reportTitle">عنوان گزارش</label>
+                  <input id="reportTitle" maxlength="120" placeholder="مثلاً تکمیل طراحی صفحه ورود" required>
+                </div>
+                <div class="form-full">
+                  <label for="reportDescription">شرح فعالیت انجام‌شده</label>
+                  <textarea id="reportDescription" maxlength="5000"
+                    placeholder="چه کاری انجام دادی؟ چه تغییراتی ایجاد شد؟" required></textarea>
+                </div>
+                <div class="form-full">
+                  <label for="reportResult">نتیجه کار / لینک یا توضیح تکمیلی</label>
+                  <textarea id="reportResult" maxlength="3000"
+                    placeholder="نتیجه نهایی، فایل‌ها یا لینک مرتبط را توضیح بده..."></textarea>
+                </div>
+              </div>
+
+              <div class="form-actions">
+                <button class="btn btn-primary" type="submit">ثبت گزارش و ذخیره ←</button>
+                <button class="btn btn-secondary" type="reset">پاک کردن فرم</button>
+              </div>
+            </form>
+          </div>
+        </section>
+
+        <!-- گزارش‌ها -->
+        <section id="page-reports" class="page">
+          <div class="page-heading">
+            <div>
+              <div class="eyebrow">MY ACTIVITY LOG</div>
+              <h2>گزارش‌های من</h2>
+              <p>گزارش‌های ثبت‌شده و وضعیت بررسی آن‌ها را ببین.</p>
             </div>
+            <button id="downloadReportsBtn" class="btn btn-primary">⬇ دانلود گزارش JSON</button>
+          </div>
 
-            <div class="system-status">
-                <span class="status-dot"></span>
-                <span>پرتال کارمندان</span>
+          <div class="notice">
+            فایل JSON را می‌توانی برای ورود به پنل مدیریت استفاده کنی. تا زمانی که مدیر گزارش را بررسی نکرده، پاداش آن قطعی نیست.
+          </div>
+
+          <div class="panel">
+            <div class="section-heading">
+              <div>
+                <h3>سوابق فعالیت</h3>
+                <p id="reportCountText">۰ گزارش</p>
+              </div>
             </div>
-        </header>
+            <div id="allReports" class="report-list"></div>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
 
-        <main>
-            <section id="welcomeView">
-                <div class="welcome-section">
-                    <div class="eyebrow">
-                        <span class="eyebrow-mark"></span>
-                        <span>AMS WORKSPACE</span>
-                    </div>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
-                    <h1>
-                        به دنیای کاری
-                        <span class="gradient-text">AMS</span>
-                        خوش آمدی
-                    </h1>
+  <script>
+    "use strict";
 
-                    <p class="welcome-description">
-                        اینجا مرکز فعالیت‌ها، وظایف و پیشرفت تو در AMS است.
-                        برای شروع، نام خودت را وارد کن تا وارد فضای کاری شوی.
-                    </p>
-                </div>
+    const STORAGE_KEYS = {
+      name: "ams_employee_display_name",
+      tasks: "ams_employee_tasks_v2",
+      reports: "ams_employee_reports_v2",
+      employeeId: "ams_employee_local_id"
+    };
 
-                <form class="entry-card" id="nameForm">
-                    <div class="card-heading">
-                        <div class="card-icon">✦</div>
+    const DEFAULT_TASKS = [
+      {
+        id: 101,
+        title: "تکمیل طراحی صفحه ورود",
+        description: "طراحی صفحه ورود را تکمیل کن و نتیجه را برای بررسی مدیر گزارش بده.",
+        reward: 50,
+        category: "طراحی",
+        status: "active"
+      },
+      {
+        id: 102,
+        title: "رفع باگ‌های سایت",
+        description: "خطاهای موجود در سایت را بررسی کن، مشکلات را برطرف کن و نتیجه را ثبت کن.",
+        reward: 75,
+        category: "برنامه‌نویسی",
+        status: "active"
+      },
+      {
+        id: 103,
+        title: "بهبود رابط کاربری",
+        description: "ظاهر و تجربه کاربری یکی از صفحات AMS را بهبود بده و تغییرات را توضیح بده.",
+        reward: 40,
+        category: "طراحی",
+        status: "active"
+      }
+    ];
 
-                        <div>
-                            <h2>اول با هم آشنا شویم</h2>
-                            <p>نامت را وارد کن تا شروع کنیم.</p>
-                        </div>
-                    </div>
+    const PAGE_TITLES = {
+      dashboard: "نمای کلی",
+      tasks: "وظایف من",
+      newReport: "ثبت گزارش فعالیت",
+      reports: "گزارش‌های من"
+    };
 
-                    <label class="field-label" for="employeeName">
-                        نام و نام خانوادگی
-                    </label>
+    let employeeName = "";
+    let tasks = [];
+    let reports = [];
+    let toastTimer = null;
 
-                    <div class="input-wrap">
-                        <input
-                            class="name-input"
-                            id="employeeName"
-                            name="employeeName"
-                            type="text"
-                            placeholder="مثلاً: آرمان رضایی"
-                            maxlength="60"
-                            autocomplete="name"
-                            required
-                        >
-                    </div>
+    const $ = (selector) => document.querySelector(selector);
 
-                    <p class="input-hint">
-                        نامی وارد کن که می‌خواهی در فضای کاری نمایش داده شود.
-                    </p>
+    function loadJSON(key, fallback) {
+      try {
+        const raw = localStorage.getItem(key);
+        if (!raw) return fallback;
+        const parsed = JSON.parse(raw);
+        return parsed ?? fallback;
+      } catch (error) {
+        console.warn("Unable to read local data:", key, error);
+        return fallback;
+      }
+    }
 
-                    <p class="error-message" id="nameError" role="alert">
-                        لطفاً نام معتبر وارد کن.
-                    </p>
+    function saveJSON(key, value) {
+      try {
+        localStorage.setItem(key, JSON.stringify(value));
+        return true;
+      } catch (error) {
+        showToast("ذخیره اطلاعات انجام نشد. فضای ذخیره‌سازی مرورگر را بررسی کن.");
+        return false;
+      }
+    }
 
-                    <button class="primary-button" type="submit">
-                        ورود به فضای کاری ←
-                    </button>
+    function createId(prefix) {
+      return prefix + "-" + Date.now().toString(36) + "-" +
+        Math.random().toString(36).slice(2, 9);
+    }
 
-                    <div class="privacy-note">
-                        <span class="privacy-icon">✓</span>
-                        <span>
-                            نام تو فعلاً فقط در همین مرورگر ذخیره می‌شود.
-                            برای تأیید هویت کارمند، در مراحل بعدی باید
-                            سیستم حساب کاربری اضافه شود.
-                        </span>
-                    </div>
-                </form>
+    function escapeHTML(value) {
+      return String(value ?? "").replace(/[&<>"']/g, (char) => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+      })[char]);
+    }
 
-                <div class="features">
-                    <article class="feature-card">
-                        <div class="feature-icon">◈</div>
-                        <h3>مدیریت وظایف</h3>
-                        <p>
-                            مشاهده وظایف و پیگیری فعالیت‌های محول‌شده.
-                        </p>
-                    </article>
+    function formatDate(value) {
+      if (!value) return "—";
+      try {
+        return new Intl.DateTimeFormat("fa-IR", {
+          year: "numeric", month: "short", day: "numeric"
+        }).format(new Date(value));
+      } catch {
+        return value;
+      }
+    }
 
-                    <article class="feature-card">
-                        <div class="feature-icon">⌁</div>
-                        <h3>ثبت فعالیت‌ها</h3>
-                        <p>
-                            آماده برای ارسال گزارش فعالیت جهت بررسی مدیر.
-                        </p>
-                    </article>
+    function formatNumber(value) {
+      return new Intl.NumberFormat("fa-IR").format(Number(value) || 0);
+    }
 
-                    <article class="feature-card">
-                        <div class="feature-icon">✧</div>
-                        <h3>پاداش‌های AMS</h3>
-                        <p>
-                            مشاهده پاداش‌ها پس از تأیید فعالیت‌ها توسط مدیر.
-                        </p>
-                    </article>
-                </div>
-            </section>
+    function statusInfo(status) {
+      const map = {
+        pending: ["در انتظار بررسی", "badge-pending"],
+        approved: ["تأیید شده", "badge-approved"],
+        rejected: ["نیازمند اصلاح / رد شده", "badge-rejected"],
+        active: ["فعال", "badge-active"],
+        in_progress: ["در حال انجام", "badge-progress"],
+        submitted: ["گزارش ثبت شده", "badge-pending"]
+      };
+      return map[status] || ["نامشخص", "badge-pending"];
+    }
 
-            <section class="dashboard" id="dashboardView">
-                <div class="dashboard-header">
-                    <div>
-                        <div class="eyebrow">
-                            <span class="eyebrow-mark"></span>
-                            <span>EMPLOYEE WORKSPACE</span>
-                        </div>
+    function statusBadge(status) {
+      const [label, css] = statusInfo(status);
+      return '<span class="badge ' + css + '">' + escapeHTML(label) + '</span>';
+    }
 
-                        <h1>
-                            سلام،
-                            <span class="gradient-text" id="displayName">
-                                کارمند
-                            </span>
-                        </h1>
+    function showToast(message) {
+      const toast = $("#toast");
+      toast.textContent = message;
+      toast.classList.add("show");
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toast.classList.remove("show"), 3200);
+    }
 
-                        <p>
-                            به فضای کاری AMS خوش آمدی.
-                            از اینجا می‌توانیم فعالیت‌ها و وظایفت را مدیریت کنیم.
-                        </p>
-                    </div>
+    function initializeData() {
+      const savedTasks = loadJSON(STORAGE_KEYS.tasks, null);
+      tasks = Array.isArray(savedTasks) ? savedTasks : DEFAULT_TASKS.map(task => ({...task}));
 
-                    <button
-                        class="secondary-button"
-                        id="changeNameButton"
-                        type="button"
-                    >
-                        تغییر نام
-                    </button>
-                </div>
+      const savedReports = loadJSON(STORAGE_KEYS.reports, []);
+      reports = Array.isArray(savedReports) ? savedReports : [];
 
-                <div class="dashboard-panel">
-                    <h2>فضای کاری تو</h2>
+      // اطمینان از وجود فیلدهای ضروری در داده‌های ذخیره‌شده
+      tasks = tasks.filter(task => task && task.id != null && typeof task.title === "string");
+      reports = reports.filter(report => report && report.id && typeof report.title === "string");
+    }
 
-                    <p>
-                        این صفحه آماده است تا در مرحله بعد به سیستم وظایف،
-                        ثبت گزارش، پاداش‌ها و بررسی مدیر متصل شود.
-                    </p>
+    function saveTasks() {
+      return saveJSON(STORAGE_KEYS.tasks, tasks);
+    }
 
-                    <div class="user-badge">
-                        <div class="user-avatar" id="userAvatar">ک</div>
+    function saveReports() {
+      return saveJSON(STORAGE_KEYS.reports, reports);
+    }
 
-                        <div class="user-details">
-                            <strong id="profileName">کارمند AMS</strong>
-                            <small>پروفایل محلی</small>
-                        </div>
-                    </div>
-
-                    <div class="empty-state">
-                        <div class="empty-icon">◈</div>
-
-                        <h3>هنوز وظیفه‌ای بارگذاری نشده است</h3>
-
-                        <p>
-                            بعد از اتصال بخش وظایف، کارهای محول‌شده
-                            در همین قسمت نمایش داده می‌شوند.
-                        </p>
-                    </div>
-                </div>
-            </section>
-        </main>
-
-        <footer>
-            AMS © <span id="currentYear"></span>
-            — Employee Workspace
-            <br>
-            سیستم ثبت نام فعلی فقط برای شروع رابط کاربری است.
-        </footer>
-    </div>
-
-    <script>
-        "use strict";
-
-        const STORAGE_KEY = "ams_employee_display_name";
-
-        const nameForm = document.getElementById("nameForm");
-        const employeeNameInput = document.getElementById("employeeName");
-        const nameError = document.getElementById("nameError");
-
-        const welcomeView = document.getElementById("welcomeView");
-        const dashboardView = document.getElementById("dashboardView");
-
-        const displayName = document.getElementById("displayName");
-        const profileName = document.getElementById("profileName");
-        const userAvatar = document.getElementById("userAvatar");
-
-        const changeNameButton = document.getElementById("changeNameButton");
-
-        document.getElementById("currentYear").textContent =
-            new Date().getFullYear();
-
-        function cleanName(value) {
-            return value
-                .trim()
-                .replace(/\s+/g, " ");
-        }
-
-        function showDashboard(name) {
-            /*
-             * از textContent استفاده می‌کنیم تا نام کاربر
-             * به‌عنوان HTML اجرا نشود.
-             */
-            displayName.textContent = name;
-            profileName.textContent = name;
-
-            const firstCharacter = Array.from(name)[0] || "ک";
-            userAvatar.textContent = firstCharacter;
-
-            welcomeView.style.display = "none";
-            dashboardView.style.display = "block";
-
-            nameError.style.display = "none";
-
-            window.scrollTo({
-                top: 0,
-                behavior: "smooth"
-            });
-        }
-
-        function showWelcome() {
-            dashboardView.style.display = "none";
-            welcomeView.style.display = "block";
-
-            employeeNameInput.value = "";
-            nameError.style.display = "none";
-
-            window.scrollTo({
-                top: 0,
-                behavior: "smooth"
-            });
-
-            employeeNameInput.focus();
-        }
-
-        nameForm.addEventListener("submit", function (event) {
-            event.preventDefault();
-
-            const name = cleanName(employeeNameInput.value);
-
-            if (name.length < 2) {
-                nameError.textContent =
-                    "لطفاً نامت را با حداقل دو نویسه وارد کن.";
-
-                nameError.style.display = "block";
-                employeeNameInput.focus();
-                return;
-            }
-
-            if (name.length > 60) {
-                nameError.textContent =
-                    "نام واردشده بیش از حد طولانی است.";
-
-                nameError.style.display = "block";
-                employeeNameInput.focus();
-                return;
-            }
-
-            try {
-                localStorage.setItem(STORAGE_KEY, name);
-            } catch (error) {
-                /*
-                 * اگر ذخیره‌سازی مرورگر غیرفعال باشد،
-                 * کاربر همچنان می‌تواند وارد صفحه شود.
-                 */
-                console.warn(
-                    "نام در مرورگر ذخیره نشد.",
-                    error
-                );
-            }
-
-            showDashboard(name);
-        });
-
-        changeNameButton.addEventListener("click", function () {
-            let savedName = "";
-
-            try {
-                savedName = localStorage.getItem(STORAGE_KEY) || "";
-            } catch (error) {
-                console.warn(
-                    "خواندن نام ذخیره‌شده ممکن نیست.",
-                    error
-                );
-            }
-
-            welcomeView.style.display = "block";
-            dashboardView.style.display = "none";
-
-            employeeNameInput.value = savedName;
-            employeeNameInput.focus();
-
-            window.scrollTo({
-                top: 0,
-                behavior: "smooth"
-            });
-        });
-
-        /*
-         * اگر کاربر قبلاً نامش را ثبت کرده باشد،
-         * مستقیماً وارد فضای کاری می‌شود.
-         */
-        let savedName = "";
-
+    function getEmployeeId() {
+      let id = localStorage.getItem(STORAGE_KEYS.employeeId);
+      if (!id) {
+        id = createId("employee");
         try {
-            savedName = localStorage.getItem(STORAGE_KEY) || "";
+          localStorage.setItem(STORAGE_KEYS.employeeId, id);
         } catch (error) {
-            console.warn(
-                "خواندن اطلاعات ذخیره‌شده ممکن نیست.",
-                error
-            );
+          // در صورت غیرفعال بودن ذخیره‌سازی، برنامه همچنان قابل استفاده می‌ماند.
         }
+      }
+      return id;
+    }
 
-        if (savedName.trim().length >= 2) {
-            showDashboard(cleanName(savedName));
-        } else {
-            welcomeView.style.display = "block";
-            dashboardView.style.display = "none";
-        }
-    </script>
+    function showApp() {
+      $("#welcomeScreen").classList.add("hidden");
+      $("#app").classList.remove("hidden");
+      $("#headerEmployeeName").textContent = employeeName;
+      $("#welcomeHeading").textContent = "خوش آمدی، " + employeeName + " 👋";
+      $("#avatar").textContent = employeeName.trim().charAt(0) || "A";
+      renderAll();
+    }
+
+    function showWelcome() {
+      $("#app").classList.add("hidden");
+      $("#welcomeScreen").classList.remove("hidden");
+      $("#employeeName").value = employeeName;
+    }
+
+    function navigateTo(pageName) {
+      if (!PAGE_TITLES[pageName]) return;
+
+      document.querySelectorAll(".page").forEach(page => page.classList.remove("active"));
+      const page = $("#page-" + pageName);
+      if (page) page.classList.add("active");
+
+      document.querySelectorAll(".nav-btn[data-page]").forEach(button => {
+        button.classList.toggle("active", button.dataset.page === pageName);
+      });
+
+      $("#topbarTitle").textContent = PAGE_TITLES[pageName];
+      $("#sidebar").classList.remove("mobile-open");
+
+      if (pageName === "newReport") {
+        populateTaskSelect();
+      }
+    }
+
+    function taskState(taskId) {
+      const related = reports.filter(report => String(report.taskId) === String(taskId));
+      if (related.some(report => report.status === "approved")) return "submitted";
+      if (related.some(report => report.status === "pending")) return "submitted";
+      const task = tasks.find(item => String(item.id) === String(taskId));
+      return task?.status === "in_progress" ? "in_progress" : "active";
+    }
+
+    function taskCard(task) {
+      const state = taskState(task.id);
+      const alreadyReported = reports.some(report =>
+        String(report.taskId) === String(task.id) &&
+        ["pending", "approved"].includes(report.status)
+      );
+
+      let action = "";
+      if (alreadyReported) {
+        action = '<button class="btn btn-secondary btn-small" disabled>گزارش ثبت شده</button>';
+      } else if (state === "in_progress") {
+        action = '<button class="btn btn-primary btn-small" data-action="report" data-id="' +
+          escapeHTML(task.id) + '">ثبت گزارش</button>';
+      } else {
+        action = '<button class="btn btn-primary btn-small" data-action="start" data-id="' +
+          escapeHTML(task.id) + '">شروع وظیفه</button>';
+      }
+
+      const badge = alreadyReported ? statusBadge("submitted") : statusBadge(state);
+
+      return `
+        <article class="task-card">
+          <div class="task-top">
+            <span class="task-category">${escapeHTML(task.category || "عمومی")}</span>
+            <span class="reward">✦ ${formatNumber(task.reward)} AMS</span>
+          </div>
+          <h3>${escapeHTML(task.title)}</h3>
+          <p>${escapeHTML(task.description)}</p>
+          <div class="task-footer">
+            ${badge}
+            ${action}
+          </div>
+        </article>`;
+    }
+
+    function renderTasks() {
+      const activeTasks = tasks.filter(task => task.status !== "disabled");
+      $("#dashboardTasks").innerHTML = activeTasks.slice(0, 3).map(taskCard).join("") ||
+        '<div class="panel empty-state">در حال حاضر وظیفه فعالی وجود ندارد.</div>';
+
+      $("#allTasks").innerHTML = activeTasks.map(taskCard).join("") ||
+        '<div class="panel empty-state">در حال حاضر وظیفه فعالی وجود ندارد.</div>';
+
+      $("#statTasks").textContent = formatNumber(
+        activeTasks.filter(task => !reports.some(report =>
+          String(report.taskId) === String(task.id) &&
+          ["pending", "approved"].includes(report.status)
+        )).length
+      );
+    }
+
+    function reportCard(report) {
+      const task = tasks.find(item => String(item.id) === String(report.taskId));
+      const reward = Number(report.proposedReward ?? task?.reward ?? 0);
+      const resultText = report.result
+        ? '<div class="report-text"><strong>نتیجه:</strong><br>' + escapeHTML(report.result) + '</div>'
+        : "";
+
+      return `
+        <article class="report-card">
+          <div class="report-card-top">
+            <div>
+              <h4>${escapeHTML(report.title)}</h4>
+              <div class="report-meta">
+                وظیفه: ${escapeHTML(task?.title || report.taskTitle || "وظیفه نامشخص")}<br>
+                تاریخ فعالیت: ${escapeHTML(formatDate(report.activityDate))}<br>
+                ثبت گزارش: ${escapeHTML(formatDate(report.createdAt))}
+              </div>
+            </div>
+            ${statusBadge(report.status)}
+          </div>
+          <div class="report-text">${escapeHTML(report.description)}</div>
+          ${resultText}
+          <div class="report-reward">
+            پاداش پیشنهادی: ${formatNumber(reward)} AMS
+            ${report.status === "approved"
+              ? " — تأییدشده توسط مدیر"
+              : " — پرداخت/تأیید نشده"}
+          </div>
+          ${report.adminNote
+            ? '<div class="report-text"><strong>یادداشت مدیر:</strong><br>' + escapeHTML(report.adminNote) + '</div>'
+            : ""}
+        </article>`;
+    }
+
+    function renderReports() {
+      const sorted = [...reports].sort((a, b) =>
+        new Date(b.createdAt || 0) - new Date(a.createdAt || 0)
+      );
+
+      const recent = sorted.slice(0, 3);
+      $("#dashboardReports").innerHTML = recent.map(reportCard).join("") ||
+        '<div class="empty-state"><div class="empty-icon">☷</div>هنوز گزارشی ثبت نکرده‌ای.</div>';
+
+      $("#allReports").innerHTML = sorted.map(reportCard).join("") ||
+        '<div class="empty-state"><div class="empty-icon">☷</div>هنوز گزارشی ثبت نکرده‌ای.<br>بعد از انجام یک وظیفه، گزارش خودت را ثبت کن.</div>';
+
+      $("#statReports").textContent = formatNumber(reports.length);
+      $("#statPending").textContent = formatNumber(reports.filter(r => r.status === "pending").length);
+      $("#statRewards").textContent = formatNumber(
+        reports.filter(r => r.status === "approved")
+          .reduce((sum, report) => sum + Number(report.approvedReward ?? report.proposedReward ?? 0), 0)
+      );
+      $("#reportCountText").textContent = formatNumber(reports.length) + " گزارش";
+    }
+
+    function populateTaskSelect(selectedId) {
+      const select = $("#reportTask");
+      const availableTasks = tasks.filter(task => task.status !== "disabled");
+
+      select.innerHTML = '<option value="">یک وظیفه انتخاب کن</option>' +
+        availableTasks.map(task =>
+          '<option value="' + escapeHTML(task.id) + '">' +
+          escapeHTML(task.title) + ' — ' + formatNumber(task.reward) + ' AMS پیشنهادی</option>'
+        ).join("");
+
+      if (selectedId != null) select.value = String(selectedId);
+    }
+
+    function renderAll() {
+      renderTasks();
+      renderReports();
+      populateTaskSelect();
+    }
+
+    function startTask(taskId) {
+      const task = tasks.find(item => String(item.id) === String(taskId));
+      if (!task) {
+        showToast("این وظیفه پیدا نشد.");
+        return;
+      }
+
+      const existing = reports.find(report =>
+        String(report.taskId) === String(taskId) &&
+        ["pending", "approved"].includes(report.status)
+      );
+
+      if (existing) {
+        showToast("برای این وظیفه قبلاً گزارش ثبت شده است.");
+        return;
+      }
+
+      task.status = "in_progress";
+      if (!saveTasks()) return;
+
+      renderAll();
+      showToast("وظیفه شروع شد. پس از انجام کار، گزارش ثبت کن.");
+    }
+
+    function openReportForm(taskId) {
+      navigateTo("newReport");
+      populateTaskSelect(taskId);
+
+      const task = tasks.find(item => String(item.id) === String(taskId));
+      if (task && !$("#reportTitle").value.trim()) {
+        $("#reportTitle").value = task.title;
+      }
+    }
+
+    function downloadJSON(filename, data) {
+      const blob = new Blob([JSON.stringify(data, null, 2)], {
+        type: "application/json;charset=utf-8"
+      });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+    }
+
+    function exportReports() {
+      if (!reports.length) {
+        showToast("هنوز گزارشی برای دانلود وجود ندارد.");
+        return;
+      }
+
+      const exportData = {
+        format: "AMS_EMPLOYEE_REPORTS",
+        version: 1,
+        exportedAt: new Date().toISOString(),
+        employee: {
+          localId: getEmployeeId(),
+          name: employeeName
+        },
+        reports: reports.map(report => ({
+          id: report.id,
+          employeeId: report.employeeId,
+          employeeName: report.employeeName,
+          taskId: report.taskId,
+          taskTitle: report.taskTitle,
+          title: report.title,
+          description: report.description,
+          result: report.result,
+          activityDate: report.activityDate,
+          createdAt: report.createdAt,
+          status: report.status,
+          proposedReward: Number(report.proposedReward) || 0,
+          approvedReward: report.status === "approved"
+            ? Number(report.approvedReward ?? report.proposedReward) || 0
+            : null,
+          adminNote: report.adminNote || ""
+        }))
+      };
+
+      downloadJSON("AMS-reports-" + new Date().toISOString().slice(0, 10) + ".json", exportData);
+      showToast("فایل JSON گزارش‌ها آماده شد.");
+    }
+
+    $("#loginForm").addEventListener("submit", event => {
+      event.preventDefault();
+
+      const name = $("#employeeName").value.trim().replace(/\s+/g, " ");
+      if (name.length < 2) {
+        showToast("لطفاً نام معتبر وارد کن.");
+        return;
+      }
+
+      employeeName = name;
+      try {
+        localStorage.setItem(STORAGE_KEYS.name, employeeName);
+      } catch (error) {
+        showToast("مرورگر اجازه ذخیره نام را نداد.");
+      }
+
+      getEmployeeId();
+      showApp();
+    });
+
+    document.addEventListener("click", event => {
+      const navButton = event.target.closest("[data-page]");
+      if (navButton) {
+        navigateTo(navButton.dataset.page);
+        return;
+      }
+
+      const gotoButton = event.target.closest("[data-goto]");
+      if (gotoButton) {
+        navigateTo(gotoButton.dataset.goto);
+        return;
+      }
+
+      const actionButton = event.target.closest("[data-action]");
+      if (actionButton) {
+        const id = actionButton.dataset.id;
+        if (actionButton.dataset.action === "start") startTask(id);
+        if (actionButton.dataset.action === "report") openReportForm(id);
+      }
+    });
+
+    $("#reportForm").addEventListener("submit", event => {
+      event.preventDefault();
+
+      const taskId = $("#reportTask").value;
+      const task = tasks.find(item => String(item.id) === String(taskId));
+      const title = $("#reportTitle").value.trim();
+      const description = $("#reportDescription").value.trim();
+      const result = $("#reportResult").value.trim();
+      const activityDate = $("#reportDate").value;
+
+      if (!task) {
+        showToast("لطفاً وظیفه مرتبط را انتخاب کن.");
+        return;
+      }
+      if (title.length < 3) {
+        showToast("عنوان گزارش باید حداقل ۳ نویسه باشد.");
+        return;
+      }
+      if (description.length < 10) {
+        showToast("شرح فعالیت باید حداقل ۱۰ نویسه داشته باشد.");
+        return;
+      }
+      if (!activityDate) {
+        showToast("تاریخ فعالیت را انتخاب کن.");
+        return;
+      }
+
+      const duplicate = reports.some(report =>
+        String(report.taskId) === String(taskId) &&
+        ["pending", "approved"].includes(report.status)
+      );
+
+      if (duplicate) {
+        showToast("برای این وظیفه گزارش در انتظار بررسی یا تأییدشده وجود دارد.");
+        return;
+      }
+
+      const report = {
+        id: createId("report"),
+        employeeId: getEmployeeId(),
+        employeeName,
+        taskId: task.id,
+        taskTitle: task.title,
+        title,
+        description,
+        result,
+        activityDate,
+        createdAt: new Date().toISOString(),
+        status: "pending",
+        proposedReward: Number(task.reward) || 0,
+        approvedReward: null,
+        adminNote: ""
+      };
+
+      reports.unshift(report);
+      if (!saveReports()) {
+        reports.shift();
+        return;
+      }
+
+      task.status = "in_progress";
+      saveTasks();
+
+      $("#reportForm").reset();
+      $("#reportDate").value = new Date().toISOString().slice(0, 10);
+
+      renderAll();
+      navigateTo("reports");
+      showToast("گزارش ذخیره شد و در انتظار بررسی مدیر است.");
+    });
+
+    $("#downloadReportsBtn").addEventListener("click", exportReports);
+
+    $("#changeNameBtn").addEventListener("click", () => {
+      const shouldExit = confirm("می‌خواهی از پنل خارج شوی و نام را دوباره وارد کنی؟");
+      if (!shouldExit) return;
+
+      try {
+        localStorage.removeItem(STORAGE_KEYS.name);
+      } catch (error) {}
+      employeeName = "";
+      showWelcome();
+    });
+
+    $("#mobileMenuBtn").addEventListener("click", () => {
+      $("#sidebar").classList.toggle("mobile-open");
+    });
+
+    $("#reportDate").value = new Date().toISOString().slice(0, 10);
+
+    initializeData();
+
+    try {
+      employeeName = (localStorage.getItem(STORAGE_KEYS.name) || "").trim();
+    } catch (error) {
+      employeeName = "";
+    }
+
+    if (employeeName) {
+      showApp();
+    }
+  </script>
 </body>
 </html>
